@@ -1,0 +1,59 @@
+﻿#grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    visibility: hidden;
+}
+    
+.debug #grid {
+    visibility: visible;
+}
+
+.debug h1 {
+    background-color: rgba(0,0,255,0.1);
+}
+
+.debug h2 {
+    background-color: rgba(0,255,0,0.1);
+}
+
+.debug h3 {
+    background-color: rgba(0,255,255,0.1);
+}
+
+.debug h4 {
+    background-color: rgba(0,255,255,0.1);
+}
+
+.debug h5 {
+    background-color: rgba(0,255,255,0.1);
+}
+
+.debug h6 {
+    background-color: rgba(0,255,255,0.1);
+}
+
+.debug p {
+    background-color: rgba(255,255,0,0.3);
+}
+
+.debug .p {
+    background-color: rgba(255,255,0,0.3);
+}
+
+.debug .display1 {
+    background-color: rgba(0,0,255,0.1);
+}
+
+.debug .display2 {
+    background-color: rgba(0,255,0,0.1);
+}
+
+.debug .display3 {
+    background-color: rgba(0,255,255,0.1);
+}
+
+.debug .display4 {
+    background-color: rgba(0,255,255,0.1);
+}

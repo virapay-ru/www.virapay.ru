@@ -17,12 +17,18 @@
 	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
 
 	<!-- UI framework -->
-	<link href="/css/typography.css" rel="stylesheet"/>
+	<link href="css/typography.css" rel="stylesheet"/>
 
 <!--    <link href="/css/colors.css" rel="stylesheet"/>
     <link href="/css/reset.css" rel="stylesheet"/>
 	<link href="/css/typography.css" rel="stylesheet"/>
 	<link href="/css/group.css" rel="stylesheet"/>-->
+
+	<!-- Common -->
+	<link href="css/common.css" rel="stylesheet"/>
+
+	<!-- Core code -->
+	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Google Sign In -->
     <script src="https://apis.google.com/js/platform.js"></script>
@@ -34,24 +40,6 @@
 	<script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>
 
 <style>
-
-/* alignment */
-
-/*.tl {
-    text-align: left;
-}
-
-.tr {
-    text-align: right;
-}
-
-.tc {
-    text-align: center;
-}
-
-.tj {
-    text-align: justify;
-}*/
 
 /* custom */
 
@@ -66,39 +54,17 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Inter', sans-serif;
+	font-family: inherit;
 }
 
-code {
+/*code {
 	font-family: 'Ubuntu Mono', monospace;
-}
+}*/
 
 .icon {
 	font-size: 1.25em;
 	display: inline-flex;
     align-items: center;
-}
-
-.group.input {
-	width: 100%;
-}
-
-/* activity */
-
-.activity {
-	width: 100%;
-	min-height: 100vh;
-    min-height: -webkit-fill-available;
-	position: absolute;
-	left: 0;
-	top: 0;
-}
-
-.activity > .container {
-	padding: 2rem 1rem;
-	box-sizing: border-box;
-	margin: 2rem auto;
-	min-height: calc(100vh - 2 * 2rem);
 }
 
 /* custom activities */
@@ -109,17 +75,15 @@ code {
     font-size: 10rem;
 }
 
-.activity.loading > .container {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
 .activity.login > .container {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
 	justify-content: center;
+}
+
+.activity.login .logo {
+	margin-bottom: 2rem;
 }
 
 .activity.login p {
@@ -144,13 +108,6 @@ code {
 }
 
 @media (min-width: 768px) {
-
-/*	.activity > .container {
-		margin: 6rem auto;
-		min-height: calc(100vh - 2 * 6rem);
-		width: 400px;
-		border: 1px solid #eee;
-	}*/
 }
 
 /* buttons */
@@ -225,141 +182,10 @@ code {
 
 </style>
 
-	<style>
-
-.logo, .logo-text {
-    margin: 0.5rem auto;
-	display: block;
-}
-
-.logo-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 36px;
-    display: inline-block;
-	margin-bottom: 2rem;
-}
-
-.logo-text > *:first-child {
-    color: #ccc;
-}
-
-.logo-text > *:last-child {
-    color: #000;
-}
-
-
-		/* DEBUG */
-
-        #grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -100;
-            visibility: hidden;
-        }
-	        
-        .debug #grid {
-            visibility: visible;
-        }
-
-        .debug h1 {
-            background-color: rgba(0,0,255,0.1);
-        }
-        
-        .debug h2 {
-            background-color: rgba(0,255,0,0.1);
-        }
-        
-        .debug h3 {
-            background-color: rgba(0,255,255,0.1);
-        }
-
-        .debug h4 {
-            background-color: rgba(0,255,255,0.1);
-        }
-
-        .debug h5 {
-            background-color: rgba(0,255,255,0.1);
-        }
-
-        .debug h6 {
-            background-color: rgba(0,255,255,0.1);
-        }
-        
-        .debug p {
-            background-color: rgba(255,255,0,0.3);
-        }
-
-		.debug .p {
-            background-color: rgba(255,255,0,0.3);
-        }
-
-        .debug .display1 {
-            background-color: rgba(0,0,255,0.1);
-        }
-        
-        .debug .display2 {
-            background-color: rgba(0,255,0,0.1);
-        }
-        
-        .debug .display3 {
-            background-color: rgba(0,255,255,0.1);
-        }
-
-        .debug .display4 {
-            background-color: rgba(0,255,255,0.1);
-        }
-
-
-	</style>
-
-    <script>
-        
-        function main() {
-
-            var canvas = document.getElementById('grid')
-            var ctx = canvas.getContext('2d')
-            
-            function resize() {
-                canvas.width = document.documentElement.offsetWidth // document.body.clientWidth
-                canvas.height = document.documentElement.offsetHeight //document.body.scrollHeight
-                ctx.fillStyle = '#fff'
-                ctx.fillRect(0, 0, canvas.width, canvas.height)
-                ctx.fillStyle = 'rgba(0,0,255,0.1)'
-                var fontSize = getComputedStyle(document.body).getPropertyValue('font-size')
-                var defaultStep = 8
-                console.log('default step is', defaultStep, 'px')
-                var step = defaultStep
-                if (/^\d+px$/.test(fontSize)) {
-                    step = parseInt(fontSize) / 2
-                    console.log('step is', step, 'px')
-                }
-                for (var x = 0; x < canvas.width; x += step) {
-                    ctx.fillRect(x, 0, 1, canvas.height)
-                }
-                ctx.fillStyle = 'rgba(255,0,0,0.3)'
-                for (var y = 0; y < canvas.height; y += step) {
-                    ctx.fillRect(0, y, canvas.width, 1)
-                }
-            }
-            
-            window.addEventListener('resize', resize)
-            
-            resize()
-            
-            document.body.addEventListener('dblclick', function () {
-                document.body.classList.toggle('debug')
-            })
-        }
-        
-    </script>
-
 </head>
-<body onload="main()" class="-debug">
+<body>
 
-<canvas id="grid"></canvas>
-
-	<div class="activity loading">
+	<div class="activity at-center loading">
 		<div class="container">
 			<i class="mdi mdi-loading display4 spin"></i>
 		</div>
@@ -413,11 +239,13 @@ code {
 		</div>
 	</div>
 -->
-	<div class="activity login is-hidden">
+	<div class="activity at-center login is-hidden">
 		<div class="container">
 
-	        <img class="logo" src="images/logo.svg" width="100"/>
-	        <div class="logo-text"><span>VIRA</span><span>PAY</span></div>
+			<div class="logo vertical">
+		        <img src="images/logo.svg"/>
+		        <div><span>VIRA</span><span>PAY</span></div>
+			</div>
 
 			<button class="button-auth signin-with-google is-hidden">
 	            <img class="icon" src="/images/google_g_logo.svg"/>
@@ -465,51 +293,6 @@ console.log('isLoggedOut()',isLoggedIn() === false)
 	return isLoggedIn() === false
 }
 
-// storage
-
-function storagePut(path, value) {
-	if (!/^(\/[^\/]+)+$/.test(path)) {
-		throw new SyntaxError(`Invalid path "${path}"`)
-	}
-	let keys = path.substr(1).split('/')
-	let rootKey = keys.shift()
-	let data = localStorage[rootKey]
-	if (data === undefined) {
-		data = '{ }'
-	}
-	data = JSON.parse(data)
-	let rootData = data
-//console.log('root0', rootKey, rootData)
-	while (keys.length > 1) {
-		let k = keys.shift()
-//console.log('key0', data[k])
-		if (typeof data[k] !== 'object') {
-			data[k] = { }
-		}
-//console.log('key1', data[k])
-		data = data[k]
-	}
-	data[keys.shift()] = value
-	localStorage[rootKey] = JSON.stringify(rootData)
-//console.log('root1', rootKey, rootData, JSON.stringify(rootData))
-}
-
-function storageGet(path) {
-	if (!/^(\/[^\/]+)+$/.test(path)) {
-		throw new SyntaxError(`Invalid path "${path}"`)
-	}
-	let keys = path.substr(1).split('/')
-	let data = localStorage[keys.shift()]
-	if (data === undefined) {
-		return data
-	}
-	data = JSON.parse(data)
-	while (keys.length > 0 && typeof data === 'object') {
-		data = data[keys.shift()]
-	}
-	return keys.length > 0 ? undefined : data
-}
-
 // activities
 
 let activities = Array.from(document.querySelectorAll('.activity'))
@@ -534,243 +317,15 @@ function profileInit(id, fullName, imageUrl, email, logoutCallback) {
 	switchActivity(activityProfile)
 }
 
-// VK API
-
-(() => {
-
-	let APP_ID = 7496488
-
-	VK.init({
-		apiId: APP_ID
-	});
-
-	function getUserInfo(id, email = undefined) {
-		let storageKey = `/${location.hostname}/auth/vk/${id}`
-		if (email !== undefined) {
-			storagePut(storageKey, email)
-		} else {
-			email = storageGet(storageKey)
-		}
-		VK.Api.call('users.get', { user_ids: id, fields: 'has_photo,photo_200', v: '5.103' }, response => {
-			console.log('VK.Api.call(users.get)', response)
-			let profile = response.response[0]
-//console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
-			profileInit('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, () => {
-				VK.Auth.logout(response => {
-					isLoggedInWith.vk = false
-console.log('isLoggedOut: VK 1')
-					if (isLoggedOut()) {
-						switchActivity(activityLogin)
-					}
-				})
-			})
-		});
-	}
-
-	VK.Auth.getLoginStatus(response => {
-		console.log('VK.Auth.getLoginStatus', response)
-		if (response.session) {
-			getUserInfo(response.session.mid)
-		} else {
-			isLoggedInWith.vk = false
-console.log('isLoggedOut: VK 2')
-			if (isLoggedOut()) {
-				switchActivity(activityLogin)
-			}
-		}
-	})
-
-	let signInButton = activityLogin.querySelector('.signin-with-vk')
-	signInButton.addEventListener('click', () => {
-
-//		VK.Auth.login(response => {
-//			console.log('VK.Auth.login', response)
-//			if (response.session) {
-//				getUserInfo(response.session.mid)
-//			}
-//		}, (1 << 22));
-
-
-        let url = `${VK._domain.main}/${VK._path.login}?client_id=${APP_ID}&display=popup&redirect_uri=${location.origin}/vk.html&response_type=token&openapi=1&scope=email`;
-
-		let popup = VK.UI.popup({
-          width: 665,
-          height: 370,
-          url: url
-        });
-
-		function observePopup() {
-			try {
-				if (popup.location.hostname === location.hostname) {
-//					console.log('TODO PARSE', popup.location.hash)
-					let parameters = popup.location.hash.substr(1).split('&').reduce((p, kv) => {
-						let [ k, v ] = kv.split('=')
-						p[k] = v
-						return p
-					}, { })
-					popup.close()
-					getUserInfo(parameters.user_id, parameters.email)
-				}
-			} catch (e) {
-				console.log(e)
-			}
-			if (popup.parent) {
-				setTimeout(observePopup, 500)
-			}
-		}
-
-		observePopup()
-
-	})
-
-	signInButton.classList.remove('is-hidden')
-
-})();
-
-// Facebook API
-
-window.fbAsyncInit = () => {
-
-	function onStatusChange(response) {
-		if (response.status === 'connected') {
-			// response.authResponse.userID 
-			FB.api('/me?fields=id,name,email,picture.type(large)', response => {
-				console.log('FB.api(/me)', response);
-				profileInit('facebook/' + response.id, response.name, response.picture.data.url, response.email, () => {
-					FB.logout(response => {
-						console.log('FB.logout', response)
-						onStatusChange(response)
-					})
-				})
-			});
-		} else {
-			isLoggedInWith.facebook = false
-console.log('isLoggedOut: FB 1')
-			if (isLoggedOut()) {
-				switchActivity(activityLogin)
-			}
-		}
-	}
-
-	FB.init({
-		appId: '2682741668715941',
-		cookie: true,
-		xfbml: true,
-		version: 'v7.0'
-	});
-
-//	FB.AppEvents.logPageView();   
-
-	let signInButton = activityLogin.querySelector('.signin-with-facebook')
-	signInButton.addEventListener('click', () => {
-		FB.login(response => {
-			console.log('FB.login', response)
-			onStatusChange(response)
-		}, {
-			scope: 'public_profile,email'
-		});
-	})
-
-	if (location.protocol === 'http:') {
-		onStatusChange({ })
-	} else {
-		FB.getLoginStatus(response => {
-			console.log('FB.getLoginStatus', response)
-			onStatusChange(response)
-		});
-		signInButton.classList.remove('is-hidden')
-	}
-
-};
-
-/*(function(d, s, id){
-	var js, fjs = d.getElementsByTagName(s)[0];
-	if (d.getElementById(id)) {return;}
-	js = d.createElement(s); js.id = id;
-	js.src = "https://connect.facebook.net/en_US/sdk.js";
-	fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));*/
-
-// Google API
-
-    gapi.load('auth2', function () {
-
-        let auth2 = gapi.auth2.init({
-            client_id: '272693258954-aj3mqp6l3kd9a5brhsf99k11bo0gd95i.apps.googleusercontent.com',
-            scope: 'profile email'
-        })
-
-        // Listen for changes to current user.
-        auth2.currentUser.listen(user => {
-            console.log('auth2.currentUser', user)
-			let hasProfile = false
-            if (user) {
-                var profile = user.getBasicProfile()
-                if (profile) {
-                    console.log("ID: " + profile.getId())
-                    console.log('Full Name: ' + profile.getName())
-                    console.log('Given Name: ' + profile.getGivenName())
-                    console.log('Family Name: ' + profile.getFamilyName())
-                    console.log("Image URL: " + profile.getImageUrl())
-                    console.log("Email: " + profile.getEmail())
-					hasProfile = true
-					profileInit('google/' + profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), () => {
-						auth2.signOut()
-					})
-                }
-            }
-			if (!hasProfile) {
-				isLoggedInWith.google = false
-console.log('isLoggedOut: G 1')
-				if (isLoggedOut()) {
-					switchActivity(activityLogin)
-				}
-			}
-        })
-
-        // Listen for sign-in state changes.
-        auth2.isSignedIn.listen(function (isSignedIn) {
-            console.log('auth2.isSignedIn', isSignedIn)
-//            if (isSignedIn) {
-//                identificationPanel.classList.add('signed-in')
-//            } else {
-//                identificationPanel.classList.remove('signed-in')
-//            }
-			if (!isSignedIn) {
-				isLoggedInWith.google = false
-console.log('isLoggedOut: G 2')
-				if (isLoggedOut()) {
-					switchActivity(activityLogin)
-				}
-			}
-        })
-/*
-        // Sign in the user if they are currently signed in.
-        if (auth2.isSignedIn.get() == true) {
-            auth2.signIn()
-        } else {
-			isLoggedInWith.google = false
-			if (isLoggedOut()) {
-				switchActivity(activityLogin)
-			}
-		}
-*/
-		let signInButton = activityLogin.querySelector('.signin-with-google')
-		signInButton.addEventListener('click', () => {
-			auth2.signIn()
-		})
-		signInButton.classList.remove('is-hidden')
-
-        //console.log('Current state', auth2.currentUser.get(), auth2.isSignedIn.get())
-//        identificationPanel.querySelector('.sign-in').addEventListener('click', function () {
-//            auth2.signIn()
-//        })
-
-//        identificationPanel.querySelector('.sign-out').addEventListener('click', function () {
-//            auth2.signOut()
-//        })
-    })
-
 </script>
+
+	<!-- Auth -->
+	<script src="js/login/google.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/login/facebook.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/login/vk.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- DEBUG -->
+	<link href="css/debug/grid.css" rel="stylesheet"/>
+	<script src="js/debug/grid.js" type="text/javascript" charset="utf-8"></script>
 
 </html>

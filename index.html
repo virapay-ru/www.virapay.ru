@@ -15,6 +15,10 @@
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
+	<!-- Common -->
+	<link href="css/common.css" rel="stylesheet">
+
+
 <style>
 
 html {
@@ -31,51 +35,24 @@ p {
     margin-bottom: 0.5rem;
 }
 
-.center {
-    display: flex;
-    flex-flow: column;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo, .logo-text {
-    margin: 0.5rem;
-}
-
-.logo-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 36px;
-    display: inline-block;
-}
-
-.logo-text > *:first-child {
-    color: #ccc;
-}
-
-.logo-text > *:last-child {
-    color: #000;
+.logo + p {
+    margin-bottom: 2rem;
 }
 
 .light {
     font-weight: 300;
 }
 
-.space {
-    height: 2rem;
-}
-
 </style>
 </head>
 <body>
 
-
-    <div class="center">
-        <img class="logo" src="images/logo.svg" width="100"/>
-        <div class="logo-text"><span>VIRA</span><span>PAY</span></div>
+    <div class="activity at-center center">
+		<div class="logo vertical">
+	        <img src="images/logo.svg" width="100"/>
+	        <div><span>VIRA</span><span>PAY</span></div>
+		</div>
         <p class="light">Мы работаем над принципиально<br/>новым платежным инструментом.</p>
-        <div class="space"></div>
     </div>
 
 </body>

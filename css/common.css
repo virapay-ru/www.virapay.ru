@@ -1,0 +1,70 @@
+﻿/* logo */
+
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    display: inline-flex;
+	align-items: center;
+}
+
+.logo.vertical {
+	flex-flow: column;
+}
+
+.logo.vertical > img {
+	width: 100px;
+}
+
+.logo.horizontal {
+	flex-flow: row;
+}
+
+.logo.horizontal > img {
+	height: 50px;
+}
+
+.logo > * {
+    margin: 0.5rem;
+}
+
+.logo > div > *:first-child {
+    color: #ccc;
+}
+
+.logo > div > *:last-child {
+    color: #000;
+}
+
+
+/* activity */
+
+.activity {
+	display: flex;
+	width: 100%;
+	min-height: 100vh;
+    min-height: -webkit-fill-available;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.activity.at-center {
+	align-items: center;
+	justify-content: center;
+}
+
+.activity > .container {
+	display: flex;
+	flex-flow: column;
+	padding: 2rem 1rem;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+
+
+/* activity */
+
+.page {
+	width: 100%;
+	max-width: 40em;
+}
