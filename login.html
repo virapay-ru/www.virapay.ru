@@ -1,0 +1,724 @@
+﻿<!doctype html>
+<html>
+<head>
+
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay" />
+	<meta name="keywords" content="virapay, vira, pay" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+	<!-- Webfonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+	<!-- UI framework -->
+<!--    <link href="/css/colors.css" rel="stylesheet"/>
+    <link href="/css/reset.css" rel="stylesheet"/>
+	<link href="/css/typography.css" rel="stylesheet"/>
+	<link href="/css/group.css" rel="stylesheet"/>-->
+
+	<!-- Google Sign In -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+
+	<!-- Facebook API -->
+	<script src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+	<!-- VK API -->
+	<script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>
+
+<style>
+
+/* alignment */
+
+.tl {
+    text-align: left;
+}
+
+.tr {
+    text-align: right;
+}
+
+.tc {
+    text-align: center;
+}
+
+.tj {
+    text-align: justify;
+}
+
+/* custom */
+
+html {
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	margin: 0;
+	color: #000;
+	background-color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Inter', sans-serif;
+}
+
+code {
+	font-family: 'Ubuntu Mono', monospace;
+}
+
+.icon {
+	font-size: 1.25em;
+	display: inline-flex;
+    align-items: center;
+}
+
+.group.input {
+	width: 100%;
+}
+
+/* activity */
+
+.activity {
+	width: 100%;
+	min-height: 100vh;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.activity > .container {
+	padding: 2rem 1rem;
+	box-sizing: border-box;
+	margin: 2rem auto;
+	min-height: calc(100vh - 2 * 2rem);
+}
+
+/* custom activities */
+
+.activity > .container > i.display1 {
+	color: gainsboro;
+	line-height: 10rem;
+    font-size: 10rem;
+}
+
+.activity.loading > .container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.activity.profile .avatar {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+}
+
+.activity.profile .logout {
+	margin-top: 1rem;
+}
+
+
+/* media */
+
+@media (max-width: 767px) {
+}
+
+@media (min-width: 768px) {
+
+	.activity > .container {
+		margin: 6rem auto;
+		min-height: calc(100vh - 2 * 6rem);
+		width: 400px;
+		border: 1px solid #eee;
+	}
+}
+
+/* buttons */
+
+.button-auth {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	height: 2.5rem;
+	width: 100%;
+	box-sizing: border-box;
+	margin-bottom: 1rem;
+	border: 0;
+	border-radius: 0.25rem;
+	background: #fff;
+	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
+	cursor: pointer;
+}
+
+.button-auth > .icon {
+	height: 1.5rem;
+	font-size: 1.5rem;
+	margin-right: 0.5rem;
+}
+
+.button-auth > span {
+	display: block;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.signin-with-google {
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+.signin-with-facebook {
+	color: #fff;
+	background: rgb(24, 119, 242);
+}
+
+.signin-with-vk {
+	color: #fff;
+	background: #4c75a3;
+}
+
+/* utilities */
+
+.is-hidden {
+	display: none;
+}
+
+.wide {
+	width: 100%;
+}
+
+.spin {
+	animation: spin 0.3s linear infinite;	
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+</style>
+
+	<style>
+
+		/* DEBUG */
+
+        #grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -100;
+            visibility: hidden;
+        }
+	        
+        .debug #grid {
+            visibility: visible;
+        }
+
+        .debug h1 {
+            background-color: rgba(0,0,255,0.1);
+        }
+        
+        .debug h2 {
+            background-color: rgba(0,255,0,0.1);
+        }
+        
+        .debug h3 {
+            background-color: rgba(0,255,255,0.1);
+        }
+
+        .debug h4 {
+            background-color: rgba(0,255,255,0.1);
+        }
+
+        .debug h5 {
+            background-color: rgba(0,255,255,0.1);
+        }
+
+        .debug h6 {
+            background-color: rgba(0,255,255,0.1);
+        }
+        
+        .debug p {
+            background-color: rgba(255,255,0,0.3);
+        }
+
+		.debug .p {
+            background-color: rgba(255,255,0,0.3);
+        }
+
+        .debug .display1 {
+            background-color: rgba(0,0,255,0.1);
+        }
+        
+        .debug .display2 {
+            background-color: rgba(0,255,0,0.1);
+        }
+        
+        .debug .display3 {
+            background-color: rgba(0,255,255,0.1);
+        }
+
+        .debug .display4 {
+            background-color: rgba(0,255,255,0.1);
+        }
+
+
+	</style>
+
+    <script>
+        
+        function main() {
+
+            var canvas = document.getElementById('grid')
+            var ctx = canvas.getContext('2d')
+            
+            function resize() {
+                canvas.width = document.documentElement.offsetWidth // document.body.clientWidth
+                canvas.height = document.documentElement.offsetHeight //document.body.scrollHeight
+                ctx.fillStyle = '#fff'
+                ctx.fillRect(0, 0, canvas.width, canvas.height)
+                ctx.fillStyle = 'rgba(0,0,255,0.1)'
+                var fontSize = getComputedStyle(document.body).getPropertyValue('font-size')
+                var defaultStep = 8
+                console.log('default step is', defaultStep, 'px')
+                var step = defaultStep
+                if (/^\d+px$/.test(fontSize)) {
+                    step = parseInt(fontSize) / 2
+                    console.log('step is', step, 'px')
+                }
+                for (var x = 0; x < canvas.width; x += step) {
+                    ctx.fillRect(x, 0, 1, canvas.height)
+                }
+                ctx.fillStyle = 'rgba(255,0,0,0.3)'
+                for (var y = 0; y < canvas.height; y += step) {
+                    ctx.fillRect(0, y, canvas.width, 1)
+                }
+            }
+            
+            window.addEventListener('resize', resize)
+            
+            resize()
+            
+            document.body.addEventListener('dblclick', function () {
+                document.body.classList.toggle('debug')
+            })
+        }
+        
+    </script>
+
+</head>
+<body onload="main()" class="-debug">
+
+<canvas id="grid"></canvas>
+
+	<div class="activity loading">
+		<div class="container">
+			<i class="mdi mdi-loading display4 spin"></i>
+		</div>
+	</div>
+<!--	<div class="activity profile is-hidden">
+		<div class="container">
+			<h4>Профиль пользователя</h4>
+			<p class="id"><small>id</small></p>
+			<img class="avatar"/>
+			<p class="fullname">Полное Имя</p>
+			<p class="email">Email</p>
+			<button class="logout">Выход</div>
+		</div>
+	</div>-->
+	<div class="activity profile is-hidden">
+		<div class="container tc">
+			<img class="avatar"/>
+			<p><small class="id">id</small></p>
+
+			<label class="group vertical tl wide">
+				Ваше имя
+				<div class="group input">
+					<div class="label"><i class="icon mdi mdi-account-outline"></i></div>
+					<input type="text" class="fullname is-valid"/>
+					<div class="validation">
+						<i class="icon mdi mdi-check positive success"></i>
+						<i class="icon mdi mdi-close negative error"></i>
+					</div>
+				</div>
+				<p class="feedback">Введите ваше имя</p>
+			</label>
+
+			<label class="group vertical tl wide">
+				Email
+				<div class="group input">
+					<div class="label"><i class="icon mdi mdi-at"></i></div>
+					<input type="text" class="email is-valid"/>
+					<div class="validation">
+						<i class="icon mdi mdi-check positive success"></i>
+						<i class="icon mdi mdi-close negative error"></i>
+					</div>
+				</div>
+				<p class="feedback">Ваш действующий адрес эл. почты</p>
+			</label>
+
+			<button class="button logout">Выход</div>
+		</div>
+	</div>
+	<div class="activity login is-hidden">
+		<div class="container tc">
+			<i class="mdi mdi-account-circle-outline display1"></i>
+			<h4>Вход</h4>
+			<button class="button-auth signin-with-google is-hidden">
+	            <img class="icon" src="/images/google_g_logo.svg"/>
+	            <span>Войти с Google</span>
+			</button>
+			<button class="button-auth signin-with-facebook is-hidden">
+	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
+				<i class="icon mdi mdi-facebook"></i>
+	            <span>Войти с Facebook</span>
+			</button>
+			<button class="button-auth signin-with-vk is-hidden">
+	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
+				<i class="icon mdi mdi-vk"></i>
+	            <span>Войти с ВКонтакте</span>
+			</button>
+		</div>
+	</div>
+</body>
+<script>
+
+'use strict';
+
+let isLoggedInWith = {
+	google: undefined,
+	facebook: undefined,
+	vk: undefined
+}
+
+function isLoggedIn() {
+	if (isLoggedInWith.google === undefined
+	 || isLoggedInWith.facebook === undefined
+	 || isLoggedInWith.vk === undefined) {
+		return undefined
+	}
+	return isLoggedInWith.google || isLoggedInWith.facebook || isLoggedInWith.vk
+}
+
+function isLoggedOut() {
+console.log('isLoggedOut()',isLoggedIn() === false)
+	return isLoggedIn() === false
+}
+
+// storage
+
+function storagePut(path, value) {
+	if (!/^(\/[^\/]+)+$/.test(path)) {
+		throw new SyntaxError(`Invalid path "${path}"`)
+	}
+	let keys = path.substr(1).split('/')
+	let rootKey = keys.shift()
+	let data = localStorage[rootKey]
+	if (data === undefined) {
+		data = '{ }'
+	}
+	data = JSON.parse(data)
+	let rootData = data
+//console.log('root0', rootKey, rootData)
+	while (keys.length > 1) {
+		let k = keys.shift()
+//console.log('key0', data[k])
+		if (typeof data[k] !== 'object') {
+			data[k] = { }
+		}
+//console.log('key1', data[k])
+		data = data[k]
+	}
+	data[keys.shift()] = value
+	localStorage[rootKey] = JSON.stringify(rootData)
+//console.log('root1', rootKey, rootData, JSON.stringify(rootData))
+}
+
+function storageGet(path) {
+	if (!/^(\/[^\/]+)+$/.test(path)) {
+		throw new SyntaxError(`Invalid path "${path}"`)
+	}
+	let keys = path.substr(1).split('/')
+	let data = localStorage[keys.shift()]
+	if (data === undefined) {
+		return data
+	}
+	data = JSON.parse(data)
+	while (keys.length > 0 && typeof data === 'object') {
+		data = data[keys.shift()]
+	}
+	return keys.length > 0 ? undefined : data
+}
+
+// activities
+
+let activities = Array.from(document.querySelectorAll('.activity'))
+let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
+let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
+
+// activities switcher
+
+function switchActivity(activity) {
+	activities.forEach(a => a.classList.add('is-hidden'))
+	activity.classList.remove('is-hidden')
+}
+
+// profile functions
+
+function profileInit(id, fullName, imageUrl, email, logoutCallback) {
+	activityProfile.querySelector('.avatar').src = imageUrl
+	activityProfile.querySelector('.id').innerText = id
+	activityProfile.querySelector('.fullname').value = fullName
+	activityProfile.querySelector('.email').value = email
+	activityProfile.querySelector('.logout').onclick = logoutCallback
+	switchActivity(activityProfile)
+}
+
+// VK API
+
+(() => {
+
+	VK.init({
+		apiId: 7493935
+	});
+
+	function getUserInfo(id, email = undefined) {
+		let storageKey = `/${location.hostname}/auth/vk/${id}`
+		if (email !== undefined) {
+			storagePut(storageKey, email)
+		} else {
+			email = storageGet(storageKey)
+		}
+		VK.Api.call('users.get', { user_ids: id, fields: 'has_photo,photo_200', v: '5.103' }, response => {
+			console.log('VK.Api.call(users.get)', response)
+			let profile = response.response[0]
+//console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
+			profileInit('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, () => {
+				VK.Auth.logout(response => {
+					isLoggedInWith.vk = false
+console.log('isLoggedOut: VK 1')
+					if (isLoggedOut()) {
+						switchActivity(activityLogin)
+					}
+				})
+			})
+		});
+	}
+
+	VK.Auth.getLoginStatus(response => {
+		console.log('VK.Auth.getLoginStatus', response)
+		if (response.session) {
+			getUserInfo(response.session.mid)
+		} else {
+			isLoggedInWith.vk = false
+console.log('isLoggedOut: VK 2')
+			if (isLoggedOut()) {
+				switchActivity(activityLogin)
+			}
+		}
+	})
+
+	let signInButton = activityLogin.querySelector('.signin-with-vk')
+	signInButton.addEventListener('click', () => {
+
+//		VK.Auth.login(response => {
+//			console.log('VK.Auth.login', response)
+//			if (response.session) {
+//				getUserInfo(response.session.mid)
+//			}
+//		}, (1 << 22));
+
+
+        let url = `${VK._domain.main}/${VK._path.login}?client_id=7458745&display=popup&redirect_uri=${location.origin}/vk.html&response_type=token&openapi=1&scope=email`;
+
+		let popup = VK.UI.popup({
+          width: 665,
+          height: 370,
+          url: url
+        });
+
+		function observePopup() {
+			try {
+				if (popup.location.hostname === location.hostname) {
+//					console.log('TODO PARSE', popup.location.hash)
+					let parameters = popup.location.hash.substr(1).split('&').reduce((p, kv) => {
+						let [ k, v ] = kv.split('=')
+						p[k] = v
+						return p
+					}, { })
+					popup.close()
+					getUserInfo(parameters.user_id, parameters.email)
+				}
+			} catch (e) {
+				console.log(e)
+			}
+			if (popup.parent) {
+				setTimeout(observePopup, 500)
+			}
+		}
+
+		observePopup()
+
+	})
+
+	signInButton.classList.remove('is-hidden')
+
+})();
+
+// Facebook API
+
+window.fbAsyncInit = () => {
+
+	function onStatusChange(response) {
+		if (response.status === 'connected') {
+			// response.authResponse.userID 
+			FB.api('/me?fields=id,name,email,picture.type(large)', response => {
+				console.log('FB.api(/me)', response);
+				profileInit('facebook/' + response.id, response.name, response.picture.data.url, response.email, () => {
+					FB.logout(response => {
+						console.log('FB.logout', response)
+						onStatusChange(response)
+					})
+				})
+			});
+		} else {
+			isLoggedInWith.facebook = false
+console.log('isLoggedOut: FB 1')
+			if (isLoggedOut()) {
+				switchActivity(activityLogin)
+			}
+		}
+	}
+
+	FB.init({
+		appId: '2682741668715941',
+		cookie: true,
+		xfbml: true,
+		version: 'v7.0'
+	});
+
+//	FB.AppEvents.logPageView();   
+
+	let signInButton = activityLogin.querySelector('.signin-with-facebook')
+	signInButton.addEventListener('click', () => {
+		FB.login(response => {
+			console.log('FB.login', response)
+			onStatusChange(response)
+		}, {
+			scope: 'public_profile,email'
+		});
+	})
+
+	if (location.protocol === 'http:') {
+		onStatusChange({ })
+	} else {
+		FB.getLoginStatus(response => {
+			console.log('FB.getLoginStatus', response)
+			onStatusChange(response)
+		});
+		signInButton.classList.remove('is-hidden')
+	}
+
+};
+
+/*(function(d, s, id){
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) {return;}
+	js = d.createElement(s); js.id = id;
+	js.src = "https://connect.facebook.net/en_US/sdk.js";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));*/
+
+// Google API
+
+    gapi.load('auth2', function () {
+
+        let auth2 = gapi.auth2.init({
+            client_id: '272693258954-aj3mqp6l3kd9a5brhsf99k11bo0gd95i.apps.googleusercontent.com',
+            scope: 'profile email'
+        })
+
+        // Listen for changes to current user.
+        auth2.currentUser.listen(user => {
+            console.log('auth2.currentUser', user)
+			let hasProfile = false
+            if (user) {
+                var profile = user.getBasicProfile()
+                if (profile) {
+                    console.log("ID: " + profile.getId())
+                    console.log('Full Name: ' + profile.getName())
+                    console.log('Given Name: ' + profile.getGivenName())
+                    console.log('Family Name: ' + profile.getFamilyName())
+                    console.log("Image URL: " + profile.getImageUrl())
+                    console.log("Email: " + profile.getEmail())
+					hasProfile = true
+					profileInit('google/' + profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), () => {
+						auth2.signOut()
+					})
+                }
+            }
+			if (!hasProfile) {
+				isLoggedInWith.google = false
+console.log('isLoggedOut: G 1')
+				if (isLoggedOut()) {
+					switchActivity(activityLogin)
+				}
+			}
+        })
+
+        // Listen for sign-in state changes.
+        auth2.isSignedIn.listen(function (isSignedIn) {
+            console.log('auth2.isSignedIn', isSignedIn)
+//            if (isSignedIn) {
+//                identificationPanel.classList.add('signed-in')
+//            } else {
+//                identificationPanel.classList.remove('signed-in')
+//            }
+			if (!isSignedIn) {
+				isLoggedInWith.google = false
+console.log('isLoggedOut: G 2')
+				if (isLoggedOut()) {
+					switchActivity(activityLogin)
+				}
+			}
+        })
+/*
+        // Sign in the user if they are currently signed in.
+        if (auth2.isSignedIn.get() == true) {
+            auth2.signIn()
+        } else {
+			isLoggedInWith.google = false
+			if (isLoggedOut()) {
+				switchActivity(activityLogin)
+			}
+		}
+*/
+		let signInButton = activityLogin.querySelector('.signin-with-google')
+		signInButton.addEventListener('click', () => {
+			auth2.signIn()
+		})
+		signInButton.classList.remove('is-hidden')
+
+        //console.log('Current state', auth2.currentUser.get(), auth2.isSignedIn.get())
+//        identificationPanel.querySelector('.sign-in').addEventListener('click', function () {
+//            auth2.signIn()
+//        })
+
+//        identificationPanel.querySelector('.sign-out').addEventListener('click', function () {
+//            auth2.signOut()
+//        })
+    })
+
+</script>
+
+</html>
