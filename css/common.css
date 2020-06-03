@@ -62,9 +62,43 @@
 }
 
 
-/* activity */
+/* page */
 
 .page {
 	width: 100%;
 	max-width: 40em;
+	padding-bottom: 4rem;
+}
+
+
+/* action bar */
+
+.action-bar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-flow: row;
+	font-size: 1.5rem;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+}
+
+.action-bar > .container {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	background: linear-gradient(#fff, rgba(255,255,255,0.5));
+	height: 4rem;
+	width: 100%;
+	max-width: 40rem;
+}
+
+.action-bar a {
+	cursor: pointer;
+	padding: 0.5rem;
+	-webkit-tap-highlight-color: transparent;
+	color: inherit;
 }
