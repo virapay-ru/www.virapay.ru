@@ -14,8 +14,11 @@
 	<!-- Webfonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
 
 	<!-- UI framework -->
+	<link href="/css/typography.css" rel="stylesheet"/>
+
 <!--    <link href="/css/colors.css" rel="stylesheet"/>
     <link href="/css/reset.css" rel="stylesheet"/>
 	<link href="/css/typography.css" rel="stylesheet"/>
@@ -34,7 +37,7 @@
 
 /* alignment */
 
-.tl {
+/*.tl {
     text-align: left;
 }
 
@@ -48,7 +51,7 @@
 
 .tj {
     text-align: justify;
-}
+}*/
 
 /* custom */
 
@@ -85,6 +88,7 @@ code {
 .activity {
 	width: 100%;
 	min-height: 100vh;
+    min-height: -webkit-fill-available;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -111,6 +115,18 @@ code {
 	justify-content: center;
 }
 
+.activity.login > .container {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.activity.login p {
+    width: 20rem;
+    font-size: 0.8rem;
+}
+
 .activity.profile .avatar {
 	width: 10rem;
 	height: 10rem;
@@ -129,12 +145,12 @@ code {
 
 @media (min-width: 768px) {
 
-	.activity > .container {
+/*	.activity > .container {
 		margin: 6rem auto;
 		min-height: calc(100vh - 2 * 6rem);
 		width: 400px;
 		border: 1px solid #eee;
-	}
+	}*/
 }
 
 /* buttons */
@@ -147,6 +163,7 @@ code {
 	padding-right: 1rem;
 	height: 2.5rem;
 	width: 100%;
+	max-width: 20rem;
 	box-sizing: border-box;
 	margin-bottom: 1rem;
 	border: 0;
@@ -189,9 +206,9 @@ code {
 	display: none;
 }
 
-.wide {
+/*.wide {
 	width: 100%;
-}
+}*/
 
 .spin {
 	animation: spin 0.3s linear infinite;	
@@ -209,6 +226,27 @@ code {
 </style>
 
 	<style>
+
+.logo, .logo-text {
+    margin: 0.5rem auto;
+	display: block;
+}
+
+.logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    display: inline-block;
+	margin-bottom: 2rem;
+}
+
+.logo-text > *:first-child {
+    color: #ccc;
+}
+
+.logo-text > *:last-child {
+    color: #000;
+}
+
 
 		/* DEBUG */
 
@@ -326,7 +364,7 @@ code {
 			<i class="mdi mdi-loading display4 spin"></i>
 		</div>
 	</div>
-<!--	<div class="activity profile is-hidden">
+	<div class="activity profile is-hidden">
 		<div class="container">
 			<h4>Профиль пользователя</h4>
 			<p class="id"><small>id</small></p>
@@ -335,10 +373,13 @@ code {
 			<p class="email">Email</p>
 			<button class="logout">Выход</div>
 		</div>
-	</div>-->
+	</div>
+<!--
 	<div class="activity profile is-hidden">
 		<div class="container tc">
+
 			<img class="avatar"/>
+
 			<p><small class="id">id</small></p>
 
 			<label class="group vertical tl wide">
@@ -368,26 +409,35 @@ code {
 			</label>
 
 			<button class="button logout">Выход</div>
+
 		</div>
 	</div>
+-->
 	<div class="activity login is-hidden">
-		<div class="container tc">
-			<i class="mdi mdi-account-circle-outline display1"></i>
-			<h4>Вход</h4>
+		<div class="container">
+
+	        <img class="logo" src="images/logo.svg" width="100"/>
+	        <div class="logo-text"><span>VIRA</span><span>PAY</span></div>
+
 			<button class="button-auth signin-with-google is-hidden">
 	            <img class="icon" src="/images/google_g_logo.svg"/>
 	            <span>Войти с Google</span>
 			</button>
+
 			<button class="button-auth signin-with-facebook is-hidden">
 	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
 				<i class="icon mdi mdi-facebook"></i>
 	            <span>Войти с Facebook</span>
 			</button>
+
 			<button class="button-auth signin-with-vk is-hidden">
 	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
 				<i class="icon mdi mdi-vk"></i>
 	            <span>Войти с ВКонтакте</span>
 			</button>
+
+			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>, даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
+
 		</div>
 	</div>
 </body>

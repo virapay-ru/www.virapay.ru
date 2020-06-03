@@ -1,0 +1,146 @@
+﻿html {
+    line-height: 1.5;
+}
+
+h1, .h1 {
+    font-weight: 700;
+    font-size: 2.75rem;
+    line-height: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h2, .h2 {
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h3, .h3 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h4, .h4 {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h5, .h5 {
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+	text-transform: uppercase;
+}
+
+h6, .h6 {
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+p, .p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-width: 40em;
+}
+
+.lead {
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+	opacity: 0.75;
+}
+
+.display1 {
+    font-weight: 900;
+    font-size: 7rem;
+    line-height: 6rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+	text-transform: uppercase;
+}
+
+.display2 {
+    font-weight: 600;
+    font-size: 5rem;
+    line-height: 4.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+	text-transform: uppercase;
+}
+
+.display3 {
+    font-weight: 900;
+    font-size: 3.3rem;
+    line-height: 3.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.display4 {
+    font-weight: 300;
+    font-size: 2.2rem;
+    line-height: 2.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+	opacity: 0.75;
+}
+
+/* TODO tests for rules after this marker  */
+
+blockquote {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    max-width: 40em;
+}
+
+blockquote > cite {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: right;
+}
+
+blockquote > cite:before {
+    content: '\2014';
+    margin-right: 0.5rem;
+}
+
+small {
+    font-size: 0.75em;
+	opacity: 0.75;
+}
+
+sub {
+    font-size: 0.75em;
+    position: relative;
+    top: 0.5em;
+    vertical-align: baseline;
+}
+
+sup {
+    font-size: 0.75em;
+    position: relative;
+    top: -0.5em;
+    vertical-align: baseline;
+}
+
+label {
+	font-weight: bold;
+}
