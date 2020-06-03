@@ -45,7 +45,13 @@ console.log('isLoggedOut: FB 1')
 	if (location.protocol === 'http:') {
 		onStatusChange({ })
 	} else {
+console.log('calling FB.getLoginStatus(...)')
+		let timeout = setTimeout(function () {
+console.log('FB does not respond...')
+			onStatusChange({ })
+		}, 1500)
 		FB.getLoginStatus(response => {
+			clearTimeout(timeout)
 			console.log('FB.getLoginStatus', response)
 			onStatusChange(response)
 		});
