@@ -488,8 +488,10 @@ function profileInit(id, fullName, imageUrl, email, logoutCallback) {
 
 (() => {
 
+	let APP_ID = 7496488
+
 	VK.init({
-		apiId: 7496488//7493935
+		apiId: APP_ID
 	});
 
 	function getUserInfo(id, email = undefined) {
@@ -539,7 +541,7 @@ console.log('isLoggedOut: VK 2')
 //		}, (1 << 22));
 
 
-        let url = `${VK._domain.main}/${VK._path.login}?client_id=7458745&display=popup&redirect_uri=${location.origin}/vk.html&response_type=token&openapi=1&scope=email`;
+        let url = `${VK._domain.main}/${VK._path.login}?client_id=${APP_ID}&display=popup&redirect_uri=${location.origin}/vk.html&response_type=token&openapi=1&scope=email`;
 
 		let popup = VK.UI.popup({
           width: 665,
