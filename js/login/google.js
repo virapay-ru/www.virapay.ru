@@ -59,7 +59,7 @@ console.log("Image URL: " + profile.getImageUrl())
 console.log("Email: " + profile.getEmail())
 					hasProfile = true
 window.debugGoogleAuthResponse = user.getAuthResponse()
-					let token = 'TODO'
+					let token = user.getAuthResponse().id_token
 					profileInit('google', profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), token, () => {
 						auth2.signOut()
 					})

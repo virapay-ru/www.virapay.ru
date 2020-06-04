@@ -360,9 +360,9 @@ function switchActivity(activity) {
 function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
 	activityProfile.querySelector('.avatar').src = imageUrl
 	activityProfile.querySelector('.apiname').innerText = apiName
-	activityProfile.querySelector('.id').value = id
+	activityProfile.querySelector('.id').innerText = id
 	activityProfile.querySelector('.fullname').value = fullName
-	activityProfile.querySelector('.email').innerText = email
+	activityProfile.querySelector('.email').value = email
 	activityProfile.querySelector('.token').innerText = token
 	activityProfile.querySelector('.logout').onclick = logoutCallback
 	switchActivity(activityProfile)

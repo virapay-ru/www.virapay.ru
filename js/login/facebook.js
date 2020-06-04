@@ -41,7 +41,7 @@ console.log('FB does not respond...')
 				FB.api('/me?fields=id,name,email,picture.type(large)', response => {
 //pr('FB.api(/me)', response)
 console.log('FB.api(/me)', response);
-					let token = 'TODO'
+					let token = response.authResponse.accessToken
 					profileInit('facebook', response.id, response.name, response.picture.data.url, response.email, token, () => {
 						FB.logout(response => {
 //pr('FB.logout', response)

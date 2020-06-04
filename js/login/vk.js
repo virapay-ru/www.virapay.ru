@@ -50,6 +50,7 @@ console.log('VK does not respond...')
 //pr('VK.Api.call(users.get)', response)
 console.log('VK.Api.call(users.get)', response)
 			let profile = response.response[0]
+window.debugVKUsersGetResponse = response
 //console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
 			let token = 'TODO'
 			profileInit('vk', profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, token, () => {
@@ -66,6 +67,7 @@ console.log('onLoggedOut: VK 1')
 //pr('VK.Auth.getLoginStatus', response)
 console.log('VK.Auth.getLoginStatus', response)
 		if (response.session) {
+window.debugVKGetLoginStatusResponse = response
 			getUserInfo(response.session.mid)
 		} else {
 //pr('isLoggedOut: VK 2')
@@ -103,6 +105,7 @@ console.log('isLoggedOut: VK 2')
 						return p
 					}, { })
 					popup.close()
+console.log('VK parameters', parameters)
 					getUserInfo(parameters.user_id, parameters.email)
 				}
 			} catch (e) {
