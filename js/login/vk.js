@@ -30,7 +30,7 @@ console.log('VK does not respond...')
 		executionTimeout = null
 	}, MAX_EXECUTION_TIME)
 
-	let APP_ID = 7496488
+	let APP_ID = 7498783//7496488
 
 	VK.init({
 		apiId: APP_ID
