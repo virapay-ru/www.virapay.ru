@@ -16,7 +16,7 @@ function storagePut(path, value) {
 	while (keys.length > 1) {
 		let k = keys.shift()
 //console.log('key0', data[k])
-		if (typeof data[k] !== 'object') {
+		if (typeof data[k] !== 'object' || data[k] === null) { // be careful - null is object
 			data[k] = { }
 		}
 //console.log('key1', data[k])
@@ -37,7 +37,7 @@ function storageGet(path) {
 		return data
 	}
 	data = JSON.parse(data)
-	while (keys.length > 0 && typeof data === 'object') {
+	while (keys.length > 0 && typeof data === 'object' && data !== null) { // be careful - null is object
 		data = data[keys.shift()]
 	}
 	return keys.length > 0 ? undefined : data
