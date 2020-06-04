@@ -15,16 +15,19 @@ window.fbAsyncInit = () => {
 		if (response.status === 'connected') {
 			// response.authResponse.userID 
 			FB.api('/me?fields=id,name,email,picture.type(large)', response => {
-				console.log('FB.api(/me)', response);
+pr('FB.api(/me)', response)
+console.log('FB.api(/me)', response);
 				profileInit('facebook/' + response.id, response.name, response.picture.data.url, response.email, () => {
 					FB.logout(response => {
-						console.log('FB.logout', response)
+pr('FB.logout', response)
+console.log('FB.logout', response)
 						onStatusChange(response)
 					})
 				})
 			});
 		} else {
 			isLoggedInWith.facebook = false
+pr('isLoggedOut: FB 1')
 console.log('isLoggedOut: FB 1')
 			if (isLoggedOut()) {
 				switchActivity(activityLogin)
@@ -33,6 +36,7 @@ console.log('isLoggedOut: FB 1')
 	}
 
 	executionTimeout = setTimeout(function () {
+pr('FB does not respond...')
 console.log('FB does not respond...')
 		onStatusChange({ })
 	}, MAX_EXECUTION_TIME)
@@ -49,7 +53,8 @@ console.log('FB does not respond...')
 	let signInButton = activityLogin.querySelector('.signin-with-facebook')
 	signInButton.addEventListener('click', () => {
 		FB.login(response => {
-			console.log('FB.login', response)
+pr('FB.login', response)
+console.log('FB.login', response)
 			onStatusChange(response)
 		}, {
 			scope: 'public_profile,email'
@@ -61,7 +66,8 @@ console.log('FB does not respond...')
 	} else {
 //console.log('calling FB.getLoginStatus(...)')
 		FB.getLoginStatus(response => {
-			console.log('FB.getLoginStatus', response)
+pr('FB.getLoginStatus', response)
+console.log('FB.getLoginStatus', response)
 			onStatusChange(response)
 		});
 		signInButton.classList.remove('is-hidden')

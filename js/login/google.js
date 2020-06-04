@@ -9,17 +9,18 @@
 
         // Listen for changes to current user.
         auth2.currentUser.listen(user => {
-            console.log('auth2.currentUser', user)
+pr('auth2.currentUser', user)
+console.log('auth2.currentUser', user)
 			let hasProfile = false
             if (user) {
                 var profile = user.getBasicProfile()
                 if (profile) {
-                    console.log("ID: " + profile.getId())
-                    console.log('Full Name: ' + profile.getName())
-                    console.log('Given Name: ' + profile.getGivenName())
-                    console.log('Family Name: ' + profile.getFamilyName())
-                    console.log("Image URL: " + profile.getImageUrl())
-                    console.log("Email: " + profile.getEmail())
+console.log("ID: " + profile.getId())
+console.log('Full Name: ' + profile.getName())
+console.log('Given Name: ' + profile.getGivenName())
+console.log('Family Name: ' + profile.getFamilyName())
+console.log("Image URL: " + profile.getImageUrl())
+console.log("Email: " + profile.getEmail())
 					hasProfile = true
 					profileInit('google/' + profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), () => {
 						auth2.signOut()
@@ -28,6 +29,7 @@
             }
 			if (!hasProfile) {
 				isLoggedInWith.google = false
+pr('isLoggedOut: G 1')
 console.log('isLoggedOut: G 1')
 				if (isLoggedOut()) {
 					switchActivity(activityLogin)
@@ -37,7 +39,8 @@ console.log('isLoggedOut: G 1')
 
         // Listen for sign-in state changes.
         auth2.isSignedIn.listen(function (isSignedIn) {
-            console.log('auth2.isSignedIn', isSignedIn)
+pr('auth2.isSignedIn', isSignedIn)
+console.log('auth2.isSignedIn', isSignedIn)
 //            if (isSignedIn) {
 //                identificationPanel.classList.add('signed-in')
 //            } else {
@@ -45,6 +48,7 @@ console.log('isLoggedOut: G 1')
 //            }
 			if (!isSignedIn) {
 				isLoggedInWith.google = false
+pr('isLoggedOut: G 2')
 console.log('isLoggedOut: G 2')
 				if (isLoggedOut()) {
 					switchActivity(activityLogin)

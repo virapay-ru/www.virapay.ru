@@ -28,6 +28,7 @@
 	<link href="css/common.css" rel="stylesheet"/>
 
 	<!-- Core code -->
+<script src="js/debug/output.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Google Sign In -->
@@ -194,6 +195,13 @@ h1, h2, h3, h4, h5, h6 {
 			<i class="mdi mdi-loading display4 spin"></i>
 		</div>
 	</div>
+
+	<div class="activity at-center debug-console">
+		<div class="container">
+			<pre class="output" style="overflow: auto;"></pre>
+		</div>
+	</div>
+
 	<div class="activity profile is-hidden">
 		<div class="container">
 			<h4>Профиль пользователя</h4>
@@ -324,9 +332,9 @@ function profileInit(id, fullName, imageUrl, email, logoutCallback) {
 </script>
 
 	<!-- Auth -->
-	<script src="js/login/google.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/login/facebook.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/login/vk.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/login/google.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+	<script src="js/login/facebook.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+	<script src="js/login/vk.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
 
 	<!-- DEBUG -->
 	<link href="css/debug/grid.css" rel="stylesheet"/>
