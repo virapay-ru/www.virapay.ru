@@ -40,8 +40,9 @@ console.log('VK does not respond...')
 
 		turnOffTimer()
 
-		let storageKeyEmail = `/${location.hostname}/auth/vk/${id}/email`
-		let storageKeyToken = `/${location.hostname}/auth/vk/${id}/token`
+		let storageRoot = `/${location.hostname}/auth/vk/${id}`
+		let storageKeyEmail = `${storageRoot}/email`
+		let storageKeyToken = `${storageRoot}/token`
 
 		if (email !== undefined) {
 			storagePut(storageKeyEmail, email)
@@ -64,8 +65,7 @@ window.debugVKUsersGetResponse = response
 			profileInit('vk', profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, accessToken, () => {
 				VK.Auth.logout(response => {
 
-					storagePut(storageKeyEmail, null)
-					storagePut(storageKeyToken, null)
+					storagePut(storageRoot, null)
 //pr('onLoggedOut: VK 1')
 console.log('onLoggedOut: VK 1')
 					onLoggedOut()
