@@ -40,9 +40,9 @@ console.log('VK does not respond...')
 
 		turnOffTimer()
 
-		let storageRoot = `/${location.hostname}/auth/vk/${id}`
-		let storageKeyEmail = `${storageRoot}/email`
-		let storageKeyToken = `${storageRoot}/token`
+		let storageRoot = `/${location.hostname}/auth/vk`
+		let storageKeyEmail = `${storageRoot}/${id}/email`
+		let storageKeyToken = `${storageRoot}/${id}/token`
 
 		if (email !== undefined) {
 			storagePut(storageKeyEmail, email)
