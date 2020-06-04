@@ -1,5 +1,36 @@
 // Google API
 
+(function () {
+
+pr('G starting')
+console.log('G starting')
+
+	let MAX_EXECUTION_TIME = 3000
+	let executionTimeout = null
+
+	function turnOffTimer() {
+		if (executionTimeout !== null) {
+			clearTimeout(executionTimeout)
+			executionTimeout = null
+		}
+	}
+
+	function onLoggedOut() {
+		turnOffTimer()
+		isLoggedInWith.google = false
+		if (isLoggedOut()) {
+			switchActivity(activityLogin)
+		}
+	}
+
+	executionTimeout = setTimeout(function () {
+pr('G does not respond...')
+console.log('G does not respond...')
+		onLoggedOut()
+		executionTimeout = null
+	}, MAX_EXECUTION_TIME)
+
+
     gapi.load('auth2', function () {
 
         let auth2 = gapi.auth2.init({
@@ -9,8 +40,12 @@
 
         // Listen for changes to current user.
         auth2.currentUser.listen(user => {
+
 pr('auth2.currentUser', user)
 console.log('auth2.currentUser', user)
+
+			turnOffTimer()
+
 			let hasProfile = false
             if (user) {
                 var profile = user.getBasicProfile()
@@ -28,12 +63,8 @@ console.log("Email: " + profile.getEmail())
                 }
             }
 			if (!hasProfile) {
-				isLoggedInWith.google = false
-pr('isLoggedOut: G 1')
-console.log('isLoggedOut: G 1')
-				if (isLoggedOut()) {
-					switchActivity(activityLogin)
-				}
+pr('onLoggedOut: G 1')
+				onLoggedOut()
 			}
         })
 
@@ -47,12 +78,8 @@ console.log('auth2.isSignedIn', isSignedIn)
 //                identificationPanel.classList.remove('signed-in')
 //            }
 			if (!isSignedIn) {
-				isLoggedInWith.google = false
 pr('isLoggedOut: G 2')
-console.log('isLoggedOut: G 2')
-				if (isLoggedOut()) {
-					switchActivity(activityLogin)
-				}
+				onLoggedOut()
 			}
         })
 /*
@@ -81,3 +108,5 @@ console.log('isLoggedOut: G 2')
 //            auth2.signOut()
 //        })
     })
+
+})();

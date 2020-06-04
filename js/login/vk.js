@@ -1,8 +1,34 @@
 // VK API
 
-(() => {
+(function () {
 
-	pr('VK starting')
+pr('VK starting')
+console.log('VK starting')
+
+	let MAX_EXECUTION_TIME = 3000
+	let executionTimeout = null
+
+	function turnOffTimer() {
+		if (executionTimeout !== null) {
+			clearTimeout(executionTimeout)
+			executionTimeout = null
+		}
+	}
+
+	function onLoggedOut() {
+		turnOffTimer()
+		isLoggedInWith.vk = false
+		if (isLoggedOut()) {
+			switchActivity(activityLogin)
+		}
+	}
+
+	executionTimeout = setTimeout(function () {
+pr('VK does not respond...')
+console.log('VK does not respond...')
+		onLoggedOut()
+		executionTimeout = null
+	}, MAX_EXECUTION_TIME)
 
 	let APP_ID = 7496488
 
@@ -11,6 +37,9 @@
 	});
 
 	function getUserInfo(id, email = undefined) {
+
+		turnOffTimer()
+
 		let storageKey = `/${location.hostname}/auth/vk/${id}`
 		if (email !== undefined) {
 			storagePut(storageKey, email)
@@ -24,12 +53,9 @@ console.log('VK.Api.call(users.get)', response)
 //console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
 			profileInit('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, () => {
 				VK.Auth.logout(response => {
-					isLoggedInWith.vk = false
-pr('isLoggedOut: VK 1')
-console.log('isLoggedOut: VK 1')
-					if (isLoggedOut()) {
-						switchActivity(activityLogin)
-					}
+pr('onLoggedOut: VK 1')
+console.log('onLoggedOut: VK 1')
+					onLoggedOut()
 				})
 			})
 		});
@@ -41,12 +67,9 @@ console.log('VK.Auth.getLoginStatus', response)
 		if (response.session) {
 			getUserInfo(response.session.mid)
 		} else {
-			isLoggedInWith.vk = false
 pr('isLoggedOut: VK 2')
 console.log('isLoggedOut: VK 2')
-			if (isLoggedOut()) {
-				switchActivity(activityLogin)
-			}
+			onLoggedOut()
 		}
 	})
 

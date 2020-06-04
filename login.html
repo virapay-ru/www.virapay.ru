@@ -185,6 +185,35 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+.debug-console {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+    height: -webkit-fill-available;
+	overflow: auto;
+	z-index: 1000;
+	box-sizing: border-box;
+	padding: 1rem;
+	font-size: 0.8rem;
+}
+
+.debug-console .output {
+	margin: 0;
+}
+
 </style>
 
 </head>
@@ -196,10 +225,8 @@ h1, h2, h3, h4, h5, h6 {
 		</div>
 	</div>
 
-	<div class="activity at-center debug-console">
-		<div class="container">
-			<pre class="output" style="overflow: auto;"></pre>
-		</div>
+	<div class="debug-console">
+		<pre class="output"></pre>
 	</div>
 
 	<div class="activity profile is-hidden">
