@@ -2,7 +2,7 @@
 
 (function () {
 
-pr('VK starting')
+//pr('VK starting')
 console.log('VK starting')
 
 	let MAX_EXECUTION_TIME = 3000
@@ -24,7 +24,7 @@ console.log('VK starting')
 	}
 
 	executionTimeout = setTimeout(function () {
-pr('VK does not respond...')
+//pr('VK does not respond...')
 console.log('VK does not respond...')
 		onLoggedOut()
 		executionTimeout = null
@@ -47,13 +47,14 @@ console.log('VK does not respond...')
 			email = storageGet(storageKey)
 		}
 		VK.Api.call('users.get', { user_ids: id, fields: 'has_photo,photo_200', v: '5.103' }, response => {
-pr('VK.Api.call(users.get)', response)
+//pr('VK.Api.call(users.get)', response)
 console.log('VK.Api.call(users.get)', response)
 			let profile = response.response[0]
 //console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
-			profileInit('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, () => {
+			let token = 'TODO'
+			profileInit('vk', profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, token, () => {
 				VK.Auth.logout(response => {
-pr('onLoggedOut: VK 1')
+//pr('onLoggedOut: VK 1')
 console.log('onLoggedOut: VK 1')
 					onLoggedOut()
 				})
@@ -62,12 +63,12 @@ console.log('onLoggedOut: VK 1')
 	}
 
 	VK.Auth.getLoginStatus(response => {
-pr('VK.Auth.getLoginStatus', response)
+//pr('VK.Auth.getLoginStatus', response)
 console.log('VK.Auth.getLoginStatus', response)
 		if (response.session) {
 			getUserInfo(response.session.mid)
 		} else {
-pr('isLoggedOut: VK 2')
+//pr('isLoggedOut: VK 2')
 console.log('isLoggedOut: VK 2')
 			onLoggedOut()
 		}
@@ -105,7 +106,7 @@ console.log('isLoggedOut: VK 2')
 					getUserInfo(parameters.user_id, parameters.email)
 				}
 			} catch (e) {
-pr('VK exception in observePopup(): ', e)
+//pr('VK exception in observePopup(): ', e)
 console.log('VK exception in observePopup(): ', e)
 			}
 			if (popup.parent) {

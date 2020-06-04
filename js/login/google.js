@@ -2,7 +2,7 @@
 
 (function () {
 
-pr('G starting')
+//pr('G starting')
 console.log('G starting')
 
 	let MAX_EXECUTION_TIME = 3000
@@ -24,7 +24,7 @@ console.log('G starting')
 	}
 
 	executionTimeout = setTimeout(function () {
-pr('G does not respond...')
+//pr('G does not respond...')
 console.log('G does not respond...')
 		onLoggedOut()
 		executionTimeout = null
@@ -41,8 +41,9 @@ console.log('G does not respond...')
         // Listen for changes to current user.
         auth2.currentUser.listen(user => {
 
-pr('auth2.currentUser', user)
+//pr('auth2.currentUser', user)
 console.log('auth2.currentUser', user)
+window.debugGoogleUser = user
 
 			turnOffTimer()
 
@@ -57,20 +58,22 @@ console.log('Family Name: ' + profile.getFamilyName())
 console.log("Image URL: " + profile.getImageUrl())
 console.log("Email: " + profile.getEmail())
 					hasProfile = true
-					profileInit('google/' + profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), () => {
+window.debugGoogleAuthResponse = user.getAuthResponse()
+					let token = 'TODO'
+					profileInit('google', profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), token, () => {
 						auth2.signOut()
 					})
                 }
             }
 			if (!hasProfile) {
-pr('onLoggedOut: G 1')
+//pr('onLoggedOut: G 1')
 				onLoggedOut()
 			}
         })
 
         // Listen for sign-in state changes.
         auth2.isSignedIn.listen(function (isSignedIn) {
-pr('auth2.isSignedIn', isSignedIn)
+//pr('auth2.isSignedIn', isSignedIn)
 console.log('auth2.isSignedIn', isSignedIn)
 //            if (isSignedIn) {
 //                identificationPanel.classList.add('signed-in')
@@ -78,7 +81,7 @@ console.log('auth2.isSignedIn', isSignedIn)
 //                identificationPanel.classList.remove('signed-in')
 //            }
 			if (!isSignedIn) {
-pr('isLoggedOut: G 2')
+//pr('isLoggedOut: G 2')
 				onLoggedOut()
 			}
         })

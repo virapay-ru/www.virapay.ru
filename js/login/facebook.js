@@ -2,7 +2,7 @@
 
 (function () {
 
-pr('FB starting')
+//pr('FB starting')
 console.log('FB starting')
 
 	let MAX_EXECUTION_TIME = 3000
@@ -24,7 +24,7 @@ console.log('FB starting')
 	}
 
 	executionTimeout = setTimeout(function () {
-pr('FB does not respond...')
+//pr('FB does not respond...')
 console.log('FB does not respond...')
 		onLoggedOut()
 		executionTimeout = null
@@ -39,18 +39,19 @@ console.log('FB does not respond...')
 			if (response.status === 'connected') {
 				// response.authResponse.userID 
 				FB.api('/me?fields=id,name,email,picture.type(large)', response => {
-pr('FB.api(/me)', response)
+//pr('FB.api(/me)', response)
 console.log('FB.api(/me)', response);
-					profileInit('facebook/' + response.id, response.name, response.picture.data.url, response.email, () => {
+					let token = 'TODO'
+					profileInit('facebook', response.id, response.name, response.picture.data.url, response.email, token, () => {
 						FB.logout(response => {
-pr('FB.logout', response)
+//pr('FB.logout', response)
 console.log('FB.logout', response)
 							onStatusChange(response)
 						})
 					})
 				});
 			} else {
-pr('onLoggedOut: FB 1')
+//pr('onLoggedOut: FB 1')
 console.log('onLoggedOut: FB 1')
 				onLoggedOut()
 			}
@@ -68,7 +69,7 @@ console.log('onLoggedOut: FB 1')
 		let signInButton = activityLogin.querySelector('.signin-with-facebook')
 		signInButton.addEventListener('click', () => {
 			FB.login(response => {
-pr('FB.login', response)
+//pr('FB.login', response)
 console.log('FB.login', response)
 				onStatusChange(response)
 			}, {
@@ -81,7 +82,7 @@ console.log('FB.login', response)
 		} else {
 	//console.log('calling FB.getLoginStatus(...)')
 			FB.getLoginStatus(response => {
-pr('FB.getLoginStatus', response)
+//pr('FB.getLoginStatus', response)
 console.log('FB.getLoginStatus', response)
 				onStatusChange(response)
 			});
