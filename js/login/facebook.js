@@ -37,11 +37,14 @@ console.log('FB does not respond...')
 			turnOffTimer()
 
 			if (response.status === 'connected') {
+
+				let token = response.authResponse.accessToken
+
 				// response.authResponse.userID 
 				FB.api('/me?fields=id,name,email,picture.type(large)', response => {
 //pr('FB.api(/me)', response)
 console.log('FB.api(/me)', response);
-					let token = response.authResponse.accessToken
+window.debugFBMeResponse = response
 					profileInit('facebook', response.id, response.name, response.picture.data.url, response.email, token, () => {
 						FB.logout(response => {
 //pr('FB.logout', response)
@@ -71,6 +74,7 @@ console.log('onLoggedOut: FB 1')
 			FB.login(response => {
 //pr('FB.login', response)
 console.log('FB.login', response)
+window.debugFBLoginResponse = response
 				onStatusChange(response)
 			}, {
 				scope: 'public_profile,email'
@@ -84,6 +88,7 @@ console.log('FB.login', response)
 			FB.getLoginStatus(response => {
 //pr('FB.getLoginStatus', response)
 console.log('FB.getLoginStatus', response)
+window.debugFBGetLoginStatusResponse = response
 				onStatusChange(response)
 			});
 			signInButton.classList.remove('is-hidden')

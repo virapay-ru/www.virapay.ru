@@ -36,24 +36,32 @@ console.log('VK does not respond...')
 		apiId: APP_ID
 	});
 
-	function getUserInfo(id, email = undefined) {
+	function getUserInfo(id, email = undefined, accessToken = undefined) {
 
 		turnOffTimer()
 
-		let storageKey = `/${location.hostname}/auth/vk/${id}`
+		let storageKeyEmail = `/${location.hostname}/auth/vk/${id}/email`
+		let storageKeyToken = `/${location.hostname}/auth/vk/${id}/token`
+
 		if (email !== undefined) {
-			storagePut(storageKey, email)
+			storagePut(storageKeyEmail, email)
 		} else {
-			email = storageGet(storageKey)
+			email = storageGet(storageKeyEmail)
 		}
+
+		if (accessToken !== undefined) {
+			storagePut(storageKeyToken, email)
+		} else {
+			accessToken = storageGet(storageKeyToken)
+		}
+
 		VK.Api.call('users.get', { user_ids: id, fields: 'has_photo,photo_200', v: '5.103' }, response => {
 //pr('VK.Api.call(users.get)', response)
 console.log('VK.Api.call(users.get)', response)
 			let profile = response.response[0]
 window.debugVKUsersGetResponse = response
 //console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
-			let token = 'TODO'
-			profileInit('vk', profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, token, () => {
+			profileInit('vk', profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, accessToken, () => {
 				VK.Auth.logout(response => {
 //pr('onLoggedOut: VK 1')
 console.log('onLoggedOut: VK 1')
@@ -106,7 +114,7 @@ console.log('isLoggedOut: VK 2')
 					}, { })
 					popup.close()
 console.log('VK parameters', parameters)
-					getUserInfo(parameters.user_id, parameters.email)
+					getUserInfo(parameters.user_id, parameters.email, parameters.access_token)
 				}
 			} catch (e) {
 //pr('VK exception in observePopup(): ', e)
