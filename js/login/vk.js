@@ -95,7 +95,7 @@ console.log('isLoggedOut: VK 2')
 //		}, (1 << 22));
 
 
-        let url = `${VK._domain.main}/${VK._path.login}?client_id=${APP_ID}&display=popup&redirect_uri=${location.origin}/vk.html&response_type=token&openapi=1&scope=email`;
+        let url = `${VK._domain.main}/${VK._path.login}?client_id=${APP_ID}&display=popup&redirect_uri=${location.origin}/vk.html&response_type=token&openapi=1&scope=email,offline`;
 
 		let popup = VK.UI.popup({
           width: 665,
