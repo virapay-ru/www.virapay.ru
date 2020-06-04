@@ -63,6 +63,9 @@ window.debugVKUsersGetResponse = response
 //console.log('vk/' + profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, 'TODO email')
 			profileInit('vk', profile.id, [ profile.first_name, profile.last_name ].join(' '), profile.photo_200, email, accessToken, () => {
 				VK.Auth.logout(response => {
+
+					storagePut(storageKeyEmail, null)
+					storagePut(storageKeyToken, null)
 //pr('onLoggedOut: VK 1')
 console.log('onLoggedOut: VK 1')
 					onLoggedOut()
