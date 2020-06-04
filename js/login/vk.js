@@ -50,7 +50,7 @@ console.log('VK does not respond...')
 		}
 
 		if (accessToken !== undefined) {
-			storagePut(storageKeyToken, email)
+			storagePut(storageKeyToken, accessToken)
 		} else {
 			accessToken = storageGet(storageKeyToken)
 		}
