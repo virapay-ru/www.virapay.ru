@@ -2,7 +2,16 @@
 
 window.fbAsyncInit = () => {
 
+	let MAX_EXECUTION_TIME = 3000
+	let executionTimeout = null
+
 	function onStatusChange(response) {
+
+		if (executionTimeout !== null) {
+			clearTimeout(executionTimeout)
+			executionTimeout = null
+		}
+
 		if (response.status === 'connected') {
 			// response.authResponse.userID 
 			FB.api('/me?fields=id,name,email,picture.type(large)', response => {
@@ -22,6 +31,11 @@ console.log('isLoggedOut: FB 1')
 			}
 		}
 	}
+
+	executionTimeout = setTimeout(function () {
+console.log('FB does not respond...')
+		onStatusChange({ })
+	}, MAX_EXECUTION_TIME)
 
 	FB.init({
 		appId: '2682741668715941',
@@ -45,13 +59,8 @@ console.log('isLoggedOut: FB 1')
 	if (location.protocol === 'http:') {
 		onStatusChange({ })
 	} else {
-console.log('calling FB.getLoginStatus(...)')
-		let timeout = setTimeout(function () {
-console.log('FB does not respond...')
-			onStatusChange({ })
-		}, 1500)
+//console.log('calling FB.getLoginStatus(...)')
 		FB.getLoginStatus(response => {
-			clearTimeout(timeout)
 			console.log('FB.getLoginStatus', response)
 			onStatusChange(response)
 		});

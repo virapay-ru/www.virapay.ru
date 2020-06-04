@@ -15,11 +15,11 @@
         ctx.fillStyle = 'rgba(0,0,255,0.1)'
         var fontSize = getComputedStyle(document.body).getPropertyValue('font-size')
         var defaultStep = 8
-        console.log('default step is', defaultStep, 'px')
+//        console.log('default step is', defaultStep, 'px')
         var step = defaultStep
         if (/^\d+px$/.test(fontSize)) {
             step = parseInt(fontSize) / 2
-            console.log('step is', step, 'px')
+//            console.log('step is', step, 'px')
         }
         for (var x = 0; x < canvas.width; x += step) {
             ctx.fillRect(x, 0, 1, canvas.height)
@@ -38,6 +38,6 @@
         document.body.classList.toggle('debug')
     })
 
-	console.log('debug grid initialized...')
+//	console.log('debug grid initialized...')
 
 })();
