@@ -3,11 +3,11 @@
     top: 0;
     left: 0;
     z-index: -100;
-    visibility: hidden;
+    display: none;
 }
     
 .debug #grid {
-    visibility: visible;
+    display: block;
 }
 
 .debug h1 {
