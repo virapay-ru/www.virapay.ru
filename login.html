@@ -30,6 +30,7 @@
 	<!-- Core code -->
 	<!--<script src="js/debug/output.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Google Sign In -->
     <script src="https://apis.google.com/js/platform.js"></script>
@@ -363,9 +364,25 @@ function switchActivity(activity) {
 	activity.classList.remove('is-hidden')
 }
 
+// backend node
+
+let backend = new JSONRPC2.RemoteProxyObject(
+	// using JSON RPC over HTTP
+	new JSONRPC2.Transports.HTTP(
+		'https://powerful-taiga-14558.herokuapp.com/rpc/json',
+		 {
+			mode: 'cors'
+		 }
+	)
+)
+
 // profile functions
 
-function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
+async function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
+
+	let result = await backend.verify(apiName, token, id)
+	console.log('VERIFICATION', result)
+
 	activityProfile.querySelector('.avatar').src = imageUrl
 	activityProfile.querySelector('.apiname').innerText = apiName
 	activityProfile.querySelector('.id').innerText = id
