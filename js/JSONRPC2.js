@@ -813,7 +813,7 @@ const JSONRPC2 = (() => {
 						}
 
 						if (response.error) {
-							throw new JSONRPC2.Errors.GenericError(
+							throw new Errors.GenericError(
 								response.error.code,
 								response.error.message,
 								response.error.data
