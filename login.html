@@ -380,8 +380,12 @@ let backend = new JSONRPC2.RemoteProxyObject(
 
 async function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
 
-	let result = await backend.verify(apiName, token, id)
-	console.log('VERIFICATION', result)
+	try {
+		let result = await backend.verify(apiName, token, id)
+		console.log('VERIFICATION', result)
+	} catch (e) {
+		console.log('VERIFICATION ERROR', e)
+	}
 
 	activityProfile.querySelector('.avatar').src = imageUrl
 	activityProfile.querySelector('.apiname').innerText = apiName
