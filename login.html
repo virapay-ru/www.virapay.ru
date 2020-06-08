@@ -47,6 +47,7 @@
 
 html {
 	font-family: 'Roboto', sans-serif;
+    font-size: 14px;
 }
 
 body {
@@ -97,14 +98,34 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.8rem;
 }
 
+.activity.profile {
+	padding-top: 4rem;
+}
+
+.activity.profile .container {
+	width: 100%;
+	max-width: 40rem;
+	align-items: center;
+}
+
 .activity.profile .avatar {
 	width: 10rem;
 	height: 10rem;
 	border-radius: 50%;
 }
 
-.activity.profile .logout {
-	margin-top: 1rem;
+.activity.profile h2, .activity.profile .avatar, .activity.profile .label, .activity.profile .button {
+	margin-bottom: 2rem;
+}
+
+.activity.profile .info {
+	max-width: 20em;
+	border-top: 1px solid #eee;
+	padding-top: 2rem;
+}
+
+.activity.profile .button.logout {
+	margin-top: 2rem;
 }
 
 
@@ -115,6 +136,67 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 768px) {
 }
+
+.label {
+	width: 100%;
+	max-width: 20rem;
+}
+
+.label input {
+	height: 2.5rem;
+	width: 100%;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border-radius: 0.25rem;
+	background: #fff;
+	border: 1px solid #eee;
+	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
+	box-sizing: border-box;
+}
+
+
+
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	height: 2.5rem;
+	width: 100%;
+	max-width: 20rem;
+	box-sizing: border-box;
+	margin-bottom: 1rem;
+	border: 0;
+	border-radius: 0.25rem;
+	background: #fff;
+	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
+	cursor: pointer;
+}
+
+.button > .icon {
+	height: 1.5rem;
+	font-size: 1.5rem;
+	margin-right: 0.5rem;
+}
+
+.button > span {
+	display: block;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.button.primary {
+	color: #fff;
+	background: rgb(24, 119, 242);
+}
+
+.button.light {
+	color: #000;
+	background: #eee;
+}
+
 
 /* buttons */
 
@@ -234,27 +316,39 @@ h1, h2, h3, h4, h5, h6 {
 	</div>
 
 	<div class="activity profile is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left logout"></a>
+			</div>
+		</div>
+
 		<div class="container">
 
-			<h4>Профиль пользователя</h4>
+			<h2>Добро пожаловать!</h2>
 
-			<p><small><span class="apiname"></span>/<span class="id"></span></small></p>
+<!--			<p><small><span class="apiname"></span>/<span class="id"></span></small></p>-->
 
 			<img class="avatar"/>
 
-			<label>
+			<label class="label">
 				<div>Полное Имя</div>
 				<div><input class="fullname"/></div>
 			</label>
 
-			<label>
+			<label class="label">
 				<div>Email</div>
 				<div><input class="email"/></div>
 			</label>
 
-			<p class="token"></p>
+			<button class="button primary profile-save">
+	            <span>Продолжить</span>
+				<i class="icon mdi mdi-arrow-right"></i>
+			</button>
 
-			<button class="logout">Выход</div>
+			<p class="info">Вы можете выйти в любое время. Если возникла такая необходимость, нажмите кнопку <q>Выход</q>.</p>
+
+			<button class="button light logout">Выход</div>
 
 		</div>
 	</div>
@@ -298,6 +392,7 @@ h1, h2, h3, h4, h5, h6 {
 	</div>
 -->
 	<div class="activity at-center login is-hidden">
+
 		<div class="container">
 
 			<div class="logo vertical">
@@ -388,13 +483,24 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 		console.log('VERIFICATION ERROR', e)
 	}
 
+	let profile = {
+		id,
+		apiName,
+		imageUrl,
+		fullName,
+		email,
+		token
+	}
+
 	activityProfile.querySelector('.avatar').src = imageUrl
-	activityProfile.querySelector('.apiname').innerText = apiName
-	activityProfile.querySelector('.id').innerText = id
+//	activityProfile.querySelector('.apiname').innerText = apiName
+//	activityProfile.querySelector('.id').innerText = id
 	activityProfile.querySelector('.fullname').value = fullName
 	activityProfile.querySelector('.email').value = email
-	activityProfile.querySelector('.token').innerText = token
-	activityProfile.querySelector('.logout').onclick = logoutCallback
+//	activityProfile.querySelector('.token').innerText = token
+	activityProfile.querySelectorAll('.logout').forEach(node => {
+		node.onclick = logoutCallback
+	})
 	switchActivity(activityProfile)
 }
 
