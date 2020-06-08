@@ -134,6 +134,45 @@ h1, h2, h3, h4, h5, h6 {
 	margin-top: 2rem;
 }
 
+.activity.main > .container {
+	align-items: center;
+	width: 100%;
+	max-width: 30rem;
+}
+
+.activity.main .hot-icons {
+	width: 100%;
+	height: 6rem;
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.activity.main .hot-icons a {
+	padding: 1rem;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
+
+.activity.main .hot-icons a .icon {
+	font-size: 3rem;
+}
+
+.activity.main .hot-icons .open-favorites .icon {
+	color: #fc0;
+}
+
+.activity.main .hot-icons .open-scanner .icon {
+	color: #fd0000;
+}
+
+.activity.main .hot-icons .open-history .icon {
+	color: #4a0;
+}
+
 
 /* media */
 
@@ -368,6 +407,31 @@ h1, h2, h3, h4, h5, h6 {
 
 		</div>
 	</div>
+
+	<div class="activity main is-hidden">
+
+		<div class="container">
+
+			<small>VIRAPAY</small>
+
+			<div class="hot-icons">
+				<a class="open-favorites">
+					<i class="icon mdi mdi-star-outline"></i>
+					<span>Избранное</span>
+				</a>
+				<a class="open-scanner">
+					<i class="icon mdi mdi-qrcode-scan"></i>
+					<span>Сканнер</span>
+				</a>
+				<a class="open-history">
+					<i class="icon mdi mdi-history"></i>
+					<span>История</span>
+				</a>
+			</div>
+
+		</div>
+	</div>
+
 </body>
 <script>
 
@@ -398,6 +462,7 @@ console.log('isLoggedOut()',isLoggedIn() === false)
 let activities = Array.from(document.querySelectorAll('.activity'))
 let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
+let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
 
 // activities switcher
 
@@ -447,9 +512,18 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 //	activityProfile.querySelector('.token').innerText = token
 //	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
 	activityProfile.querySelectorAll('.logout').forEach(node => {
-alert('Logout: ' + node.className)
-		node.onclick = function () { alert('Logout!'); logoutCallback(); }
+//alert('Logout: ' + node.className)
+		node.onclick = function () {
+//			alert('Logout!');
+			logoutCallback();
+		}
 	})
+	activityProfile.querySelectorAll('.profile-save').forEach(node => {
+		node.onclick = function () {
+			switchActivity(activityMain)
+		}
+	})
+
 	switchActivity(activityProfile)
 }
 
