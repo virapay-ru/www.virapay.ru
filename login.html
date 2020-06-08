@@ -45,6 +45,7 @@
 
 /* custom */
 
+/*
 html {
 	font-family: 'Roboto', sans-serif;
     font-size: 14px;
@@ -55,6 +56,7 @@ body {
 	color: #000;
 	background-color: #ffffff;
 }
+*/
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: inherit;
@@ -137,70 +139,11 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 768px) {
 }
 
-.label {
-	width: 100%;
-	max-width: 20rem;
-}
-
-.label input {
-	height: 2.5rem;
-	width: 100%;
-	padding-left: 1rem;
-	padding-right: 1rem;
-	border-radius: 0.25rem;
-	background: #fff;
-	border: 1px solid #eee;
-	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
-	box-sizing: border-box;
-}
-
-
-
-.button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding-left: 1rem;
-	padding-right: 1rem;
-	height: 2.5rem;
-	width: 100%;
-	max-width: 20rem;
-	box-sizing: border-box;
-	margin-bottom: 1rem;
-	border: 0;
-	border-radius: 0.25rem;
-	background: #fff;
-	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
-	cursor: pointer;
-}
-
-.button > .icon {
-	height: 1.5rem;
-	font-size: 1.5rem;
-	margin-right: 0.5rem;
-}
-
-.button > span {
-	display: block;
-	width: 100%;
-	text-align: center;
-	text-transform: uppercase;
-}
-
-.button.primary {
-	color: #fff;
-	background: rgb(24, 119, 242);
-}
-
-.button.light {
-	color: #000;
-	background: #eee;
-}
 
 
 /* buttons */
 
-.button-auth {
+/*.button-auth {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -229,7 +172,7 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	text-align: center;
 	text-transform: uppercase;
-}
+}*/
 
 .signin-with-google {
 	border: 1px solid rgba(0,0,0,0.1);
@@ -400,18 +343,18 @@ h1, h2, h3, h4, h5, h6 {
 		        <div><span>VIRA</span><span>PAY</span></div>
 			</div>
 
-			<button class="button-auth signin-with-google is-hidden">
+			<button class="button -button-auth signin-with-google is-hidden">
 	            <img class="icon" src="/images/google_g_logo.svg"/>
 	            <span>Войти с Google</span>
 			</button>
 
-			<button class="button-auth signin-with-facebook is-hidden">
+			<button class="button -button-auth signin-with-facebook is-hidden">
 	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
 				<i class="icon mdi mdi-facebook"></i>
 	            <span>Войти с Facebook</span>
 			</button>
 
-			<button class="button-auth signin-with-vk is-hidden">
+			<button class="button -button-auth signin-with-vk is-hidden">
 	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
 				<i class="icon mdi mdi-vk"></i>
 	            <span>Войти с ВКонтакте</span>
@@ -498,7 +441,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 	activityProfile.querySelector('.fullname').value = fullName
 	activityProfile.querySelector('.email').value = email
 //	activityProfile.querySelector('.token').innerText = token
-	activityProfile.querySelectorAll('.logout').forEach(node => {
+	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
 		node.onclick = logoutCallback
 	})
 	switchActivity(activityProfile)
