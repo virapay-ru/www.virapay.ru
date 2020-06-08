@@ -20,6 +20,12 @@ p {
     margin-bottom: 0.5rem;
 }
 
+h5 {
+	font-size: inherit;
+	color: #ccc;
+	text-transform: uppercase;
+}
+
 
 /* logo */
 

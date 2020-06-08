@@ -155,6 +155,7 @@ h1, h2, h3, h4, h5, h6 {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
+	cursor: pointer;
 }
 
 .activity.main .hot-icons a .icon {
@@ -173,6 +174,55 @@ h1, h2, h3, h4, h5, h6 {
 	color: #4a0;
 }
 
+.activity.main .categories {
+	width: 100%;
+	height: 6rem;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	margin-bottom: 2rem;
+}
+
+.activity.main .categories a {
+	width: calc((100% - 2rem) / 3);
+	padding: 1rem;
+	margin-bottom: 1rem;
+	box-sizing: border-box;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	-border: 1px solid rgb(77, 144, 254);
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	border-radius: 5px;
+	height: 8rem;
+	cursor: pointer;
+}
+
+.activity.main .categories a .icon {
+	font-size: 2.5rem;
+	color: rgb(77, 144, 254);
+}
+
+.activity.main .categories a span {
+	text-align: center;
+	display: block;
+	font-size: 0.8rem;
+}
+
+.activity.main .categories a.selected {
+	background: rgb(77, 144, 254);
+}
+
+.activity.main .categories a.selected > * {
+	color: #fff;
+}
+
+
+
+.activity h5 {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
 
 /* media */
 
@@ -429,6 +479,34 @@ h1, h2, h3, h4, h5, h6 {
 				</a>
 			</div>
 
+			<h5>Категории</h5>
+			<div class="categories">
+				<a class="category" data-id="1">
+					<i class="icon mdi mdi-office-building"></i>
+					<span>Коммунальные услуги</span>
+				</a>
+				<a class="category" data-id="2">
+					<i class="icon mdi mdi-web"></i>
+					<span>Интернет</span>
+				</a>
+				<a class="category" data-id="3">
+					<i class="icon mdi mdi-television-classic"></i>
+					<span>Телевидение</span>
+				</a>
+				<a class="category" data-id="4">
+					<i class="icon mdi mdi-phone-in-talk"></i>
+					<span>Телефон</span>
+				</a>
+				<a class="category" data-id="5">
+					<i class="icon mdi mdi-gamepad-variant-outline"></i>
+					<span>Игры</span>
+				</a>
+				<a class="category" data-id="6">
+					<i class="icon mdi mdi-dots-horizontal"></i>
+					<span>Прочее</span>
+				</a>
+			</div>
+
 		</div>
 	</div>
 
@@ -526,6 +604,21 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 
 	switchActivity(activityProfile)
 }
+
+// main
+
+(function () {
+
+	let categories = activityMain.querySelectorAll('.category')
+
+	categories.forEach(category => {
+		category.onclick = () => {
+			category.classList.toggle('selected')
+		}
+	})
+
+})();
+
 
 </script>
 
