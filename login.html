@@ -116,8 +116,12 @@ h1, h2, h3, h4, h5, h6 {
 	border-radius: 50%;
 }
 
-.activity.profile h2, .activity.profile .avatar, .activity.profile .label, .activity.profile .button {
+.activity.profile h2, .activity.profile small, .activity.profile .label, .activity.profile .button {
 	margin-bottom: 2rem;
+}
+
+.activity.profile .avatar {
+	margin-bottom: 1rem;
 }
 
 .activity.profile .info {
@@ -270,9 +274,9 @@ h1, h2, h3, h4, h5, h6 {
 
 			<h2>Добро пожаловать!</h2>
 
-<!--			<p><small><span class="apiname"></span>/<span class="id"></span></small></p>-->
-
 			<img class="avatar"/>
+
+			<small><span class="apiname"></span>/<span class="id"></span></small>
 
 			<label class="label">
 				<div>Полное Имя</div>
@@ -436,13 +440,15 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 	}
 
 	activityProfile.querySelector('.avatar').src = imageUrl
-//	activityProfile.querySelector('.apiname').innerText = apiName
-//	activityProfile.querySelector('.id').innerText = id
+	activityProfile.querySelector('.apiname').innerText = apiName
+	activityProfile.querySelector('.id').innerText = id
 	activityProfile.querySelector('.fullname').value = fullName
 	activityProfile.querySelector('.email').value = email
 //	activityProfile.querySelector('.token').innerText = token
-	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
-		node.onclick = logoutCallback
+//	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
+	activityProfile.querySelectorAll('.logout').forEach(node => {
+alert('Logout: ' + node.className)
+		node.onclick = function () { alert('Logout!'); logoutCallback(); }
 	})
 	switchActivity(activityProfile)
 }
