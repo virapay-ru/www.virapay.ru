@@ -134,6 +134,10 @@ h1, h2, h3, h4, h5, h6 {
 	margin-top: 2rem;
 }
 
+.activity.message button {
+	margin-top: 1rem;
+}
+
 .activity.main > .container {
 	align-items: center;
 	width: 100%;
@@ -387,6 +391,20 @@ h1, h2, h3, h4, h5, h6 {
 		</div>
 	</div>
 
+	<div class="activity at-center message is-hidden">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p>
+				<i class="icon mdi mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon mdi mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+
 	<div class="activity profile is-hidden">
 
 		<div class="action-bar">
@@ -424,45 +442,7 @@ h1, h2, h3, h4, h5, h6 {
 
 		</div>
 	</div>
-<!--
-	<div class="activity profile is-hidden">
-		<div class="container tc">
 
-			<img class="avatar"/>
-
-			<p><small class="id">id</small></p>
-
-			<label class="group vertical tl wide">
-				Ваше имя
-				<div class="group input">
-					<div class="label"><i class="icon mdi mdi-account-outline"></i></div>
-					<input type="text" class="fullname is-valid"/>
-					<div class="validation">
-						<i class="icon mdi mdi-check positive success"></i>
-						<i class="icon mdi mdi-close negative error"></i>
-					</div>
-				</div>
-				<p class="feedback">Введите ваше имя</p>
-			</label>
-
-			<label class="group vertical tl wide">
-				Email
-				<div class="group input">
-					<div class="label"><i class="icon mdi mdi-at"></i></div>
-					<input type="text" class="email is-valid"/>
-					<div class="validation">
-						<i class="icon mdi mdi-check positive success"></i>
-						<i class="icon mdi mdi-close negative error"></i>
-					</div>
-				</div>
-				<p class="feedback">Ваш действующий адрес эл. почты</p>
-			</label>
-
-			<button class="button logout">Выход</div>
-
-		</div>
-	</div>
--->
 	<div class="activity at-center login is-hidden">
 
 		<div class="container">
@@ -608,6 +588,7 @@ console.log('isLoggedOut()',isLoggedIn() === false)
 
 let activities = Array.from(document.querySelectorAll('.activity'))
 let activityLoading = activities.reduce((_, a) => a.classList.contains('loading') ? a : _, null)
+let activityMessage = activities.reduce((_, a) => a.classList.contains('message') ? a : _, null)
 let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
@@ -617,6 +598,19 @@ let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a 
 function switchActivity(activity) {
 	activities.forEach(a => a.classList.add('is-hidden'))
 	activity.classList.remove('is-hidden')
+}
+
+// message
+
+function showMessage(title, text, actionCallback) {
+	activityMessage.querySelector('.title').innerText = title
+	activityMessage.querySelector('.text').innerText = text
+	activityMessage.querySelectorAll('.action').forEach(node => {
+		node.onclick = function () {
+			actionCallback();
+		}
+	})
+	switchActivity(activityMessage)
 }
 
 // backend node
@@ -662,11 +656,27 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 				}
 			})
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
-				node.onclick = function () {
+				node.onclick = async function () {
+					switchActivity(activityLoading)
+					try {
+						let result = await backend.profileUpdate(
+							apiName, id, token,
+							activityProfile.querySelector('.fullname').value,
+							activityProfile.querySelector('.email').value
+						)
+						console.log('SAVING PROFILE RESULT', result)
+						if (result) {
+							switchActivity(activityMain)
+						} else {
+							showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+						}
+					} catch (errorProfileSaving) {
+						console.log('SAVING PROFILE FAILED', errorProfileSaving)
+						switchActivity(activityProfile)
+					}
 					switchActivity(activityMain)
 				}
 			})
-
 			if (result.isNew) {
 				switchActivity(activityProfile)
 			} else {
@@ -675,16 +685,13 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 
 		} else {
 
-			// TODO show error message
-			logoutCallback()
+			showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
 		}
 
-	} catch (e) {
+	} catch (errorLogin) {
 
-		console.log('LOGIN FAILED', e)
-
-		// TODO show error message
-		logoutCallback()
+		console.log('LOGIN FAILED', errorLogin)
+		showMessage('Вход', 'Не удалось выпольнить вход в приходение. Попробуйте позднее.', logoutCallback)
 	}
 
 /*
