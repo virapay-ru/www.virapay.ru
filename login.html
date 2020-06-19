@@ -672,7 +672,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 						}
 					} catch (errorProfileSaving) {
 						console.log('SAVING PROFILE FAILED', errorProfileSaving)
-						switchActivity(activityProfile)
+						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
 					}
 				}
 			})
