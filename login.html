@@ -259,6 +259,28 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 300;
 }
 
+.activity.main .profile-show {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	border-radius: 2rem;
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+}
+
+.activity.main .avatar {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	margin-right: 0.5rem;
+	margin-left: 0.1rem;
+	margin-top: 0.1rem;
+	margin-bottom: 0.1rem;
+}
+
+.activity.main .fullname {
+	margin-right: 1rem;
+}
+
 .activity h5 {
 	margin-top: 2rem;
 	margin-bottom: 1rem;
@@ -409,7 +431,7 @@ h1, h2, h3, h4, h5, h6 {
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left logout"></a>
+				<a class="icon mdi mdi-chevron-left back"></a>
 			</div>
 		</div>
 
@@ -478,7 +500,10 @@ h1, h2, h3, h4, h5, h6 {
 
 		<div class="container">
 
-			<small>VIRAPAY</small>
+			<div class="profile-show">
+				<img class="avatar"/>
+				<small class="fullname">VIRAPAY</small>
+			</div>
 
 			<div class="hot-icons">
 				<a class="open-favorites">
@@ -646,26 +671,40 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 			activityProfile.querySelector('.id').innerText = id
 			activityProfile.querySelector('.fullname').value = result.name
 			activityProfile.querySelector('.email').value = result.email
-		//	activityProfile.querySelector('.token').innerText = token
-		//	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
 			activityProfile.querySelectorAll('.logout').forEach(node => {
-		//alert('Logout: ' + node.className)
 				node.onclick = function () {
-		//			alert('Logout!');
 					logoutCallback();
+				}
+			})
+			activityProfile.querySelectorAll('.back').forEach(node => {
+				if (result.isNew) {
+					node.onclick = function () {
+						logoutCallback()
+					}
+				} else {
+					node.onclick = function () {
+						switchActivity(activityMain)
+					}
 				}
 			})
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
 				node.onclick = async function () {
 					switchActivity(activityLoading)
 					try {
+						let name = activityProfile.querySelector('.fullname').value
+						let email = activityProfile.querySelector('.email').value
 						let result = await backend.profileUpdate(
 							apiName, id, token,
-							activityProfile.querySelector('.fullname').value,
-							activityProfile.querySelector('.email').value
+							name, email
 						)
 						console.log('SAVING PROFILE RESULT', result)
 						if (result) {
+							activityMain.querySelector('.fullname').innerText = name
+							activityProfile.querySelectorAll('.back').forEach(node => {
+								node.onclick = function () {
+									switchActivity(activityMain)
+								}
+							})
 							switchActivity(activityMain)
 						} else {
 							showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
@@ -676,6 +715,14 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 					}
 				}
 			})
+			activityMain.querySelector('.avatar').src = imageUrl
+			activityMain.querySelector('.fullname').innerText = result.name
+			activityMain.querySelectorAll('.profile-show').forEach(node => {
+				node.onclick = function () {
+					switchActivity(activityProfile)
+				}
+			})
+
 			if (result.isNew) {
 				switchActivity(activityProfile)
 			} else {
@@ -690,48 +737,8 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 	} catch (errorLogin) {
 
 		console.log('LOGIN FAILED', errorLogin)
-		showMessage('Вход', 'Не удалось выпольнить вход в приходение. Попробуйте позднее.', logoutCallback)
+		showMessage('Вход', 'Не удалось выпольнить вход в приложение. Попробуйте позднее.', logoutCallback)
 	}
-
-/*
-	try {
-		console.log('VERIFICATION REQUEST', apiName, id, token)
-		let result = await backend.verify(apiName, id, token)
-		console.log('VERIFICATION', result)
-	} catch (e) {
-		console.log('VERIFICATION ERROR', e)
-	}
-
-	let profile = {
-		id,
-		apiName,
-		imageUrl,
-		fullName,
-		email,
-		token
-	}
-
-	activityProfile.querySelector('.avatar').src = imageUrl
-	activityProfile.querySelector('.apiname').innerText = apiName
-	activityProfile.querySelector('.id').innerText = id
-	activityProfile.querySelector('.fullname').value = fullName
-	activityProfile.querySelector('.email').value = email
-//	activityProfile.querySelector('.token').innerText = token
-//	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
-	activityProfile.querySelectorAll('.logout').forEach(node => {
-//alert('Logout: ' + node.className)
-		node.onclick = function () {
-//			alert('Logout!');
-			logoutCallback();
-		}
-	})
-	activityProfile.querySelectorAll('.profile-save').forEach(node => {
-		node.onclick = function () {
-			switchActivity(activityMain)
-		}
-	})
-
-	switchActivity(activityProfile)*/
 
 }
 
