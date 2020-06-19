@@ -607,6 +607,7 @@ console.log('isLoggedOut()',isLoggedIn() === false)
 // activities
 
 let activities = Array.from(document.querySelectorAll('.activity'))
+let activityLoading = activities.reduce((_, a) => a.classList.contains('loading') ? a : _, null)
 let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
@@ -634,6 +635,59 @@ let backend = new JSONRPC2.RemoteProxyObject(
 
 async function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
 
+	switchActivity(activityLoading)
+
+	try {
+
+		console.log('LOGIN REQUEST', apiName, id, token)
+
+		let result = await backend.login(apiName, id, token, name, email)
+
+		console.log('LOGIN RESULT', result)
+
+		if (result) {
+
+			activityProfile.querySelector('.avatar').src = imageUrl
+			activityProfile.querySelector('.apiname').innerText = apiName
+			activityProfile.querySelector('.id').innerText = id
+			activityProfile.querySelector('.fullname').value = result.name
+			activityProfile.querySelector('.email').value = result.email
+		//	activityProfile.querySelector('.token').innerText = token
+		//	Array.prototype.forEach.call(activityProfile.querySelectorAll('.logout'), node => {
+			activityProfile.querySelectorAll('.logout').forEach(node => {
+		//alert('Logout: ' + node.className)
+				node.onclick = function () {
+		//			alert('Logout!');
+					logoutCallback();
+				}
+			})
+			activityProfile.querySelectorAll('.profile-save').forEach(node => {
+				node.onclick = function () {
+					switchActivity(activityMain)
+				}
+			})
+
+			if (result.isNew) {
+				switchActivity(activityProfile)
+			} else {
+				switchActivity(activityMain)
+			}
+
+		} else {
+
+			// TODO show error message
+			logoutCallback()
+		}
+
+	} catch (e) {
+
+		console.log('LOGIN FAILED', e)
+
+		// TODO show error message
+		logoutCallback()
+	}
+
+/*
 	try {
 		console.log('VERIFICATION REQUEST', apiName, id, token)
 		let result = await backend.verify(apiName, id, token)
@@ -671,7 +725,8 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 		}
 	})
 
-	switchActivity(activityProfile)
+	switchActivity(activityProfile)*/
+
 }
 
 // main
