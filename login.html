@@ -674,7 +674,6 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 						console.log('SAVING PROFILE FAILED', errorProfileSaving)
 						switchActivity(activityProfile)
 					}
-					switchActivity(activityMain)
 				}
 			})
 			if (result.isNew) {
