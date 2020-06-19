@@ -61,6 +61,7 @@ window.debugGoogleAuthResponse = user.getAuthResponse()
 					let token = user.getAuthResponse().id_token
 					if (token) {
 						hasProfile = true
+console.log('profileInit', 'google', profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), token)
 						profileInit('google', profile.getId(), profile.getName(), profile.getImageUrl(), profile.getEmail(), token, () => {
 							auth2.signOut()
 						})

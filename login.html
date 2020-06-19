@@ -661,7 +661,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 
 		console.log('LOGIN REQUEST', apiName, id, token)
 
-		let result = await backend.login(apiName, id, token, name, email)
+		let result = await backend.login(apiName, id, token, fullName, email)
 
 		console.log('LOGIN RESULT', result)
 
