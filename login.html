@@ -651,6 +651,61 @@ let backend = new JSONRPC2.RemoteProxyObject(
 	)
 )
 
+// main activity
+
+async function mainInit() {
+
+	switchActivity(activityLoading)
+
+	let storageProvidersKey = `/${location.hostname}/providers`
+
+	let data = storageGet(storageProvidersKey)
+	let version = (data ? data.version : 0)
+	let newData = await backend.providersGetUpdate(version)
+	if (newData !== null) {
+		data = newData
+		storagePut(storageProvidersKey, data)
+	}
+
+	let listNode = activityMain.querySelector('.partners')
+	listNode.innerHTML = ''
+	data.providers.forEach(item => {
+
+		let providerNode = document.createElement('div')
+		providerNode.classList.add('provider')
+
+		let favNode = document.createElement('a')
+		favNode.classList.add('icon')
+		favNode.classList.add('mdi')
+		favNode.classList.add('mdi-star-outline')
+
+		let detailsNode = document.createElement('div')
+		detailsNode.classList.add('details')
+
+		let nameNode = document.createElement('div')
+		nameNode.classList.add('name')
+		nameNode.innerText = item.name_portal
+
+		let serviceNode = document.createElement('div')
+		serviceNode.classList.add('service')
+		serviceNode.innerText = 'ИНН ' + item.inn
+
+		let btnNode = document.createElement('a')
+		btnNode.classList.add('icon')
+		btnNode.classList.add('mdi')
+		btnNode.classList.add('mdi-chevron-right')
+
+		detailsNode.appendChild(nameNode)
+		detailsNode.appendChild(serviceNode)
+		providerNode.appendChild(favNode)
+		providerNode.appendChild(detailsNode)
+		providerNode.appendChild(btnNode)
+		listNode.appendChild(providerNode)
+	})
+
+	switchActivity(activityMain)
+}
+
 // profile functions
 
 async function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
@@ -684,7 +739,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 					}
 				} else {
 					node.onclick = function () {
-						switchActivity(activityMain)
+						mainInit() //switchActivity(activityMain)
 					}
 				}
 			})
@@ -703,10 +758,10 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 							activityMain.querySelector('.fullname').innerText = name
 							activityProfile.querySelectorAll('.back').forEach(node => {
 								node.onclick = function () {
-									switchActivity(activityMain)
+									mainInit() //switchActivity(activityMain)
 								}
 							})
-							switchActivity(activityMain)
+							mainInit() //switchActivity(activityMain)
 						} else {
 							showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
 						}
@@ -727,7 +782,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 			if (result.isNew) {
 				switchActivity(activityProfile)
 			} else {
-				switchActivity(activityMain)
+				mainInit() //switchActivity(activityMain)
 			}
 
 		} else {
