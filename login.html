@@ -223,9 +223,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.main .partners > .provider {
-	display: flex;
+	display: none;
 	flex-flow: row;
 	justify-content: space-between;
+}
+
+.activity.main .partners > .provider.shown {
+	display: flex;
 }
 
 .activity.main .partners > .provider .icon {
@@ -252,6 +256,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.main .partners > .provider .name {
 	font-weight: bold;
+}
+
+.activity.main .partners > .provider .inn {
+	opacity: 0.7;
+	font-weight: 300;
 }
 
 .activity.main .partners > .provider .service {
@@ -523,11 +532,11 @@ h1, h2, h3, h4, h5, h6 {
 
 			<h5>Категории</h5>
 			<div class="categories">
-				<a class="category" data-id="1">
+				<a class="category" data-id="4">
 					<i class="icon mdi mdi-office-building"></i>
 					<span>Коммунальные услуги</span>
 				</a>
-				<a class="category" data-id="2">
+				<a class="category" data-id="1">
 					<i class="icon mdi mdi-web"></i>
 					<span>Интернет</span>
 				</a>
@@ -535,7 +544,7 @@ h1, h2, h3, h4, h5, h6 {
 					<i class="icon mdi mdi-television-classic"></i>
 					<span>Телевидение</span>
 				</a>
-				<a class="category" data-id="4">
+				<a class="category" data-id="7">
 					<i class="icon mdi mdi-phone-in-talk"></i>
 					<span>Телефон</span>
 				</a>
@@ -543,7 +552,7 @@ h1, h2, h3, h4, h5, h6 {
 					<i class="icon mdi mdi-gamepad-variant-outline"></i>
 					<span>Игры</span>
 				</a>
-				<a class="category" data-id="6">
+				<a class="category" data-id="8">
 					<i class="icon mdi mdi-dots-horizontal"></i>
 					<span>Прочее</span>
 				</a>
@@ -673,6 +682,7 @@ async function mainInit() {
 
 		let providerNode = document.createElement('div')
 		providerNode.classList.add('provider')
+		providerNode.classList.add('shown')
 
 		let favNode = document.createElement('a')
 		favNode.classList.add('icon')
@@ -686,9 +696,13 @@ async function mainInit() {
 		nameNode.classList.add('name')
 		nameNode.innerText = item.name_portal
 
+		let innNode = document.createElement('div')
+		innNode.classList.add('inn')
+		innNode.innerText = 'ИНН ' + item.inn
+
 		let serviceNode = document.createElement('div')
 		serviceNode.classList.add('service')
-		serviceNode.innerText = 'ИНН ' + item.inn
+		serviceNode.innerText = item.service_name
 
 		let btnNode = document.createElement('a')
 		btnNode.classList.add('icon')
@@ -696,14 +710,46 @@ async function mainInit() {
 		btnNode.classList.add('mdi-chevron-right')
 
 		detailsNode.appendChild(nameNode)
+		detailsNode.appendChild(innNode)
 		detailsNode.appendChild(serviceNode)
 		providerNode.appendChild(favNode)
 		providerNode.appendChild(detailsNode)
 		providerNode.appendChild(btnNode)
+		providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
 		listNode.appendChild(providerNode)
 	})
 
 	switchActivity(activityMain)
+}
+
+function filterProviders() {
+
+	let selectedCategories = []
+
+	activityMain.querySelectorAll('.category').forEach(category => {
+		if (category.classList.contains('selected')) {
+			selectedCategories.push(JSON.parse(category.dataset.id))
+		}
+	})
+
+	activityMain.querySelectorAll('.partners > .provider').forEach(node => {
+		if (selectedCategories.length <= 0) {
+			node.classList.add('shown')
+		} else {
+			let shown = false
+			let categories = JSON.parse(node.dataset.categories)
+			selectedCategories.forEach(selectedCategory => {
+				if (categories.indexOf(selectedCategory) >= 0) {
+					shown = true
+				}
+			})
+			if (shown) {
+				node.classList.add('shown')
+			} else {
+				node.classList.remove('shown')
+			}
+		}
+	})
 }
 
 // profile functions
@@ -807,6 +853,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 	categories.forEach(category => {
 		category.onclick = () => {
 			category.classList.toggle('selected')
+			filterProviders()
 		}
 	})
 
