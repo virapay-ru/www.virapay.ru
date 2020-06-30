@@ -223,13 +223,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.main .partners > .provider {
-	display: none;
+	display: flex;
 	flex-flow: row;
 	justify-content: space-between;
+	max-height: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	border-width: 0;
+	opacity: 0.2;
+	width: 100%;
+	cursor: pointer;
+	border-style: solid;
+	border-color: #eee;
+	transition: all 0.3s ease-out;
+	overflow: hidden;
 }
 
 .activity.main .partners > .provider.shown {
-	display: flex;
+	max-height: 10rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-top-width: 1px;
+	opacity: 1;
 }
 
 .activity.main .partners > .provider .icon {
@@ -240,14 +255,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.main .partners {
 	width: 100%;
-}
-
-.activity.main .partners > .provider {
-	width: 100%;
-	cursor: pointer;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
-	border-top: 1px solid #eee;
 }
 
 .activity.main .partners > .provider .details {
@@ -267,6 +274,15 @@ h1, h2, h3, h4, h5, h6 {
 	opacity: 0.7;
 	font-weight: 300;
 }
+
+.activity.main .partners > .provider .icon {
+	transition: color 0.3s ease-out;
+}
+
+.activity.main .partners > .provider .icon.selected {
+	color: rgb(77, 144, 254);
+}
+
 
 .activity.main .profile-show {
 	display: flex;
@@ -688,6 +704,7 @@ async function mainInit() {
 		favNode.classList.add('icon')
 		favNode.classList.add('mdi')
 		favNode.classList.add('mdi-star-outline')
+		favNode.classList.add('fav')
 
 		let detailsNode = document.createElement('div')
 		detailsNode.classList.add('details')
@@ -717,12 +734,27 @@ async function mainInit() {
 		providerNode.appendChild(btnNode)
 		providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
 		listNode.appendChild(providerNode)
+
+		favNode.onclick = function () {
+			if (favNode.classList.contains('mdi-star-outline')) {
+				favNode.classList.remove('mdi-star-outline')
+				favNode.classList.add('mdi-star')
+				favNode.classList.add('selected')
+			} else {
+				favNode.classList.remove('selected')
+				favNode.classList.remove('mdi-star')
+				favNode.classList.add('mdi-star-outline')
+			}
+			filterProviders()
+		}
 	})
 
 	switchActivity(activityMain)
 }
 
 function filterProviders() {
+
+	let favlistOnly = activityMain.querySelector('.open-favorites').classList.contains('selected')
 
 	let selectedCategories = []
 
@@ -734,7 +766,15 @@ function filterProviders() {
 
 	activityMain.querySelectorAll('.partners > .provider').forEach(node => {
 		if (selectedCategories.length <= 0) {
-			node.classList.add('shown')
+			if (favlistOnly) {
+				if (node.querySelector('.fav').classList.contains('selected')) {
+					node.classList.add('shown')
+				} else {
+					node.classList.remove('shown')
+				}
+			} else {
+				node.classList.add('shown')
+			}
 		} else {
 			let shown = false
 			let categories = JSON.parse(node.dataset.categories)
@@ -743,6 +783,9 @@ function filterProviders() {
 					shown = true
 				}
 			})
+			if (favlistOnly && !node.querySelector('.fav').classList.contains('selected')) {
+				shown = false
+			}
 			if (shown) {
 				node.classList.add('shown')
 			} else {
@@ -848,11 +891,25 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 
 (function () {
 
-	let categories = activityMain.querySelectorAll('.category')
-
-	categories.forEach(category => {
+	activityMain.querySelectorAll('.category').forEach(category => {
 		category.onclick = () => {
 			category.classList.toggle('selected')
+			filterProviders()
+		}
+	})
+
+	activityMain.querySelectorAll('.open-favorites').forEach(btn => {
+		btn.onclick = () => {
+			let icon = btn.querySelector('.icon')
+			if (icon.classList.contains('mdi-star-outline')) {
+				icon.classList.remove('mdi-star-outline')
+				icon.classList.add('mdi-star')
+				btn.classList.add('selected')
+			} else {
+				btn.classList.remove('selected')
+				icon.classList.remove('mdi-star')
+				icon.classList.add('mdi-star-outline')
+			}
 			filterProviders()
 		}
 	})
