@@ -686,6 +686,10 @@ function isLoggedIn() {
 	return isLoggedInWith.google || isLoggedInWith.facebook || isLoggedInWith.vk
 }
 
+let profileData = null
+let providersList = null
+let profileSave = function () { }
+
 function isLoggedOut() {
 console.log('isLoggedOut()',isLoggedIn() === false)
 	return isLoggedIn() === false
@@ -790,7 +794,10 @@ async function mainInit() {
 
 	let listNode = activityMain.querySelector('.partners')
 	listNode.innerHTML = ''
-	data.providers.forEach(item => {
+	providersList = data.providers
+	providersList.forEach(item => {
+
+		let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
 
 		let providerNode = document.createElement('div')
 		providerNode.classList.add('provider')
@@ -799,8 +806,13 @@ async function mainInit() {
 		let favNode = document.createElement('a')
 		favNode.classList.add('icon')
 		favNode.classList.add('mdi')
-		favNode.classList.add('mdi-star-outline')
 		favNode.classList.add('fav')
+		if (profileData.favList.indexOf(rowKey) >= 0) {
+			favNode.classList.add('mdi-star')
+			favNode.classList.add('selected')
+		} else {
+			favNode.classList.add('mdi-star-outline')
+		}
 
 		let detailsNode = document.createElement('div')
 		detailsNode.classList.add('details')
@@ -836,13 +848,27 @@ async function mainInit() {
 				favNode.classList.remove('mdi-star-outline')
 				favNode.classList.add('mdi-star')
 				favNode.classList.add('selected')
+				profileData.favList.push(rowKey)
 			} else {
 				favNode.classList.remove('selected')
 				favNode.classList.remove('mdi-star')
 				favNode.classList.add('mdi-star-outline')
+				profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
 			}
-			filterProviders()
+			let result = profileSave()
+			if (result) {
+				filterProviders()
+			} else {
+				showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+					favNode.classList.remove('selected')
+					favNode.classList.remove('mdi-star')
+					favNode.classList.add('mdi-star-outline')
+					profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+				})
+			}
 		}
+
+		item.node = providerNode
 	})
 
 	switchActivity(activityMain)
@@ -909,7 +935,13 @@ function filterProviders() {
 
 // profile functions
 
-async function profileInit(apiName, id, fullName, imageUrl, email, token, logoutCallback) {
+async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogout) {
+
+	let logoutCallback = function () {
+		doLogout()
+		profileData = null
+		profileSave = function () { }
+	}
 
 	switchActivity(activityLoading)
 
@@ -922,6 +954,8 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 		console.log('LOGIN RESULT', result)
 
 		if (result) {
+
+			profileData = result.data
 
 			activityProfile.querySelector('.avatar').src = imageUrl
 			activityProfile.querySelector('.apiname').innerText = apiName
@@ -944,15 +978,30 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 					}
 				}
 			})
+			profileSave = async function () {
+				try {
+					let name = activityProfile.querySelector('.fullname').value
+					let email = activityProfile.querySelector('.email').value
+					let result = await backend.profileUpdate(
+						apiName, id, token,
+						name, email, profileData
+					)
+					return result
+				} catch (errorProfileSaving) {
+					console.log('SAVING PROFILE FAILED', errorProfileSaving)
+					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+				}
+				return null
+			}
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
 				node.onclick = async function () {
 					switchActivity(activityLoading)
-					try {
+					/*try {
 						let name = activityProfile.querySelector('.fullname').value
 						let email = activityProfile.querySelector('.email').value
 						let result = await backend.profileUpdate(
 							apiName, id, token,
-							name, email
+							name, email, profileData
 						)
 						console.log('SAVING PROFILE RESULT', result)
 						if (result) {
@@ -969,7 +1018,22 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 					} catch (errorProfileSaving) {
 						console.log('SAVING PROFILE FAILED', errorProfileSaving)
 						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+					}*/
+
+					let result = profileSave()
+					if (result) {
+						activityMain.querySelector('.fullname').innerText = name
+						activityProfile.querySelectorAll('.back').forEach(node => {
+							node.onclick = function () {
+								mainInit() //switchActivity(activityMain)
+							}
+						})
+						mainInit() //switchActivity(activityMain)
+					} else {
+						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
 					}
+
+
 				}
 			})
 			activityMain.querySelector('.avatar').src = imageUrl
