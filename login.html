@@ -265,7 +265,7 @@ h1, h2, h3, h4, h5, h6 {
 
 	display: none;
 
-		transition: margin-bottom 0.3s ease-out;
+		transition: margin-bottom 0.5s ease-out;
 }
 
 @keyframes provider-show {
@@ -904,7 +904,7 @@ function filterProviders() {
 				node.style.marginBottom = '0'
 			})
 		}, 500)
-	}, 500)
+	}, 0)
 }
 
 // profile functions
@@ -1018,7 +1018,8 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 				icon.classList.add('mdi-star')
 				btn.classList.add('selected')
 				setTimeout(function () {
-					scrollByYTo(document.scrollingElement, document.querySelector('.partners').offsetTop)
+					let el = document.querySelector('.categories')
+					scrollByYTo(document.scrollingElement, el.offsetTop + el.offsetHeight)
 				}, 500)
 			} else {
 				btn.classList.remove('selected')
