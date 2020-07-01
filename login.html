@@ -244,28 +244,58 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.main .partners > .provider {
-	display: flex;
+
 	flex-flow: row;
 	justify-content: space-between;
-	max-height: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-	border-width: 0;
-	opacity: 0.2;
+	overflow: hidden;
 	width: 100%;
 	cursor: pointer;
 	border-style: solid;
 	border-color: #eee;
-	transition: all 0.3s ease-out;
-	overflow: hidden;
-}
+	box-sizing: border-box;
 
-.activity.main .partners > .provider.shown {
-	max-height: 10rem;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+	animation-name: provider-hide;
+
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
+	border-width: 0;
 	border-top-width: 1px;
+
+	display: none;
+}
+
+@keyframes provider-show {
+  0% {
+	transform: scale(1, 0);
+	opacity: 0;
+  }
+  100% {
+	transform: scale(1, 1);
 	opacity: 1;
+  }
+}
+
+@keyframes provider-hide {
+  0% {
+	transform: scale(1, 1);
+	opacity: 1;
+  }
+  100% {
+	transform: scale(1, 0);
+	opacity: 0;
+  }
+}
+
+.activity.main .partners > .provider.show {
+	animation-name: provider-show;
+	display: flex;
+}
+
+.activity.main .partners > .provider.hide {
+	animation-name: provider-hide;
+	display: flex;
 }
 
 .activity.main .partners > .provider .icon {
@@ -700,6 +730,46 @@ let backend = new JSONRPC2.RemoteProxyObject(
 	)
 )
 
+let scrollByYTo = (function () {
+
+//document.scrollingElement.scrollTop
+
+	let t0 = Date.now()
+
+	function frame(el) {
+		let time = JSON.parse(el.dataset.scrollingTime)
+		let t = Math.abs(Date.now() - t0) / time
+		let sourceY = JSON.parse(el.dataset.scrollingSourceY)
+		let targetY = JSON.parse(el.dataset.scrollingTargetY)
+		if (t >= 1) {
+			el.scrollTop = targetY
+			el.dataset.scrollingProgress = JSON.stringify(false)
+		} else {
+			el.scrollTop = sourceY + (targetY - sourceY) * t
+			requestAnimationFrame(function () { frame(el) })
+		}
+	}
+
+	return function (el, y, time = 300) {
+
+		t0 = Date.now()
+
+		el.dataset.scrollingTime = JSON.stringify(time)
+		el.dataset.scrollingSourceY = JSON.stringify(el.scrollTop)
+		el.dataset.scrollingTargetY = JSON.stringify(y)
+		if (el.dataset.scrollingProgress === undefined) {
+			el.dataset.scrollingProgress = JSON.stringify(false)
+		}
+		let flag = JSON.parse(el.dataset.scrollingProgress)
+		if (!flag) {
+			el.dataset.scrollingProgress = JSON.stringify(true)
+			frame(el)
+		}
+
+	}
+
+})();
+
 // main activity
 
 async function mainInit() {
@@ -722,7 +792,7 @@ async function mainInit() {
 
 		let providerNode = document.createElement('div')
 		providerNode.classList.add('provider')
-		providerNode.classList.add('shown')
+		providerNode.classList.add('show')
 
 		let favNode = document.createElement('a')
 		favNode.classList.add('icon')
@@ -792,12 +862,13 @@ function filterProviders() {
 		if (selectedCategories.length <= 0) {
 			if (favlistOnly) {
 				if (node.querySelector('.fav').classList.contains('selected')) {
-					node.classList.add('shown')
-				} else {
-					node.classList.remove('shown')
+					node.classList.add('show')
+				} else if (node.classList.contains('show')) {
+					node.classList.remove('show')
+					node.classList.add('hide')
 				}
 			} else {
-				node.classList.add('shown')
+				node.classList.add('show')
 			}
 		} else {
 			let shown = false
@@ -811,12 +882,19 @@ function filterProviders() {
 				shown = false
 			}
 			if (shown) {
-				node.classList.add('shown')
-			} else {
-				node.classList.remove('shown')
+				node.classList.add('show')
+			} else if (node.classList.contains('show')) {
+				node.classList.remove('show')
+				node.classList.add('hide')
 			}
 		}
 	})
+
+	setTimeout(function () {
+		activityMain.querySelectorAll('.partners > .provider.hide').forEach(node => {
+			node.classList.remove('hide')
+		})
+	}, 500)
 }
 
 // profile functions
@@ -929,6 +1007,9 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, logout
 				icon.classList.remove('mdi-star-outline')
 				icon.classList.add('mdi-star')
 				btn.classList.add('selected')
+				setTimeout(function () {
+					scrollByYTo(document.scrollingElement, document.querySelector('.partners').offsetTop)
+				}, 500)
 			} else {
 				btn.classList.remove('selected')
 				icon.classList.remove('mdi-star')
