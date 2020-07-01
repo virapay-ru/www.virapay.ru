@@ -264,6 +264,8 @@ h1, h2, h3, h4, h5, h6 {
 	border-top-width: 1px;
 
 	display: none;
+
+		transition: margin-bottom 0.3s ease-out;
 }
 
 @keyframes provider-show {
@@ -891,9 +893,17 @@ function filterProviders() {
 	})
 
 	setTimeout(function () {
-		activityMain.querySelectorAll('.partners > .provider.hide').forEach(node => {
-			node.classList.remove('hide')
+		let hiddenItems = activityMain.querySelectorAll('.partners > .provider.hide')
+		hiddenItems.forEach(node => {
+			//node.classList.remove('hide')
+			node.style.marginBottom = '-' + node.offsetHeight + 'px'
 		})
+		setTimeout(function () {
+			hiddenItems.forEach(node => {
+				node.classList.remove('hide')
+				node.style.marginBottom = '0'
+			})
+		}, 500)
 	}, 500)
 }
 
