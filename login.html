@@ -594,9 +594,39 @@ h1, h2, h3, h4, h5, h6 {
 
 		<div class="container">
 
-			<div class="profile-show">
-				<img class="avatar"/>
-				<span class="fullname">VIRAPAY</span>
+<style>
+
+.header {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	min-height: 3rem;
+}
+
+.header .logo {
+	font-size: 1.25rem;
+}
+
+.header .logo img {
+	height: 2.5rem;
+}
+
+</style>
+
+			<div class="header">
+
+				<div class="logo horizontal">
+			        <img src="images/logo.svg"/>
+			        <div><span>VIRA</span><span>PAY</span></div>
+				</div>
+
+				<div class="profile-show">
+					<img class="avatar"/>
+					<span class="fullname">VIRAPAY</span>
+				</div>
+
 			</div>
 
 <style>
@@ -720,7 +750,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding-left: 3rem;
 	height: 3rem;
 	font-size: 1.2rem;
-	border: 1px solid #ddd;
+	border: 1px solid rgb(77, 144, 254);
     box-shadow: 0 0 1rem rgba(0,0,0,0.1);
 }
 
@@ -734,7 +764,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="search-field">
 				<i class="icon mdi mdi-magnify"></i>
 				<label class="label">
-					<div><input class="search"/></div>
+					<div><input class="search" placeholder="Поиск по ИНН, Названию..."/></div>
 				</label>
 			</div>
 
@@ -946,8 +976,10 @@ async function mainInit() {
 		if (profileData.favList.indexOf(rowKey) >= 0) {
 			favNode.classList.add('mdi-star')
 			favNode.classList.add('selected')
+			item.isFavorite = true
 		} else {
 			favNode.classList.add('mdi-star-outline')
+			item.isFavorite = false
 		}
 
 		let detailsNode = document.createElement('div')
@@ -985,11 +1017,13 @@ async function mainInit() {
 				favNode.classList.add('mdi-star')
 				favNode.classList.add('selected')
 				profileData.favList.push(rowKey)
+				item.isFavorite = true
 			} else {
 				favNode.classList.remove('selected')
 				favNode.classList.remove('mdi-star')
 				favNode.classList.add('mdi-star-outline')
 				profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+				item.isFavorite = false
 			}
 			let result = profileSave()
 			if (result) {
@@ -1000,6 +1034,7 @@ async function mainInit() {
 					favNode.classList.remove('mdi-star')
 					favNode.classList.add('mdi-star-outline')
 					profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+					item.isFavorite = false
 				})
 			}
 		}
@@ -1022,42 +1057,63 @@ function filterProviders() {
 		}
 	})
 
-	activityMain.querySelectorAll('.partners > .provider').forEach(node => {
-		if (selectedCategories.length <= 0) {
-			if (favlistOnly) {
-				if (node.querySelector('.fav').classList.contains('selected')) {
-					node.classList.add('show')
-				} else if (node.classList.contains('show')) {
-					node.classList.remove('show')
-					node.classList.add('hide')
-				}
-			} else {
-				node.classList.add('show')
-			}
-		} else {
-			let shown = false
-			let categories = JSON.parse(node.dataset.categories)
-			selectedCategories.forEach(selectedCategory => {
-				if (categories.indexOf(selectedCategory) >= 0) {
-					shown = true
+	let searchQuery = '' + document.querySelector('.search-field input').value
+	let searchWords = searchQuery
+		.toLowerCase()
+		.replace(/[\,\.\?\!\%\*\(\)\[\]\{\}\-\+\_\<\>\:\;\"\'\`\\\/\r\n\t]+/g, ' ')
+		.split(/\s+/)
+		.filter(word => word.length > 0)
+//console.log('searchWords', searchWords)
+
+	let hiddenItems = []
+
+	providersList.forEach(row => {
+
+		row.isMatch = true
+
+		if (searchWords.length > 0) {
+			let found = true
+			searchWords.forEach(word => {
+				if (row.search_key.indexOf(word) < 0) {
+					found = false
 				}
 			})
-			if (favlistOnly && !node.querySelector('.fav').classList.contains('selected')) {
-				shown = false
-			}
-			if (shown) {
-				node.classList.add('show')
-			} else if (node.classList.contains('show')) {
-				node.classList.remove('show')
-				node.classList.add('hide')
+			if (!found) {
+				row.isMatch = false
 			}
 		}
+
+		if (selectedCategories.length > 0) {
+			let found = false
+			let categories = row.categories
+			selectedCategories.forEach(selectedCategory => {
+				if (categories.indexOf(selectedCategory) >= 0) {
+					found = true
+				}
+			})
+			if (!found) {
+				row.isMatch = false
+			}
+		}
+
+		if (favlistOnly && !row.isFavorite) {
+			row.isMatch = false
+		}
+
+		if (row.isMatch) {
+			row.node.classList.add('show')
+		} else {
+			if (row.node.classList.contains('show')) {
+				row.node.classList.remove('show')
+				row.node.classList.add('hide')
+				hiddenItems.push(row.node)
+			}
+		}
+
 	})
 
 	setTimeout(function () {
-		let hiddenItems = activityMain.querySelectorAll('.partners > .provider.hide')
 		hiddenItems.forEach(node => {
-			//node.classList.remove('hide')
 			node.style.marginBottom = '-' + node.offsetHeight + 'px'
 		})
 		setTimeout(function () {
@@ -1208,7 +1264,22 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			category.classList.toggle('selected')
 			filterProviders()
 		}
-	})
+	});
+
+	(function () {
+		let timeout = null
+		activityMain.querySelector('.search-field input').addEventListener('input', (evt) => {
+			if (timeout !== null) {
+				clearTimeout(timeout)
+				timeout = null
+			}
+			timeout = setTimeout(function () {
+				clearTimeout(timeout)
+				timeout = null
+				filterProviders()
+			}, 500)
+		})
+	})();
 
 	activityMain.querySelectorAll('.open-favorites').forEach(btn => {
 		btn.onclick = () => {
@@ -1218,8 +1289,8 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				icon.classList.add('mdi-star')
 				btn.classList.add('selected')
 				setTimeout(function () {
-					let el = document.querySelector('.categories')
-					scrollByYTo(document.scrollingElement, el.offsetTop + el.offsetHeight)
+					let el = document.querySelector('.search-field')
+					scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
 				}, 500)
 			} else {
 				btn.classList.remove('selected')
