@@ -1359,12 +1359,12 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		function touchStart(evt, pt) {
 			pt0 = pt
 			drag = true
-console.log('start', pt, evt.type)
+//console.log('start', pt, evt.type)
 		}
 
 		function touchMove(evt, pt) {
 			if (drag) {
-console.log('move', pt, evt.type)
+//console.log('move', pt, evt.type)
 				let dx = pt.x - pt0.x
 				let dy = pt.y - pt0.y
 				if (Math.abs(dx) > Math.abs(dy)) {
@@ -1378,7 +1378,7 @@ console.log('move', pt, evt.type)
 
 		function touchEnd(evt, pt) {
 			drag = false
-console.log('end', pt, evt.type)
+//console.log('end', pt, evt.type)
 		}
 
 		el.addEventListener('mousedown', function (evt) {
