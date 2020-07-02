@@ -1319,7 +1319,12 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				}, 50)
 			}, 50)
 		})
+		let focusTimeout = null
 		searchInput.addEventListener('focusin', evt => {
+			if (focusTimeout !== null) {
+				clearTimeout(focusTimeout)
+				focusTimeout = null
+			}
 			let el = document.querySelector('.search-field')
 			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
 			document.querySelector('.bottom-panel').classList.add('hide')
@@ -1327,7 +1332,14 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		searchInput.addEventListener('focusout', evt => {
 			let el = document.querySelector('.search-field')
 			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
-			document.querySelector('.bottom-panel').classList.remove('hide')
+			if (focusTimeout !== null) {
+				clearTimeout(focusTimeout)
+				focusTimeout = null
+			}
+			focusTimeout = setTimeout(function () {
+				document.querySelector('.bottom-panel').classList.remove('hide')
+				focusTimeout = null
+			}, 750)
 		})
 	})();
 
