@@ -161,7 +161,7 @@ h1, h2, h3, h4, h5, h6 {
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 5;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	box-sizing: border-box;
@@ -202,38 +202,51 @@ h1, h2, h3, h4, h5, h6 {
 	color: #4a0;
 }
 
+.activity.main .hot-icons .open-search .icon {
+	color: rgb(77, 144, 254);
+}
+
+.scroll-horizontal {
+	overflow-x: hidden;
+	max-width: 100%;
+}
+
 .activity.main .categories {
-	width: 100%;
 	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	margin-bottom: 2rem;
+    flex-flow: row;
+    justify-content: space-between;
+	box-sizing: border-box;
 }
 
 .activity.main .categories a {
-	width: calc((100% - 2rem) / 3);
-	padding: 1rem;
-	margin-bottom: 1rem;
-	box-sizing: border-box;
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-	-border: 1px solid rgb(77, 144, 254);
-	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
-	border-radius: 5px;
-	height: 8rem;
-	cursor: pointer;
+    width: 7rem;
+    min-width: 7rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+	border: 1px solid rgba(77, 144, 254, 0.2);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 5px;
+    height: 7rem;
+    cursor: pointer;
+	margin-right: 1rem;
+	user-select: none;
 }
 
 .activity.main .categories a .icon {
-	font-size: 2.5rem;
+	font-size: 2rem;
 	color: rgb(77, 144, 254);
+	user-select: none;
 }
 
 .activity.main .categories a span {
 	text-align: center;
 	display: block;
 	font-size: 0.8rem;
+	user-select: none;
 }
 
 .activity.main .categories a.selected {
@@ -313,6 +326,7 @@ h1, h2, h3, h4, h5, h6 {
 .activity.main .partners {
 	width: 100%;
 	padding-bottom: 40rem;
+	margin-top: 1rem;
 }
 
 .activity.main .partners > .provider .details {
@@ -348,8 +362,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.main .avatar {
-	width: 2rem;
-	height: 2rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	border-radius: 50%;
 	margin-right: 0.5rem;
 	/*margin-left: 0.1rem;
@@ -582,8 +596,36 @@ h1, h2, h3, h4, h5, h6 {
 
 			<div class="profile-show">
 				<img class="avatar"/>
-				<small class="fullname">VIRAPAY</small>
+				<span class="fullname">VIRAPAY</span>
 			</div>
+
+<style>
+
+.banner {
+	border-radius: 10px;
+	background-image: url(/images/banner-stub.jpg);
+	background-size: cover;
+	color: #fff;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 8rem;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+
+.banner > * {
+	margin: 0;
+}
+
+</style>
+
+			<a class="banner">
+				<h3>Место для вашей рекламы</h3>
+				<p>Не упустите ваш шанс!</p>
+			</a>
 
 			<div class="bottom-panel">
 				<div class="hot-icons">
@@ -602,6 +644,7 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 			</div>
 
+<!--
 			<h5>Категории</h5>
 			<div class="categories">
 				<a class="category" data-id="4">
@@ -629,9 +672,102 @@ h1, h2, h3, h4, h5, h6 {
 					<span>Прочее</span>
 				</a>
 			</div>
+-->
 
-			<h5>Все услуги</h5>
-			<div class="partners">
+			<!--<h5>Все услуги</h5>-->
+
+<style>
+
+.search-field {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.search-field .icon {
+	width: 3rem;
+	color: rgb(77, 144, 254);
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	cursor: pointer;
+	font-size: 1.8rem;
+
+	height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+
+	margin-right: -3rem;
+	z-index: 1;
+}
+
+.search-field .label {
+	width: 100%;
+	display: flex;
+	max-width: 100%;
+}
+
+.search-field .label div {
+	width: 100%;
+}
+
+.search-field .label input {
+	padding-left: 3rem;
+	height: 3rem;
+	font-size: 1.2rem;
+	border: 1px solid #ddd;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+}
+
+.search-field .label input:focus {
+	border: 1px solid rgb(77, 144, 254);
+	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
+}
+
+</style>
+
+			<div class="search-field">
+				<i class="icon mdi mdi-magnify"></i>
+				<label class="label">
+					<div><input class="search"/></div>
+				</label>
+			</div>
+
+		<div class="scroll-horizontal">
+			<div class="categories">
+				<a class="category" data-id="4">
+					<i class="icon mdi mdi-office-building"></i>
+					<span>Коммунальные услуги</span>
+				</a>
+				<a class="category" data-id="1">
+					<i class="icon mdi mdi-web"></i>
+					<span>Интернет</span>
+				</a>
+				<a class="category" data-id="3">
+					<i class="icon mdi mdi-television-classic"></i>
+					<span>Телевидение</span>
+				</a>
+				<a class="category" data-id="7">
+					<i class="icon mdi mdi-phone-in-talk"></i>
+					<span>Телефон</span>
+				</a>
+				<a class="category" data-id="5">
+					<i class="icon mdi mdi-gamepad-variant-outline"></i>
+					<span>Игры</span>
+				</a>
+				<a class="category" data-id="8">
+					<i class="icon mdi mdi-dots-horizontal"></i>
+					<span>Прочее</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="partners">
 
 				<div class="provider">
 					<a class="icon mdi mdi-star-outline"></a>
@@ -1092,6 +1228,61 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			}
 			filterProviders()
 		}
+	})
+
+	activityMain.querySelectorAll('.scroll-horizontal').forEach(el => {
+
+		let drag = false
+		let pt0 = null
+
+		function touchStart(evt, pt) {
+			pt0 = pt
+			drag = true
+console.log('start', pt, evt.type)
+		}
+
+		function touchMove(evt, pt) {
+			if (drag) {
+console.log('move', pt, evt.type)
+				let dx = pt.x - pt0.x
+				let dy = pt.y - pt0.y
+				if (Math.abs(dx) > Math.abs(dy)) {
+					el.scrollLeft -= dx
+					pt0 = pt
+					evt.stopPropagation()
+					evt.preventDefault()
+				}
+			}
+		}
+
+		function touchEnd(evt, pt) {
+			drag = false
+console.log('end', pt, evt.type)
+		}
+
+		el.addEventListener('mousedown', function (evt) {
+			return touchStart(evt, { x: evt.pageX, y: evt.pageY })
+		})
+
+		el.addEventListener('touchstart', function (evt) {
+			return touchStart(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
+		})
+
+		el.addEventListener('mousemove', function (evt) {
+			return touchMove(evt, { x: evt.pageX, y: evt.pageY })
+		})
+
+		el.addEventListener('touchmove', function (evt) {
+			return touchMove(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
+		})
+
+		document.addEventListener('mouseup', function (evt) {
+			return touchEnd(evt, { x: evt.pageX, y: evt.pageY })
+		})
+
+		document.addEventListener('touchend', function (evt) {
+			return touchEnd(evt, { x: evt.changedTouches[0].pageX, y: evt.changedTouches[0].pageY })
+		})
 	})
 
 })();
