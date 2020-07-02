@@ -385,6 +385,42 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 1rem;
 }
 
+
+
+
+.activity.navbar {
+	background: rgba(255,255,255,0.75);
+	padding-top: 4rem;
+	/*display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;*/
+	z-index: 10;
+}
+
+.activity.navbar .links {
+	margin-top: 4rem;
+	background: #fff;
+	padding: 1rem;
+	border-radius: 10px;
+}
+
+.activity.navbar .links a {
+	margin: 1rem;
+	font-size: 1.25rem;
+	cursor: pointer;
+	font-weight: bold;
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+
+.activity.main .profile-show {
+	z-index: 11;
+}
+
+
+
 /* media */
 
 @media (max-width: 767px) {
@@ -562,6 +598,25 @@ h1, h2, h3, h4, h5, h6 {
 			<button class="button light logout">Выход</div>
 
 		</div>
+	</div>
+
+	<div class="activity navbar is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left back"></a>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="links">
+				<a class="profile-show">Профиль пользователя</a>
+				<a class="open-history">История операций</a>
+				<a href="/policy.html">Политика конфиденциальности</a>
+				<a href="/offer.html">Условия использования</a>
+			</div>
+		</div>
+
 	</div>
 
 	<div class="activity at-center login is-hidden">
@@ -898,6 +953,7 @@ let activityMessage = activities.reduce((_, a) => a.classList.contains('message'
 let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
+let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
 
 // activities switcher
 
@@ -1094,6 +1150,7 @@ function filterProviders() {
 		.filter(word => word.length > 0)
 //console.log('searchWords', searchWords)
 
+
 	let hiddenItems = []
 
 	providersList.forEach(row => {
@@ -1103,7 +1160,8 @@ function filterProviders() {
 		if (searchWords.length > 0) {
 			let found = true
 			searchWords.forEach(word => {
-				if (row.search_key.indexOf(word) < 0) {
+				//if (row.search_key.indexOf(word) < 0) {
+				if (!row.search_key.some(key => key.startsWith(word))) {
 					found = false
 				}
 			})
@@ -1259,11 +1317,18 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			})
 			activityMain.querySelector('.avatar').src = imageUrl
 			activityMain.querySelector('.fullname').innerText = result.name
-			activityMain.querySelectorAll('.profile-show').forEach(node => {
+
+			document.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
 					switchActivity(activityProfile)
 				}
 			})
+			activityMain.querySelectorAll('.profile-show').forEach(node => {
+				node.onclick = function () {
+					navBarShow()
+				}
+			})
+
 
 			if (result.isNew) {
 				switchActivity(activityProfile)
@@ -1283,6 +1348,9 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 	}
 
 }
+
+let navBarShow = () => { }
+let navBarHide = () => { }
 
 // main
 
@@ -1416,7 +1484,45 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		document.addEventListener('touchend', function (evt) {
 			return touchEnd(evt, { x: evt.changedTouches[0].pageX, y: evt.changedTouches[0].pageY })
 		})
-	})
+	});
+
+	(function () {
+		let avatar = activityMain.querySelector('.avatar')
+		navBarShow = () => {
+			let x = avatar.offsetLeft + avatar.offsetWidth/2
+			let y = avatar.offsetTop + avatar.offsetHeight/2
+			activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
+			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
+			activityNavBar.classList.remove('is-hidden')
+			setTimeout(() => {
+				activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
+				setTimeout(() => {
+					activityNavBar.style.clipPath = 'none'
+					activityNavBar.style.transition = 'unset'
+					activityNavBar.style.height = `${activityMain.offsetHeight}px`
+				}, 600)
+			}, 50)
+		}
+		navBarHide = () => {
+			let x = avatar.offsetLeft + avatar.offsetWidth/2
+			let y = avatar.offsetTop + avatar.offsetHeight/2
+			document.scrollingElement.scrollTop = 0
+			activityNavBar.style.height = 'auto'
+			activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
+			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
+			setTimeout(() => {
+				activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
+				setTimeout(() => {
+					activityNavBar.style.clipPath = 'none'
+					activityNavBar.style.transition = 'unset'
+					activityNavBar.classList.add('is-hidden')
+				}, 600)
+			}, 50)
+		}
+		activityNavBar.querySelector('.back').onclick = function () {
+			navBarHide()
+		}
+	})();
 
 })();
 
