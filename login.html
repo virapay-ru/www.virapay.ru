@@ -168,6 +168,11 @@ h1, h2, h3, h4, h5, h6 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: bottom 0.3s ease-out;
+}
+
+.bottom-panel.hide {
+	bottom: -6rem;
 }
 
 .activity.main .hot-icons a {
@@ -759,6 +764,29 @@ h1, h2, h3, h4, h5, h6 {
 	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
 }
 
+#focus-trigger {
+	background: transparent;
+	color: transparent;
+	width: 1rem;
+	height: 0;
+	outline: 0;
+	box-shadow: none;
+	border: 0;
+	padding: 0;
+	font-size: 0;
+}
+
+#focus-trigger:focus {
+	border: 0;
+	outline: 0;
+	box-shadow: none;
+	padding: 0;
+}
+
+#focus-trigger.hide {
+	display: none;
+}
+
 </style>
 
 			<div class="search-field">
@@ -798,7 +826,7 @@ h1, h2, h3, h4, h5, h6 {
 		</div>
 
 		<div class="partners">
-
+<!--
 				<div class="provider">
 					<a class="icon mdi mdi-star-outline"></a>
 					<div class="details">
@@ -825,12 +853,13 @@ h1, h2, h3, h4, h5, h6 {
 					</div>
 					<a class="icon mdi mdi-chevron-right"></a>
 				</div>
-
+-->
 			</div>
-
 
 		</div>
 	</div>
+
+	<input type="text" id="focus-trigger" class="hide"/>
 
 </body>
 <script>
@@ -1268,7 +1297,8 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 
 	(function () {
 		let timeout = null
-		activityMain.querySelector('.search-field input').addEventListener('input', (evt) => {
+		let searchInput = activityMain.querySelector('.search-field input')
+		searchInput.addEventListener('input', evt => {
 			if (timeout !== null) {
 				clearTimeout(timeout)
 				timeout = null
@@ -1278,6 +1308,26 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				timeout = null
 				filterProviders()
 			}, 500)
+		})
+		searchInput.addEventListener('change', evt => {
+			let el = document.querySelector('#focus-trigger')
+			el.classList.remove('hide')
+			setTimeout(function () {
+				el.focus()
+				setTimeout(function () {
+					el.classList.add('hide')
+				}, 50)
+			}, 50)
+		})
+		searchInput.addEventListener('focusin', evt => {
+			let el = document.querySelector('.search-field')
+			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+			document.querySelector('.bottom-panel').classList.add('hide')
+		})
+		searchInput.addEventListener('focusout', evt => {
+			let el = document.querySelector('.search-field')
+			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+			document.querySelector('.bottom-panel').classList.remove('hide')
 		})
 	})();
 
