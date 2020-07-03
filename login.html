@@ -1407,7 +1407,11 @@ let navBarHide = () => { }
 		})
 		searchInput.addEventListener('keydown', evt => {
 			if (evt.keyCode === 13) {
+				evt.stopPropagation()
+				evt.preventDefault()
 				leaveFocusedElement()
+				let el = document.querySelector('.search-field')
+				scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
 			}
 		})
 		let focusTimeout = null
@@ -1421,8 +1425,6 @@ let navBarHide = () => { }
 			document.querySelector('.bottom-panel').classList.add('hide')
 		})
 		searchInput.addEventListener('focusout', evt => {
-			//let el = document.querySelector('.search-field')
-			//scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
 			if (focusTimeout !== null) {
 				clearTimeout(focusTimeout)
 				focusTimeout = null
