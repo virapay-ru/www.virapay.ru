@@ -36,11 +36,11 @@ console.log('G does not respond...')
         let auth2 = gapi.auth2.init({
             client_id: '272693258954-aj3mqp6l3kd9a5brhsf99k11bo0gd95i.apps.googleusercontent.com',
             scope: 'profile email'
-        }).then(() => {
+        })/*.then(() => {
 			console.log('gapi.auth2.init is ok')
 		},err => {
 			console.log('gapi.auth2.init was throw an error', err)
-		})
+		})*/
 
         // Listen for changes to current user.
         auth2.currentUser.listen(user => {
