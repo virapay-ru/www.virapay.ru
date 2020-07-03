@@ -59,7 +59,11 @@ console.log('updateSignInStatus', isSignedIn)
 			})
 			signInButton.classList.remove('is-hidden')
 
-	    });
+	    }, function (error) {
+
+			console.log('gapi.auth2.init failed', error)
+			console.log(error)
+		});
 
 	})
 
