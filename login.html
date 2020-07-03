@@ -377,7 +377,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.main .fullname {
-	margin-right: 1rem;
+    margin-right: 1rem;
+    max-width: 9rem;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .activity h5 {
@@ -1309,6 +1314,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 
 					let result = profileSave()
 					if (result) {
+						let name = activityProfile.querySelector('.fullname').value
 						activityMain.querySelector('.fullname').innerText = name
 						activityProfile.querySelectorAll('.back').forEach(node => {
 							node.onclick = function () {
