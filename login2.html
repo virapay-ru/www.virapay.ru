@@ -1,0 +1,1598 @@
+﻿<!doctype html>
+<html>
+<head>
+
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay" />
+	<meta name="keywords" content="virapay, vira, pay" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+	<!-- Webfonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" crossorigin="anonymous">
+	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
+
+	<!-- UI framework -->
+	<link href="css/typography.css" rel="stylesheet"/>
+
+<!--    <link href="/css/colors.css" rel="stylesheet"/>
+    <link href="/css/reset.css" rel="stylesheet"/>
+	<link href="/css/typography.css" rel="stylesheet"/>
+	<link href="/css/group.css" rel="stylesheet"/>-->
+
+	<!-- Common -->
+	<link href="css/common.css" rel="stylesheet"/>
+
+	<!-- Core code -->
+	<!--<script src="js/debug/output.js" type="text/javascript" charset="utf-8"></script>-->
+	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Google Sign In -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+
+	<!-- Facebook API -->
+	<script src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+	<!-- VK API -->
+	<script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>
+
+<style>
+
+/* custom */
+
+/*
+html {
+	font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+body {
+	margin: 0;
+	color: #000;
+	background-color: #ffffff;
+}
+*/
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: inherit;
+}
+
+/*code {
+	font-family: 'Ubuntu Mono', monospace;
+}*/
+
+.icon {
+	font-size: 1.25em;
+	display: inline-flex;
+    align-items: center;
+}
+
+/* custom activities */
+
+.activity.loading > .container {
+	padding-bottom: 4rem;
+}
+
+.activity > .container > i.display1 {
+	color: gainsboro;
+	line-height: 10rem;
+    font-size: 10rem;
+}
+
+.activity.login > .container {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.activity.login .logo {
+	margin-bottom: 2rem;
+}
+
+.activity.login p {
+    width: 20rem;
+    font-size: 0.8rem;
+}
+
+.activity.profile {
+	padding-top: 4rem;
+}
+
+.activity.profile .container {
+	width: 100%;
+	max-width: 40rem;
+	align-items: center;
+}
+
+.activity.profile .avatar {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+}
+
+.activity.profile h2, .activity.profile small, .activity.profile .label, .activity.profile .button {
+	margin-bottom: 2rem;
+}
+
+.activity.profile .avatar {
+	margin-bottom: 1rem;
+}
+
+.activity.profile .info {
+	max-width: 20em;
+	border-top: 1px solid #eee;
+	padding-top: 2rem;
+}
+
+.activity.profile .button.logout {
+	margin-top: 2rem;
+}
+
+.activity.message button {
+	margin-top: 1rem;
+}
+
+.activity.main > .container {
+	align-items: center;
+	width: 100%;
+	max-width: 30rem;
+}
+
+.activity.main .hot-icons {
+	width: 100%;
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	max-width: 27rem;
+		background: #fff;
+		border-radius: 10px;
+    	box-shadow: 0 0 5rem rgba(0,0,0,0.2);
+}
+
+.bottom-panel {
+	width: 100%;
+	height: 6rem;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 5;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: bottom 0.3s ease-out;
+}
+
+.bottom-panel.hide {
+	bottom: -6rem;
+}
+
+.activity.main .hot-icons a {
+	padding: 1rem;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	cursor: pointer;
+	width: calc((100% - 2rem) / 3);
+	height: 5rem;
+	font-weight: bold;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.main .hot-icons a .icon {
+	font-size: 2rem;
+}
+
+.activity.main .hot-icons a span {
+	font-size: 0.8rem;
+}
+
+.activity.main .hot-icons .open-favorites .icon {
+	color: #fc0;
+}
+
+.activity.main .hot-icons .open-scanner .icon {
+	color: #fd0000;
+}
+
+.activity.main .hot-icons .open-history .icon {
+	color: #4a0;
+}
+
+.activity.main .hot-icons .open-search .icon {
+	color: rgb(77, 144, 254);
+}
+
+.scroll-horizontal {
+	overflow-x: hidden;
+	max-width: 100%;
+}
+
+.activity.main .categories {
+	display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+	box-sizing: border-box;
+}
+
+.activity.main .categories a {
+    width: 6.5rem;
+    min-width: 6.5rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+	border: 1px solid rgba(77, 144, 254, 0.2);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 5px;
+    height: 6.5rem;
+    cursor: pointer;
+	margin-right: 1rem;
+	user-select: none;
+}
+
+.activity.main .categories a .icon {
+	font-size: 2rem;
+	color: rgb(77, 144, 254);
+	user-select: none;
+}
+
+.activity.main .categories a span {
+	text-align: center;
+	display: block;
+	font-size: 0.8rem;
+	user-select: none;
+}
+
+.activity.main .categories a.selected {
+	background: rgb(77, 144, 254);
+}
+
+.activity.main .categories a.selected > * {
+	color: #fff;
+}
+
+.activity.main .partners > .provider {
+
+	flex-flow: row;
+	justify-content: space-between;
+	overflow: hidden;
+	width: 100%;
+	cursor: pointer;
+	border-style: solid;
+	border-color: #eee;
+	box-sizing: border-box;
+
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+	animation-name: provider-hide;
+
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-width: 0;
+	border-top-width: 1px;
+
+	display: none;
+	-webkit-tap-highlight-color: transparent;
+
+		transition: margin-bottom 0.5s ease-out;
+}
+
+@keyframes provider-show {
+  0% {
+	transform: scale(1, 0);
+	opacity: 0;
+  }
+  100% {
+	transform: scale(1, 1);
+	opacity: 1;
+  }
+}
+
+@keyframes provider-hide {
+  0% {
+	transform: scale(1, 1);
+	opacity: 1;
+  }
+  100% {
+	transform: scale(1, 0);
+	opacity: 0;
+  }
+}
+
+.activity.main .partners > .provider.show {
+	animation-name: provider-show;
+	display: flex;
+}
+
+.activity.main .partners > .provider.hide {
+	animation-name: provider-hide;
+	display: flex;
+}
+
+.activity.main .partners > .provider .icon {
+	width: 3rem;
+	font-size: 1.5rem;
+	justify-content: center;
+	transition: color 0.3s ease-out;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.main .partners {
+	width: 100%;
+	padding-bottom: 40rem;
+	margin-top: 1rem;
+}
+
+.activity.main .partners > .provider .details {
+	width: calc(100% - 3rem * 2);
+}
+
+.activity.main .partners > .provider .name {
+	font-weight: bold;
+}
+
+.activity.main .partners > .provider .inn {
+	opacity: 0.7;
+	font-weight: 300;
+}
+
+.activity.main .partners > .provider .service {
+	opacity: 0.7;
+	font-weight: 300;
+}
+
+.activity.main .partners > .provider .icon.selected {
+	color: rgb(77, 144, 254);
+}
+
+
+.activity.main .profile-show {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	border-radius: 2rem;
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.main .avatar {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	margin-right: 0.5rem;
+	/*margin-left: 0.1rem;
+	margin-top: 0.1rem;
+	margin-bottom: 0.1rem;*/
+}
+
+.activity.main .fullname {
+    margin-right: 1rem;
+    max-width: 8rem;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.activity h5 {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+
+
+
+.activity.navbar {
+	background: rgba(255,255,255,0.75);
+	padding-top: 4rem;
+	/*display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;*/
+	z-index: 10;
+}
+
+.activity.navbar .links {
+	margin-top: 4rem;
+	background: #fff;
+	padding: 1rem;
+	border-radius: 10px;
+}
+
+.activity.navbar .links a {
+	margin: 1rem;
+	font-size: 1.25rem;
+	cursor: pointer;
+	font-weight: bold;
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+
+.activity.main .profile-show {
+	z-index: 11;
+}
+
+
+
+/* media */
+
+@media (max-width: 767px) {
+}
+
+@media (min-width: 768px) {
+}
+
+
+
+/* buttons */
+
+/*.button-auth {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	height: 2.5rem;
+	width: 100%;
+	max-width: 20rem;
+	box-sizing: border-box;
+	margin-bottom: 1rem;
+	border: 0;
+	border-radius: 0.25rem;
+	background: #fff;
+	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
+	cursor: pointer;
+}
+
+.button-auth > .icon {
+	height: 1.5rem;
+	font-size: 1.5rem;
+	margin-right: 0.5rem;
+}
+
+.button-auth > span {
+	display: block;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+}*/
+
+.signin-with-google {
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+.signin-with-facebook {
+	color: #fff;
+	background: rgb(24, 119, 242);
+}
+
+.signin-with-vk {
+	color: #fff;
+	background: #4c75a3;
+}
+
+/* utilities */
+
+.is-hidden {
+	display: none;
+}
+
+/*.wide {
+	width: 100%;
+}*/
+
+.spin {
+	animation: spin 0.3s linear infinite;	
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+.debug-console {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+    height: -webkit-fill-available;
+	overflow: auto;
+	z-index: 1000;
+	box-sizing: border-box;
+	padding: 1rem;
+	font-size: 0.8rem;
+}
+
+.debug-console .output {
+	margin: 0;
+}
+*/
+
+</style>
+
+</head>
+<body>
+
+<!--
+	<div class="debug-console">
+		<pre class="output"></pre>
+	</div>
+-->
+
+	<div class="activity at-center loading">
+		<div class="container">
+			<i class="mdi mdi-loading display4 spin"></i>
+		</div>
+	</div>
+
+	<div class="activity at-center message is-hidden">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p>
+				<i class="icon mdi mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon mdi mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+
+	<div class="activity profile is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left back"></a>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<h2>Добро пожаловать!</h2>
+
+			<img class="avatar"/>
+
+			<small><span class="apiname"></span>/<span class="id"></span></small>
+
+			<label class="label">
+				<div>Полное Имя</div>
+				<div><input class="fullname"/></div>
+			</label>
+
+			<label class="label">
+				<div>Email</div>
+				<div><input class="email"/></div>
+			</label>
+
+			<button class="button primary profile-save">
+	            <span>Продолжить</span>
+				<i class="icon mdi mdi-arrow-right"></i>
+			</button>
+
+			<p class="info">Вы можете выйти в любое время. Если возникла такая необходимость, нажмите кнопку <q>Выход</q>.</p>
+
+			<button class="button light logout">Выход</div>
+
+		</div>
+	</div>
+
+	<div class="activity navbar is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left back"></a>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="links">
+				<a class="profile-show">Профиль пользователя</a>
+				<a class="open-history">История операций</a>
+				<a href="/policy.html">Политика конфиденциальности</a>
+				<a href="/offer.html">Условия использования</a>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="activity at-center login is-hidden">
+
+		<div class="container">
+
+			<div class="logo vertical">
+		        <img src="images/logo.svg"/>
+		        <div><span>VIRA</span><span>PAY</span></div>
+			</div>
+
+			<button class="button -button-auth signin-with-google is-hidden">
+	            <img class="icon" src="/images/google_g_logo.svg"/>
+	            <span>Войти с Google</span>
+			</button>
+
+			<button class="button -button-auth signin-with-facebook is-hidden">
+	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
+				<i class="icon mdi mdi-facebook"></i>
+	            <span>Войти с Facebook</span>
+			</button>
+
+			<button class="button -button-auth signin-with-vk is-hidden">
+	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
+				<i class="icon mdi mdi-vk"></i>
+	            <span>Войти с ВКонтакте</span>
+			</button>
+
+			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>, даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
+
+		</div>
+	</div>
+
+	<div class="activity main is-hidden">
+
+		<div class="container">
+
+<style>
+
+.header {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	min-height: 3rem;
+}
+
+.header .logo {
+	font-size: 1.25rem;
+}
+
+.header .logo img {
+	height: 2.5rem;
+}
+
+</style>
+
+			<div class="header">
+
+				<div class="logo horizontal">
+			        <img src="images/logo.svg"/>
+			        <div><span>VIRA</span><span>PAY</span></div>
+				</div>
+
+				<div class="profile-show">
+					<img class="avatar"/>
+					<span class="fullname">VIRAPAY</span>
+				</div>
+
+			</div>
+
+<style>
+
+.banner {
+	border-radius: 10px;
+	background-image: url(/images/banner-stub.jpg);
+	background-size: cover;
+	color: #fff;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 8rem;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+
+.banner > * {
+	margin: 0;
+}
+
+</style>
+
+			<a class="banner">
+				<h3>Место для вашей рекламы</h3>
+				<p>Не упустите ваш шанс!</p>
+			</a>
+
+			<div class="bottom-panel">
+				<div class="hot-icons">
+					<a class="open-favorites">
+						<i class="icon mdi mdi-star-outline"></i>
+						<span>Избранное</span>
+					</a>
+					<a class="open-scanner">
+						<i class="icon mdi mdi-qrcode-scan"></i>
+						<span>Сканнер</span>
+					</a>
+					<a class="open-history">
+						<i class="icon mdi mdi-history"></i>
+						<span>История</span>
+					</a>
+				</div>
+			</div>
+
+<!--
+			<h5>Категории</h5>
+			<div class="categories">
+				<a class="category" data-id="4">
+					<i class="icon mdi mdi-office-building"></i>
+					<span>Коммунальные услуги</span>
+				</a>
+				<a class="category" data-id="1">
+					<i class="icon mdi mdi-web"></i>
+					<span>Интернет</span>
+				</a>
+				<a class="category" data-id="3">
+					<i class="icon mdi mdi-television-classic"></i>
+					<span>Телевидение</span>
+				</a>
+				<a class="category" data-id="7">
+					<i class="icon mdi mdi-phone-in-talk"></i>
+					<span>Телефон</span>
+				</a>
+				<a class="category" data-id="5">
+					<i class="icon mdi mdi-gamepad-variant-outline"></i>
+					<span>Игры</span>
+				</a>
+				<a class="category" data-id="8">
+					<i class="icon mdi mdi-dots-horizontal"></i>
+					<span>Прочее</span>
+				</a>
+			</div>
+-->
+
+			<!--<h5>Все услуги</h5>-->
+
+<style>
+
+.search-field {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.search-field .icon {
+	width: 3rem;
+	color: rgb(77, 144, 254);
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	cursor: pointer;
+	font-size: 1.8rem;
+
+	height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+
+	margin-right: -3rem;
+	z-index: 1;
+}
+
+.search-field .label {
+	width: 100%;
+	display: flex;
+	max-width: 100%;
+}
+
+.search-field .label div {
+	width: 100%;
+}
+
+.search-field .label input {
+	padding-left: 3rem;
+	height: 3rem;
+	font-size: 1.2rem;
+	border: 1px solid rgb(77, 144, 254);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+}
+
+.search-field .label input:focus {
+	border: 1px solid rgb(77, 144, 254);
+	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
+}
+
+#focus-trigger {
+	background: transparent;
+	color: transparent;
+	width: 1rem;
+	height: 0;
+	outline: 0;
+	box-shadow: none;
+	border: 0;
+	padding: 0;
+	font-size: 0;
+}
+
+#focus-trigger:focus {
+	border: 0;
+	outline: 0;
+	box-shadow: none;
+	padding: 0;
+}
+
+#focus-trigger.hide {
+	display: none;
+}
+
+</style>
+
+			<div class="search-field">
+				<i class="icon mdi mdi-magnify"></i>
+				<label class="label">
+					<div><input class="search" placeholder="Поиск по ИНН, Названию..."/></div>
+				</label>
+			</div>
+
+		<div class="scroll-horizontal">
+			<div class="categories">
+				<a class="category" data-id="4">
+					<i class="icon mdi mdi-office-building"></i>
+					<span>Коммунальные услуги</span>
+				</a>
+				<a class="category" data-id="1">
+					<i class="icon mdi mdi-web"></i>
+					<span>Интернет</span>
+				</a>
+				<a class="category" data-id="3">
+					<i class="icon mdi mdi-television-classic"></i>
+					<span>Телевидение</span>
+				</a>
+				<a class="category" data-id="7">
+					<i class="icon mdi mdi-phone-in-talk"></i>
+					<span>Телефон</span>
+				</a>
+				<a class="category" data-id="5">
+					<i class="icon mdi mdi-gamepad-variant-outline"></i>
+					<span>Игры</span>
+				</a>
+				<a class="category" data-id="8">
+					<i class="icon mdi mdi-dots-horizontal"></i>
+					<span>Прочее</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="partners">
+<!--
+				<div class="provider">
+					<a class="icon mdi mdi-star-outline"></a>
+					<div class="details">
+						<div class="name">Промсвязьмонтаж ООО</div>
+						<div class="service">Домофон</div>
+					</div>
+					<a class="icon mdi mdi-chevron-right"></a>
+				</div>
+
+				<div class="provider">
+					<a class="icon mdi mdi-star-outline"></a>
+					<div class="details">
+						<div class="name">Промсвязьмонтаж ООО</div>
+						<div class="service">Пени</div>
+					</div>
+					<a class="icon mdi mdi-chevron-right"></a>
+				</div>
+
+				<div class="provider">
+					<a class="icon mdi mdi-star-outline"></a>
+					<div class="details">
+						<div class="name">Газпром межрегионгаз Иваново ООО</div>
+						<div class="service">Оплата за ВГДО</div>
+					</div>
+					<a class="icon mdi mdi-chevron-right"></a>
+				</div>
+-->
+			</div>
+
+		</div>
+	</div>
+
+	<input type="text" id="focus-trigger" class="hide"/>
+
+</body>
+<script>
+
+'use strict';
+
+let isLoggedInWith = {
+	google: undefined,
+	facebook: undefined,
+	vk: undefined
+}
+
+function isLoggedIn() {
+	if (isLoggedInWith.google === undefined
+	 || isLoggedInWith.facebook === undefined
+	 || isLoggedInWith.vk === undefined) {
+		return undefined
+	}
+	return isLoggedInWith.google || isLoggedInWith.facebook || isLoggedInWith.vk
+}
+
+let profileData = null
+let providersList = null
+let profileSave = function () { }
+
+function isLoggedOut() {
+console.log('isLoggedOut()',isLoggedIn() === false)
+	return isLoggedIn() === false
+}
+
+// activities
+
+let activities = Array.from(document.querySelectorAll('.activity'))
+let activityLoading = activities.reduce((_, a) => a.classList.contains('loading') ? a : _, null)
+let activityMessage = activities.reduce((_, a) => a.classList.contains('message') ? a : _, null)
+let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
+let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
+let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
+let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
+
+// activities switcher
+
+function switchActivity(activity) {
+	activities.forEach(a => a.classList.add('is-hidden'))
+	activity.classList.remove('is-hidden')
+}
+
+// message
+
+function showMessage(title, text, actionCallback) {
+	activityMessage.querySelector('.title').innerText = title
+	activityMessage.querySelector('.text').innerText = text
+	activityMessage.querySelectorAll('.action').forEach(node => {
+		node.onclick = function () {
+			actionCallback();
+		}
+	})
+	switchActivity(activityMessage)
+}
+
+// backend node
+
+let backend = new JSONRPC2.RemoteProxyObject(
+	// using JSON RPC over HTTP
+	new JSONRPC2.Transports.HTTP(
+		'https://powerful-taiga-14558.herokuapp.com/rpc/json',
+		 {
+			mode: 'cors'
+		 }
+	)
+)
+
+let scrollByYTo = (function () {
+
+//document.scrollingElement.scrollTop
+
+	let t0 = Date.now()
+
+	function frame(el) {
+		let time = JSON.parse(el.dataset.scrollingTime)
+		let t = Math.abs(Date.now() - t0) / time
+		let sourceY = JSON.parse(el.dataset.scrollingSourceY)
+		let targetY = JSON.parse(el.dataset.scrollingTargetY)
+		if (t >= 1) {
+			el.scrollTop = targetY
+			el.dataset.scrollingProgress = JSON.stringify(false)
+		} else {
+			el.scrollTop = sourceY + (targetY - sourceY) * t
+			requestAnimationFrame(function () { frame(el) })
+		}
+	}
+
+	return function (el, y, time = 300) {
+
+		t0 = Date.now()
+
+		el.dataset.scrollingTime = JSON.stringify(time)
+		el.dataset.scrollingSourceY = JSON.stringify(el.scrollTop)
+		el.dataset.scrollingTargetY = JSON.stringify(y)
+		if (el.dataset.scrollingProgress === undefined) {
+			el.dataset.scrollingProgress = JSON.stringify(false)
+		}
+		let flag = JSON.parse(el.dataset.scrollingProgress)
+		if (!flag) {
+			el.dataset.scrollingProgress = JSON.stringify(true)
+			frame(el)
+		}
+
+	}
+
+})();
+
+// main activity
+
+let mainInited = false
+
+async function mainInit() {
+
+	if (mainInited === false) {
+
+		switchActivity(activityLoading)
+
+		let storageProvidersKey = `/${location.hostname}/providers`
+
+		let data = storageGet(storageProvidersKey)
+		let version = (data ? data.version : 0)
+		let newData = await backend.providersGetUpdate(version)
+		if (newData !== null) {
+			data = newData
+			storagePut(storageProvidersKey, data)
+		}
+
+		let listNode = activityMain.querySelector('.partners')
+		listNode.innerHTML = ''
+		providersList = data.providers
+		providersList.forEach(item => {
+
+			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
+
+			let providerNode = document.createElement('div')
+			providerNode.classList.add('provider')
+			providerNode.classList.add('show')
+
+			let favNode = document.createElement('a')
+			favNode.classList.add('icon')
+			favNode.classList.add('mdi')
+			favNode.classList.add('fav')
+			if (profileData.favList.indexOf(rowKey) >= 0) {
+				favNode.classList.add('mdi-star')
+				favNode.classList.add('selected')
+				item.isFavorite = true
+			} else {
+				favNode.classList.add('mdi-star-outline')
+				item.isFavorite = false
+			}
+
+			let detailsNode = document.createElement('div')
+			detailsNode.classList.add('details')
+
+			let nameNode = document.createElement('div')
+			nameNode.classList.add('name')
+			nameNode.innerText = item.name_portal
+
+			let innNode = document.createElement('div')
+			innNode.classList.add('inn')
+			innNode.innerText = 'ИНН ' + item.inn
+
+			let serviceNode = document.createElement('div')
+			serviceNode.classList.add('service')
+			serviceNode.innerText = item.service_name
+
+			let btnNode = document.createElement('a')
+			btnNode.classList.add('icon')
+			btnNode.classList.add('mdi')
+			btnNode.classList.add('mdi-chevron-right')
+
+			detailsNode.appendChild(nameNode)
+			detailsNode.appendChild(innNode)
+			detailsNode.appendChild(serviceNode)
+			providerNode.appendChild(favNode)
+			providerNode.appendChild(detailsNode)
+			providerNode.appendChild(btnNode)
+			providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
+			listNode.appendChild(providerNode)
+
+			favNode.onclick = function () {
+				if (favNode.classList.contains('mdi-star-outline')) {
+					favNode.classList.remove('mdi-star-outline')
+					favNode.classList.add('mdi-star')
+					favNode.classList.add('selected')
+					profileData.favList.push(rowKey)
+					item.isFavorite = true
+				} else {
+					favNode.classList.remove('selected')
+					favNode.classList.remove('mdi-star')
+					favNode.classList.add('mdi-star-outline')
+					profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+					item.isFavorite = false
+				}
+				let result = profileSave()
+				if (result) {
+					filterProviders()
+				} else {
+					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+						favNode.classList.remove('selected')
+						favNode.classList.remove('mdi-star')
+						favNode.classList.add('mdi-star-outline')
+						profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+						item.isFavorite = false
+					})
+				}
+			}
+
+			item.node = providerNode
+		})
+
+		mainInited = true
+	}
+
+	filterProviders()
+	switchActivity(activityMain)
+}
+
+function filterProviders() {
+
+	let favlistOnly = activityMain.querySelector('.open-favorites').classList.contains('selected')
+
+	let selectedCategories = []
+
+	activityMain.querySelectorAll('.category').forEach(category => {
+		if (category.classList.contains('selected')) {
+			selectedCategories.push(JSON.parse(category.dataset.id))
+		}
+	})
+
+	let searchQuery = '' + document.querySelector('.search-field input').value
+	let searchWords = searchQuery
+		.toLowerCase()
+		.replace(/[\,\.\?\!\%\*\(\)\[\]\{\}\-\+\_\<\>\:\;\"\'\`\\\/\r\n\t]+/g, ' ')
+		.split(/\s+/)
+		.filter(word => word.length > 0)
+//console.log('searchWords', searchWords)
+
+
+	let hiddenItems = []
+
+	providersList.forEach(row => {
+
+		row.isMatch = true
+
+		if (searchWords.length > 0) {
+			let found = true
+			searchWords.forEach(word => {
+				//if (row.search_key.indexOf(word) < 0) {
+				if (!row.search_key.some(key => key.startsWith(word))) {
+					found = false
+				}
+			})
+			if (!found) {
+				row.isMatch = false
+			}
+		}
+
+		if (selectedCategories.length > 0) {
+			let found = false
+			let categories = row.categories
+			selectedCategories.forEach(selectedCategory => {
+				if (categories.indexOf(selectedCategory) >= 0) {
+					found = true
+				}
+			})
+			if (!found) {
+				row.isMatch = false
+			}
+		}
+
+		if (favlistOnly && !row.isFavorite) {
+			row.isMatch = false
+		}
+
+		if (row.isMatch) {
+			row.node.classList.add('show')
+		} else {
+			if (row.node.classList.contains('show')) {
+				row.node.classList.remove('show')
+				row.node.classList.add('hide')
+				hiddenItems.push(row.node)
+			}
+		}
+
+	})
+
+	setTimeout(function () {
+		hiddenItems.forEach(node => {
+			node.style.marginBottom = '-' + node.offsetHeight + 'px'
+		})
+		setTimeout(function () {
+			hiddenItems.forEach(node => {
+				node.classList.remove('hide')
+				node.style.marginBottom = '0'
+			})
+		}, 500)
+	}, 0)
+}
+
+// profile functions
+
+async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogout) {
+
+	let logoutCallback = function () {
+		doLogout()
+		profileData = null
+		profileSave = function () { }
+	}
+
+	switchActivity(activityLoading)
+
+	try {
+
+		console.log('LOGIN REQUEST', apiName, id, token)
+
+		let result = await backend.login(apiName, id, token, fullName, email)
+
+		console.log('LOGIN RESULT', result)
+
+		if (result) {
+
+			profileData = result.data
+
+			activityProfile.querySelector('.avatar').src = imageUrl
+			activityProfile.querySelector('.apiname').innerText = apiName
+			activityProfile.querySelector('.id').innerText = id
+			activityProfile.querySelector('.fullname').value = result.name
+			activityProfile.querySelector('.email').value = result.email
+			activityProfile.querySelectorAll('.logout').forEach(node => {
+				node.onclick = function () {
+					logoutCallback();
+				}
+			})
+			activityProfile.querySelectorAll('.back').forEach(node => {
+				if (result.isNew) {
+					node.onclick = function () {
+						logoutCallback()
+					}
+				} else {
+					node.onclick = function () {
+						mainInit() //switchActivity(activityMain)
+					}
+				}
+			})
+			profileSave = async function () {
+				try {
+					let name = activityProfile.querySelector('.fullname').value
+					let email = activityProfile.querySelector('.email').value
+					let result = await backend.profileUpdate(
+						apiName, id, token,
+						name, email, profileData
+					)
+					return result
+				} catch (errorProfileSaving) {
+					console.log('SAVING PROFILE FAILED', errorProfileSaving)
+					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+				}
+				return null
+			}
+			activityProfile.querySelectorAll('.profile-save').forEach(node => {
+				node.onclick = async function () {
+					switchActivity(activityLoading)
+					/*try {
+						let name = activityProfile.querySelector('.fullname').value
+						let email = activityProfile.querySelector('.email').value
+						let result = await backend.profileUpdate(
+							apiName, id, token,
+							name, email, profileData
+						)
+						console.log('SAVING PROFILE RESULT', result)
+						if (result) {
+							activityMain.querySelector('.fullname').innerText = name
+							activityProfile.querySelectorAll('.back').forEach(node => {
+								node.onclick = function () {
+									mainInit() //switchActivity(activityMain)
+								}
+							})
+							mainInit() //switchActivity(activityMain)
+						} else {
+							showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+						}
+					} catch (errorProfileSaving) {
+						console.log('SAVING PROFILE FAILED', errorProfileSaving)
+						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+					}*/
+
+					let result = profileSave()
+					if (result) {
+						let name = activityProfile.querySelector('.fullname').value
+						activityMain.querySelector('.fullname').innerText = name
+						activityProfile.querySelectorAll('.back').forEach(node => {
+							node.onclick = function () {
+								mainInit() //switchActivity(activityMain)
+							}
+						})
+						mainInit() //switchActivity(activityMain)
+					} else {
+						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+					}
+
+
+				}
+			})
+			activityMain.querySelector('.avatar').src = imageUrl
+			activityMain.querySelector('.fullname').innerText = result.name
+
+			document.querySelectorAll('.profile-show').forEach(node => {
+				node.onclick = function () {
+					switchActivity(activityProfile)
+				}
+			})
+			activityMain.querySelectorAll('.profile-show').forEach(node => {
+				node.onclick = function () {
+					if (activityNavBar.classList.contains('is-hidden')) {
+						navBarShow()
+					} else {
+						navBarHide()
+					}
+				}
+			})
+
+
+			if (result.isNew) {
+				switchActivity(activityProfile)
+			} else {
+				mainInit() //switchActivity(activityMain)
+			}
+
+		} else {
+
+			showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
+		}
+
+	} catch (errorLogin) {
+
+		console.log('LOGIN FAILED', errorLogin)
+		showMessage('Вход', 'Не удалось выпольнить вход в приложение. Попробуйте позднее.', logoutCallback)
+	}
+
+}
+
+// focus
+
+function leaveFocusedElement() {
+	let el = document.querySelector('#focus-trigger')
+	el.classList.remove('hide')
+console.log('leave focused element')
+	setTimeout(function () {
+		el.focus()
+		setTimeout(function () {
+			el.classList.add('hide')
+		}, 50)
+	}, 50)
+}
+
+//
+
+let navBarShow = () => { }
+let navBarHide = () => { }
+
+// main
+
+(function () {
+
+	activityMain.querySelectorAll('.category').forEach(category => {
+		category.onclick = () => {
+			category.classList.toggle('selected')
+			filterProviders()
+		}
+	});
+
+	(function () {
+		let timeout = null
+		let searchInput = activityMain.querySelector('.search-field input')
+		searchInput.addEventListener('input', evt => {
+			if (timeout !== null) {
+				clearTimeout(timeout)
+				timeout = null
+			}
+			timeout = setTimeout(function () {
+				clearTimeout(timeout)
+				timeout = null
+				filterProviders()
+			}, 500)
+		})
+		searchInput.addEventListener('keydown', evt => {
+			if (evt.keyCode === 13) {
+				evt.stopPropagation()
+				evt.preventDefault()
+				leaveFocusedElement()
+				let el = document.querySelector('.search-field')
+				scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+			}
+		})
+		let focusTimeout = null
+		searchInput.addEventListener('focusin', evt => {
+			if (focusTimeout !== null) {
+				clearTimeout(focusTimeout)
+				focusTimeout = null
+			}
+			let el = document.querySelector('.search-field')
+			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+			document.querySelector('.bottom-panel').classList.add('hide')
+		})
+		searchInput.addEventListener('focusout', evt => {
+			if (focusTimeout !== null) {
+				clearTimeout(focusTimeout)
+				focusTimeout = null
+			}
+			focusTimeout = setTimeout(function () {
+				document.querySelector('.bottom-panel').classList.remove('hide')
+				focusTimeout = null
+			}, 750)
+		})
+	})();
+
+	activityMain.querySelectorAll('.open-favorites').forEach(btn => {
+		btn.onclick = () => {
+			let icon = btn.querySelector('.icon')
+			if (icon.classList.contains('mdi-star-outline')) {
+				icon.classList.remove('mdi-star-outline')
+				icon.classList.add('mdi-star')
+				btn.classList.add('selected')
+				setTimeout(function () {
+					let el = document.querySelector('.search-field')
+					scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+				}, 500)
+			} else {
+				btn.classList.remove('selected')
+				icon.classList.remove('mdi-star')
+				icon.classList.add('mdi-star-outline')
+			}
+			filterProviders()
+		}
+	})
+
+	activityMain.querySelectorAll('.scroll-horizontal').forEach(el => {
+
+		let drag = false
+		let pt0 = null
+
+		function touchStart(evt, pt) {
+			pt0 = pt
+			drag = true
+//console.log('start', pt, evt.type)
+		}
+
+		function touchMove(evt, pt) {
+			if (drag) {
+//console.log('move', pt, evt.type)
+				let dx = pt.x - pt0.x
+				let dy = pt.y - pt0.y
+				if (Math.abs(dx) > Math.abs(dy)) {
+					el.scrollLeft -= dx
+					pt0 = pt
+					evt.stopPropagation()
+					evt.preventDefault()
+				}
+			}
+		}
+
+		function touchEnd(evt, pt) {
+			drag = false
+//console.log('end', pt, evt.type)
+		}
+
+		el.addEventListener('mousedown', function (evt) {
+			return touchStart(evt, { x: evt.pageX, y: evt.pageY })
+		})
+
+		el.addEventListener('touchstart', function (evt) {
+			return touchStart(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
+		})
+
+		el.addEventListener('mousemove', function (evt) {
+			return touchMove(evt, { x: evt.pageX, y: evt.pageY })
+		})
+
+		el.addEventListener('touchmove', function (evt) {
+			return touchMove(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
+		})
+
+		document.addEventListener('mouseup', function (evt) {
+			return touchEnd(evt, { x: evt.pageX, y: evt.pageY })
+		})
+
+		document.addEventListener('touchend', function (evt) {
+			return touchEnd(evt, { x: evt.changedTouches[0].pageX, y: evt.changedTouches[0].pageY })
+		})
+	});
+
+	(function () {
+
+		let avatar = activityMain.querySelector('.avatar')
+		let timerStep0 = null
+		let timerStep1 = null
+
+		function clearTimers() {
+			if (timerStep0 !== null) {
+				clearTimeout(timerStep0)
+				timerStep0 = null
+			}
+			if (timerStep1 !== null) {
+				clearTimeout(timerStep1)
+				timerStep1 = null
+			}
+		}
+
+		navBarShow = () => {
+			let x = avatar.offsetLeft + avatar.offsetWidth/2
+			let y = avatar.offsetTop + avatar.offsetHeight/2
+			activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
+			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
+			activityNavBar.classList.remove('is-hidden')
+			clearTimers()
+			timerStep0 = setTimeout(() => {
+				timerStep0 = null
+				activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
+				document.querySelector('.bottom-panel').classList.add('hide')
+				timerStep1 = setTimeout(() => {
+					timerStep1 = null
+					activityNavBar.style.clipPath = 'none'
+					activityNavBar.style.transition = 'unset'
+					activityNavBar.style.height = `${activityMain.offsetHeight}px`
+				}, 600)
+			}, 50)
+		}
+
+		navBarHide = () => {
+			let x = avatar.offsetLeft + avatar.offsetWidth/2
+			let y = avatar.offsetTop + avatar.offsetHeight/2
+			document.scrollingElement.scrollTop = 0
+			activityNavBar.style.height = 'auto'
+			activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
+			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
+			clearTimers()
+			timerStep0 = setTimeout(() => {
+				timerStep0 = null
+				activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
+				document.querySelector('.bottom-panel').classList.remove('hide')
+				timerStep1 = setTimeout(() => {
+					timerStep1 = null
+					activityNavBar.style.clipPath = 'none'
+					activityNavBar.style.transition = 'unset'
+					activityNavBar.classList.add('is-hidden')
+				}, 600)
+			}, 50)
+		}
+
+		activityNavBar.querySelector('.back').onclick = function () {
+			navBarHide()
+		}
+
+	})();
+
+})();
+
+
+</script>
+
+	<!-- Auth -->
+	<script src="js/login/google2.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+	<script src="js/login/facebook.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+	<script src="js/login/vk.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+
+	<!-- DEBUG -->
+	<link href="css/debug/grid.css" rel="stylesheet"/>
+	<script src="js/debug/grid.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
