@@ -1538,6 +1538,7 @@ let navBarHide = () => { }
 			timerStep0 = setTimeout(() => {
 				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
+				document.querySelector('.bottom-panel').classList.add('hide')
 				timerStep1 = setTimeout(() => {
 					timerStep1 = null
 					activityNavBar.style.clipPath = 'none'
@@ -1558,6 +1559,7 @@ let navBarHide = () => { }
 			timerStep0 = setTimeout(() => {
 				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
+				document.querySelector('.bottom-panel').classList.remove('hide')
 				timerStep1 = setTimeout(() => {
 					timerStep1 = null
 					activityNavBar.style.clipPath = 'none'
