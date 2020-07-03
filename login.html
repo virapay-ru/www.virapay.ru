@@ -1029,104 +1029,112 @@ let scrollByYTo = (function () {
 
 // main activity
 
+let mainInited = false
+
 async function mainInit() {
 
-	switchActivity(activityLoading)
+	if (mainInited === false) {
 
-	let storageProvidersKey = `/${location.hostname}/providers`
+		switchActivity(activityLoading)
 
-	let data = storageGet(storageProvidersKey)
-	let version = (data ? data.version : 0)
-	let newData = await backend.providersGetUpdate(version)
-	if (newData !== null) {
-		data = newData
-		storagePut(storageProvidersKey, data)
-	}
+		let storageProvidersKey = `/${location.hostname}/providers`
 
-	let listNode = activityMain.querySelector('.partners')
-	listNode.innerHTML = ''
-	providersList = data.providers
-	providersList.forEach(item => {
-
-		let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
-
-		let providerNode = document.createElement('div')
-		providerNode.classList.add('provider')
-		providerNode.classList.add('show')
-
-		let favNode = document.createElement('a')
-		favNode.classList.add('icon')
-		favNode.classList.add('mdi')
-		favNode.classList.add('fav')
-		if (profileData.favList.indexOf(rowKey) >= 0) {
-			favNode.classList.add('mdi-star')
-			favNode.classList.add('selected')
-			item.isFavorite = true
-		} else {
-			favNode.classList.add('mdi-star-outline')
-			item.isFavorite = false
+		let data = storageGet(storageProvidersKey)
+		let version = (data ? data.version : 0)
+		let newData = await backend.providersGetUpdate(version)
+		if (newData !== null) {
+			data = newData
+			storagePut(storageProvidersKey, data)
 		}
 
-		let detailsNode = document.createElement('div')
-		detailsNode.classList.add('details')
+		let listNode = activityMain.querySelector('.partners')
+		listNode.innerHTML = ''
+		providersList = data.providers
+		providersList.forEach(item => {
 
-		let nameNode = document.createElement('div')
-		nameNode.classList.add('name')
-		nameNode.innerText = item.name_portal
+			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
 
-		let innNode = document.createElement('div')
-		innNode.classList.add('inn')
-		innNode.innerText = 'ИНН ' + item.inn
+			let providerNode = document.createElement('div')
+			providerNode.classList.add('provider')
+			providerNode.classList.add('show')
 
-		let serviceNode = document.createElement('div')
-		serviceNode.classList.add('service')
-		serviceNode.innerText = item.service_name
-
-		let btnNode = document.createElement('a')
-		btnNode.classList.add('icon')
-		btnNode.classList.add('mdi')
-		btnNode.classList.add('mdi-chevron-right')
-
-		detailsNode.appendChild(nameNode)
-		detailsNode.appendChild(innNode)
-		detailsNode.appendChild(serviceNode)
-		providerNode.appendChild(favNode)
-		providerNode.appendChild(detailsNode)
-		providerNode.appendChild(btnNode)
-		providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
-		listNode.appendChild(providerNode)
-
-		favNode.onclick = function () {
-			if (favNode.classList.contains('mdi-star-outline')) {
-				favNode.classList.remove('mdi-star-outline')
+			let favNode = document.createElement('a')
+			favNode.classList.add('icon')
+			favNode.classList.add('mdi')
+			favNode.classList.add('fav')
+			if (profileData.favList.indexOf(rowKey) >= 0) {
 				favNode.classList.add('mdi-star')
 				favNode.classList.add('selected')
-				profileData.favList.push(rowKey)
 				item.isFavorite = true
 			} else {
-				favNode.classList.remove('selected')
-				favNode.classList.remove('mdi-star')
 				favNode.classList.add('mdi-star-outline')
-				profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
 				item.isFavorite = false
 			}
-			let result = profileSave()
-			if (result) {
-				filterProviders()
-			} else {
-				showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+
+			let detailsNode = document.createElement('div')
+			detailsNode.classList.add('details')
+
+			let nameNode = document.createElement('div')
+			nameNode.classList.add('name')
+			nameNode.innerText = item.name_portal
+
+			let innNode = document.createElement('div')
+			innNode.classList.add('inn')
+			innNode.innerText = 'ИНН ' + item.inn
+
+			let serviceNode = document.createElement('div')
+			serviceNode.classList.add('service')
+			serviceNode.innerText = item.service_name
+
+			let btnNode = document.createElement('a')
+			btnNode.classList.add('icon')
+			btnNode.classList.add('mdi')
+			btnNode.classList.add('mdi-chevron-right')
+
+			detailsNode.appendChild(nameNode)
+			detailsNode.appendChild(innNode)
+			detailsNode.appendChild(serviceNode)
+			providerNode.appendChild(favNode)
+			providerNode.appendChild(detailsNode)
+			providerNode.appendChild(btnNode)
+			providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
+			listNode.appendChild(providerNode)
+
+			favNode.onclick = function () {
+				if (favNode.classList.contains('mdi-star-outline')) {
+					favNode.classList.remove('mdi-star-outline')
+					favNode.classList.add('mdi-star')
+					favNode.classList.add('selected')
+					profileData.favList.push(rowKey)
+					item.isFavorite = true
+				} else {
 					favNode.classList.remove('selected')
 					favNode.classList.remove('mdi-star')
 					favNode.classList.add('mdi-star-outline')
 					profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
 					item.isFavorite = false
-				})
+				}
+				let result = profileSave()
+				if (result) {
+					filterProviders()
+				} else {
+					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+						favNode.classList.remove('selected')
+						favNode.classList.remove('mdi-star')
+						favNode.classList.add('mdi-star-outline')
+						profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+						item.isFavorite = false
+					})
+				}
 			}
-		}
 
-		item.node = providerNode
-	})
+			item.node = providerNode
+		})
 
+		mainInited = true
+	}
+
+	filterProviders()
 	switchActivity(activityMain)
 }
 
@@ -1325,7 +1333,11 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			})
 			activityMain.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
-					navBarShow()
+					if (activityNavBar.classList.contains('is-hidden')) {
+						navBarShow()
+					} else {
+						navBarHide()
+					}
 				}
 			})
 
@@ -1348,6 +1360,22 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 	}
 
 }
+
+// focus
+
+function leaveFocusedElement() {
+	let el = document.querySelector('#focus-trigger')
+	el.classList.remove('hide')
+console.log('leave focused element')
+	setTimeout(function () {
+		el.focus()
+		setTimeout(function () {
+			el.classList.add('hide')
+		}, 50)
+	}, 50)
+}
+
+//
 
 let navBarShow = () => { }
 let navBarHide = () => { }
@@ -1377,15 +1405,10 @@ let navBarHide = () => { }
 				filterProviders()
 			}, 500)
 		})
-		searchInput.addEventListener('change', evt => {
-			let el = document.querySelector('#focus-trigger')
-			el.classList.remove('hide')
-			setTimeout(function () {
-				el.focus()
-				setTimeout(function () {
-					el.classList.add('hide')
-				}, 50)
-			}, 50)
+		searchInput.addEventListener('keydown', evt => {
+			if (evt.keyCode === 13) {
+				leaveFocusedElement()
+			}
 		})
 		let focusTimeout = null
 		searchInput.addEventListener('focusin', evt => {
@@ -1398,8 +1421,8 @@ let navBarHide = () => { }
 			document.querySelector('.bottom-panel').classList.add('hide')
 		})
 		searchInput.addEventListener('focusout', evt => {
-			let el = document.querySelector('.search-field')
-			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+			//let el = document.querySelector('.search-field')
+			//scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
 			if (focusTimeout !== null) {
 				clearTimeout(focusTimeout)
 				focusTimeout = null
@@ -1487,22 +1510,41 @@ let navBarHide = () => { }
 	});
 
 	(function () {
+
 		let avatar = activityMain.querySelector('.avatar')
+		let timerStep0 = null
+		let timerStep1 = null
+
+		function clearTimers() {
+			if (timerStep0 !== null) {
+				clearTimeout(timerStep0)
+				timerStep0 = null
+			}
+			if (timerStep1 !== null) {
+				clearTimeout(timerStep1)
+				timerStep1 = null
+			}
+		}
+
 		navBarShow = () => {
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
 			activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
 			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
 			activityNavBar.classList.remove('is-hidden')
-			setTimeout(() => {
+			clearTimers()
+			timerStep0 = setTimeout(() => {
+				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
-				setTimeout(() => {
+				timerStep1 = setTimeout(() => {
+					timerStep1 = null
 					activityNavBar.style.clipPath = 'none'
 					activityNavBar.style.transition = 'unset'
 					activityNavBar.style.height = `${activityMain.offsetHeight}px`
 				}, 600)
 			}, 50)
 		}
+
 		navBarHide = () => {
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
@@ -1510,18 +1552,23 @@ let navBarHide = () => { }
 			activityNavBar.style.height = 'auto'
 			activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
 			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
-			setTimeout(() => {
+			clearTimers()
+			timerStep0 = setTimeout(() => {
+				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
-				setTimeout(() => {
+				timerStep1 = setTimeout(() => {
+					timerStep1 = null
 					activityNavBar.style.clipPath = 'none'
 					activityNavBar.style.transition = 'unset'
 					activityNavBar.classList.add('is-hidden')
 				}, 600)
 			}, 50)
 		}
+
 		activityNavBar.querySelector('.back').onclick = function () {
 			navBarHide()
 		}
+
 	})();
 
 })();
