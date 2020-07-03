@@ -45,7 +45,7 @@ console.log('updateSignInStatus', isSignedIn)
         let auth2 = gapi.auth2.init({
             client_id: '272693258954-aj3mqp6l3kd9a5brhsf99k11bo0gd95i.apps.googleusercontent.com',
             scope: 'profile email',
-			cookiepolicy: 'single_host_origin',
+			cookie_policy: 'none',
 			ux_mode: 'redirect',
 			redirect_uri: 'https://virapay.ru/login2.html'
         }).then(function () {
