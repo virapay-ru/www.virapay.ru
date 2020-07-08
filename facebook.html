@@ -1,13 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 <script>
 
-let parameters = location.search.substr(1).split('&').reduce((p, kv) => {
-	let [ k, v ] = kv.split('=')
-	if (k !== '') {
-		p[k] = decodeURIComponent(v)
-	}
-	return p
-}, { })
+(function () {
 
-console.log('parameters', parameters)
+	let p = parseParameters(location.search)
+	if (p.code) {
+		console.log('code', p.code)
+	} else {
+		console.log('there is no code here')
+	}
+
+})();
 
 </script>
+</head>
+</html>
