@@ -1,6 +1,6 @@
 <script>
 
-let parameters = location.hash.substr(1).split('&').reduce((p, kv) => {
+let parameters = location.search.substr(1).split('&').reduce((p, kv) => {
 	let [ k, v ] = kv.split('=')
 	if (k !== '') {
 		p[k] = decodeURIComponent(v)
