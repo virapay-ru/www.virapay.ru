@@ -1227,7 +1227,7 @@ function filterProviders() {
 
 // profile functions
 
-async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogout) {
+async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogout, doUpdate) {
 
 	let logoutCallback = function () {
 		doLogout()
@@ -1278,6 +1278,9 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 						apiName, id, token,
 						name, email, imageUrl, profileData
 					)
+					if (result) {
+						doUpdate(name, email)
+					}
 					return result
 				} catch (errorProfileSaving) {
 					console.log('SAVING PROFILE FAILED', errorProfileSaving)
@@ -1571,6 +1574,11 @@ let navBarHide = () => { }
 			storagePut(sessionKey, null)
 			switchActivity(activityLogin)
 			profileData = null
+		}, (name, email) => {
+			user.name = name
+			user.email = email
+			user.isNew = false
+			storagePut(sessionKey, user)
 		})
 	} else {
 		switchActivity(activityLogin)
