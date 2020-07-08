@@ -633,16 +633,16 @@ h1, h2, h3, h4, h5, h6 {
 		        <div><span>VIRA</span><span>PAY</span></div>
 			</div>
 
-			<button class="button -button-auth signin-with-google is-hidden">
+			<a class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=272693258954-aj3mqp6l3kd9a5brhsf99k11bo0gd95i.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Fgoogle.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
 	            <img class="icon" src="/images/google_g_logo.svg"/>
 	            <span>Войти с Google</span>
-			</button>
+			</a>
 
-			<button class="button -button-auth signin-with-facebook is-hidden">
+			<a class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
 	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
 				<i class="icon mdi mdi-facebook"></i>
 	            <span>Войти с Facebook</span>
-			</button>
+			</a>
 
 			<button class="button -button-auth signin-with-vk is-hidden">
 	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
@@ -1241,7 +1241,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 
 		console.log('LOGIN REQUEST', apiName, id, token)
 
-		let result = await backend.login(apiName, id, token, fullName, email)
+		let result = await backend.login(apiName, id, token, fullName, email, imageUrl)
 
 		console.log('LOGIN RESULT', result)
 
@@ -1288,29 +1288,6 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
 				node.onclick = async function () {
 					switchActivity(activityLoading)
-					/*try {
-						let name = activityProfile.querySelector('.fullname').value
-						let email = activityProfile.querySelector('.email').value
-						let result = await backend.profileUpdate(
-							apiName, id, token,
-							name, email, profileData
-						)
-						console.log('SAVING PROFILE RESULT', result)
-						if (result) {
-							activityMain.querySelector('.fullname').innerText = name
-							activityProfile.querySelectorAll('.back').forEach(node => {
-								node.onclick = function () {
-									mainInit() //switchActivity(activityMain)
-								}
-							})
-							mainInit() //switchActivity(activityMain)
-						} else {
-							showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
-						}
-					} catch (errorProfileSaving) {
-						console.log('SAVING PROFILE FAILED', errorProfileSaving)
-						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
-					}*/
 
 					let result = profileSave()
 					if (result) {
@@ -1386,7 +1363,7 @@ console.log('leave focused element')
 let navBarShow = () => { }
 let navBarHide = () => { }
 
-// main
+// common controls
 
 (function () {
 
@@ -1583,16 +1560,33 @@ let navBarHide = () => { }
 
 })();
 
+// entry point
+
+(function () {
+
+	let sessionKey = `/${location.hostname}/session`
+	let user = storageGet(sessionKey)
+	if (user) {
+		profileInit(user.apiName, user.id, user.name, user.picture, user.email, user.token, () => {
+			storagePut(sessionKey, null)
+			switchActivity(activityLogin)
+			profileData = null
+		})
+	} else {
+		switchActivity(activityLogin)
+	}
+
+})();
 
 </script>
 
 	<!-- Auth -->
-	<script src="js/login/google.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+<!--	<script src="js/login/google.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
 	<script src="js/login/facebook.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
-	<script src="js/login/vk.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>
+	<script src="js/login/vk.js" type="text/javascript" charset="utf-8" async="true" defer="true"></script>-->
 
 	<!-- DEBUG -->
-	<link href="css/debug/grid.css" rel="stylesheet"/>
-	<script src="js/debug/grid.js" type="text/javascript" charset="utf-8"></script>
+<!--	<link href="css/debug/grid.css" rel="stylesheet"/>
+	<script src="js/debug/grid.js" type="text/javascript" charset="utf-8"></script>-->
 
 </html>

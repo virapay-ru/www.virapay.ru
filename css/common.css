@@ -158,6 +158,8 @@ h5 {
 	background: #fff;
 	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
 	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
 }
 
 .button > .icon {
