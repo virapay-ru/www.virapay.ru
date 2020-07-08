@@ -208,3 +208,9 @@ h5 {
 	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
 	outline: 0;
 }
+
+/* utilities */
+
+.is-hidden {
+	display: none;
+}
