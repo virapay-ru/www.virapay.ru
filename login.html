@@ -1276,7 +1276,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 					let email = activityProfile.querySelector('.email').value
 					let result = await backend.profileUpdate(
 						apiName, id, token,
-						name, email, profileData
+						name, email, imageUrl, profileData
 					)
 					return result
 				} catch (errorProfileSaving) {
