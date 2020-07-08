@@ -59,11 +59,13 @@
 
 			let p = parseParameters(location.search)
 			if (p.code) {
-				showMessage('Вход', 'TODO код еще не готов...', homepage)
-				console.log('code', p.code)
-		//		backend.auth('facebook', p.code).then(user => {
-		//		}).catch(error => {
-		//		})
+				backend.auth('facebook', p.code).then(user => {
+					user.apiName = 'facebook'
+					storagePut(`/${location.hostname}/session`, user)
+					homepage()
+				}).catch(error => {
+					showMessage('Вход', 'Не удалось получить токен. Попробуйте позднее.', homepage)
+				})
 			} else {
 				showMessage('Вход', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
 			}
