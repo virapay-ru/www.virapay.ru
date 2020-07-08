@@ -28,34 +28,9 @@
 	<!-- Storage -->
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
 
-	<!-- Common -->
-	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
-
-	<!-- Entry point -->
-<script>
-
-(function () {
-
-	function homepage() {
-		location.replace('https://virapay.ru/login.html')
-	}
-
-	let p = parseParameters(location.search)
-	if (p.code) {
-		showMessage('Вход', 'TODO код еще не готов...', homepage)
-		console.log('code', p.code)
-//		backend.auth('facebook', p.code).then(user => {
-//		}).catch(error => {
-//		})
-	} else {
-		showMessage('Вход', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
-	}
-
-})();
-
-</script>
 </head>
 <body>
+
 	<div class="activity at-center message is-hidden">
 		<div class="container">
 			<h2 class="title"></h2>
@@ -69,5 +44,33 @@
 			</button>
 		</div>
 	</div>
+
+	<!-- Common -->
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Entry point -->
+	<script>
+
+		(function () {
+
+			function homepage() {
+				location.replace('https://virapay.ru/login.html')
+			}
+
+			let p = parseParameters(location.search)
+			if (p.code) {
+				showMessage('Вход', 'TODO код еще не готов...', homepage)
+				console.log('code', p.code)
+		//		backend.auth('facebook', p.code).then(user => {
+		//		}).catch(error => {
+		//		})
+			} else {
+				showMessage('Вход', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
+			}
+
+		})();
+
+	</script>
+
 </body>
 </html>
