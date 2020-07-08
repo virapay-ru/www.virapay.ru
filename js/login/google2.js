@@ -5,6 +5,24 @@
 //pr('G starting')
 console.log('G starting')
 
+	let parameters = location.hash.substr(1).split('&').reduce((p, kv) => {
+		let [ k, v ] = kv.split('=')
+		if (k !== '') {
+			p[k] = decodeURIComponent(v)
+		}
+		return p
+	}, { })
+
+	if (/https:\/\/www\.googleapis\.com\/auth\/userinfo\.profile/.test(parameters.scope) && parameters.id_token) {	
+		// TODO
+
+	}
+
+
+
+
+
+
 	let MAX_EXECUTION_TIME = 3000
 	let executionTimeout = null
 
