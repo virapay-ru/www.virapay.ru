@@ -53,14 +53,16 @@
 
 		(function () {
 
+			let apiName = 'facebook'
+
 			function homepage() {
 				location.replace('https://virapay.ru/login.html')
 			}
 
 			let p = parseParameters(location.search)
 			if (p.code) {
-				backend.auth('facebook', p.code).then(user => {
-					user.apiName = 'facebook'
+				backend.auth(apiName, p.code).then(user => {
+					user.apiName = apiName
 					storagePut(`/${location.hostname}/session`, user)
 					homepage()
 				}).catch(error => {

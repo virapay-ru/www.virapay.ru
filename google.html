@@ -1,20 +1,81 @@
-<script>
+<!doctype html>
+<html>
+<head>
 
-//let url = "https://virapay.ru/login2.html#scope=email%20profile%20https://www.googleapis.com/auth/userinfo.email%20openid%20https://www.googleapis.com/auth/userinfo.profile&id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6ImE0MWEzNTcwYjhlM2FlMWI3MmNhYWJjYWE3YjhkMmRiMjA2NWQ3YzEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjcyNjkzMjU4OTU0LWFqM21xcDZsM2tkOWE1YnJoc2Y5OWsxMWJvMGdkOTVpLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjcyNjkzMjU4OTU0LWFqM21xcDZsM2tkOWE1YnJoc2Y5OWsxMWJvMGdkOTVpLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA1MDAwOTAyNDU3ODQ2OTk0NDEyIiwiZW1haWwiOiJ2aXJhcGF5LnJ1QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpYXQiOjE1OTM3NzUxODIsImV4cCI6MTU5Mzc3ODc4MiwianRpIjoiNTY3NWFlYmY4ZDliODM1ODNjNDcxYjk5NmJmYWNlZjkyOTk2YTgxYyJ9.eX177mAsy96XIDnWPXLRmbS0n79aMolYXGvzkoF9ifEOkhx5aE0lbZLr3h80oouKK1uFQmIYb60jwKR8QmN-6Wf-bnkQHpOOXCN5t3JCy224ZKIVvQe8Kv76XTS5_HpCCKywBps9mgeVArjzVVLAsjVDnw5MX1yRcWX_Qwuu6DholUhV-bsAq2h4vACMAApjZMsCzuaNLCgX_npHh_Glq0pDcey3iXbUxi9JWFr2LkJLfTWOHyDiZqO5ynv-pNM3cYiZAreBGmcPQoz2SVVXrVJpvvM-m00GgsH7aZPU6QiNhqBfNV5eMMAfDB-7TxiCbj9baJYvSmMQS1j98lW7oQ&login_hint=AJDLj6Lv6MGDUZTcp5UzOO5u9RqN52oNUiwmg9-vJ3O4bv00-UVBOoZJzFu00YNc8b76Hmi3HmJQl8CE-AX1Ut50Tuxxg_C6fg&client_id=272693258954-aj3mqp6l3kd9a5brhsf99k11bo0gd95i.apps.googleusercontent.com"
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay" />
+	<meta name="keywords" content="virapay, vira, pay" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
 
-let parameters = location.hash.substr(1).split('&').reduce((p, kv) => {
-	let [ k, v ] = kv.split('=')
-	if (k !== '') {
-		p[k] = decodeURIComponent(v)
-	}
-	return p
-}, { })
+	<!-- Webfonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" crossorigin="anonymous">
+	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
 
-console.log('parameters', parameters)
+	<!-- UI framework -->
+	<link href="css/typography.css" rel="stylesheet"/>
 
-/*if (/https:\/\/www\.googleapis\.com\/auth\/userinfo\.profile/.test(parameters.scope) && parameters.id_token) {
+	<!-- Common -->
+	<link href="css/common.css" rel="stylesheet"/>
 
+	<!-- JSONRPC2 -->
+	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
 
-}*/
+	<!-- Storage -->
+	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
 
-</script>
+</head>
+<body>
+
+	<div class="activity at-center message is-hidden">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p>
+				<i class="icon mdi mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon mdi mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+
+	<!-- Common -->
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Entry point -->
+	<script>
+
+		(function () {
+
+			let apiName = 'google'
+
+			function homepage() {
+				location.replace('https://virapay.ru/login.html')
+			}
+
+			let p = parseParameters(location.search)
+console.log('parameters', window.parameters = p)
+			if (p.code) {
+				backend.auth(apiName, p.code).then(user => {
+					user.apiName = apiName
+					storagePut(`/${location.hostname}/session`, user)
+					homepage()
+				}).catch(error => {
+					showMessage('Вход', 'Не удалось получить токен. Попробуйте позднее.', homepage)
+				})
+			} else {
+				showMessage('Вход', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
+			}
+
+		})();
+
+	</script>
+
+</body>
+</html>
