@@ -1,22 +1,73 @@
 <!doctype html>
 <html>
 <head>
-<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay" />
+	<meta name="keywords" content="virapay, vira, pay" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+	<!-- Webfonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" crossorigin="anonymous">
+	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
+
+	<!-- UI framework -->
+	<link href="css/typography.css" rel="stylesheet"/>
+
+	<!-- Common -->
+	<link href="css/common.css" rel="stylesheet"/>
+
+	<!-- JSONRPC2 -->
+	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Storage -->
+	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Common -->
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Entry point -->
 <script>
 
 (function () {
 
+	function homepage() {
+		location.replace('https://virapay.ru/login.html')
+	}
+
 	let p = parseParameters(location.search)
 	if (p.code) {
+		showMessage('Вход', 'TODO код еще не готов...', homepage)
 		console.log('code', p.code)
+//		backend.auth('facebook', p.code).then(user => {
+//		}).catch(error => {
+//		})
 	} else {
-		console.log('there is no code here')
+		showMessage('Вход', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
 	}
 
 })();
 
 </script>
 </head>
+<body>
+	<div class="activity at-center message is-hidden">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p>
+				<i class="icon mdi mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon mdi mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+</body>
 </html>
