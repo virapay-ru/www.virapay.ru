@@ -612,7 +612,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.accounts .container > * {
-	max-width: 24rem;
+	max-width: 20rem;
+	width: 100%;
 }
 
 .activity.accounts .container {
@@ -1701,6 +1702,7 @@ async function mainInit() {
 							scrollTopAccounts = document.scrollingElement.scrollTop
 							activityAccountEdit.querySelector('input.account').value = account.querySelector('.value').innerText
 							activityAccountEdit.querySelector('input.description').value = account.querySelector('.description').innerText
+console.log('edit account', account)
 							switchActivity(activityAccountEdit)
 						}
 					})
