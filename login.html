@@ -773,9 +773,9 @@ h1, h2, h3, h4, h5, h6 {
 					<div class="commands">
 						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
 						<div class="popup">
-							<a>Удалить</a>
-							<a>Изменить</a>
-							<a>Перейти к оплате</a>
+							<a class="account-delete">Удалить</a>
+							<a class="account-edit">Изменить</a>
+							<a class="account-payment">Перейти к оплате</a>
 						</div>
 					</div>					
 				</div>
@@ -797,9 +797,9 @@ h1, h2, h3, h4, h5, h6 {
 					<div class="commands">
 						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
 						<div class="popup">
-							<a>Удалить</a>
-							<a>Изменить</a>
-							<a>Перейти к оплате</a>
+							<a class="account-delete">Удалить</a>
+							<a class="account-edit">Изменить</a>
+							<a class="account-payment">Перейти к оплате</a>
 						</div>
 					</div>					
 				</div>
@@ -821,9 +821,9 @@ h1, h2, h3, h4, h5, h6 {
 					<div class="commands">
 						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
 						<div class="popup">
-							<a>Удалить</a>
-							<a>Изменить</a>
-							<a>Перейти к оплате</a>
+							<a class="account-delete">Удалить</a>
+							<a class="account-edit">Изменить</a>
+							<a class="account-payment">Перейти к оплате</a>
 						</div>
 					</div>					
 				</div>
@@ -845,9 +845,9 @@ h1, h2, h3, h4, h5, h6 {
 					<div class="commands">
 						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
 						<div class="popup">
-							<a>Удалить</a>
-							<a>Изменить</a>
-							<a>Перейти к оплате</a>
+							<a class="account-delete">Удалить</a>
+							<a class="account-edit">Изменить</a>
+							<a class="account-payment">Перейти к оплате</a>
 						</div>
 					</div>					
 				</div>
@@ -869,9 +869,9 @@ h1, h2, h3, h4, h5, h6 {
 					<div class="commands">
 						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
 						<div class="popup">
-							<a>Удалить</a>
-							<a>Изменить</a>
-							<a>Перейти к оплате</a>
+							<a class="account-delete">Удалить</a>
+							<a class="account-edit">Изменить</a>
+							<a class="account-payment">Перейти к оплате</a>
 						</div>
 					</div>					
 				</div>
@@ -1668,14 +1668,35 @@ async function mainInit() {
 					switchActivity(activityAccounts)
 					document.scrollingElement.scrollTop = scrollTopAccounts
 				})
+				activityAccountEdit.querySelectorAll('.provider-details .name').forEach(node => {
+					node.innerText = item.name_portal
+				})
+				activityAccountEdit.querySelectorAll('.provider-details .inn').forEach(node => {
+					node.innerText = 'ИНН ' + item.inn
+				})
+				activityAccountEdit.querySelectorAll('.provider-details .service').forEach(node => {
+					node.innerText = item.service_name
+				})
+
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
 					node.onclick = () => {
 						scrollTopAccounts = document.scrollingElement.scrollTop
 						switchActivity(activityAccountEdit)
 					}
 				})
+
+				activityAccounts.querySelectorAll('.account').forEach(account => {
+					activityAccounts.querySelectorAll('.account-edit').forEach(node => {
+						node.onclick = () => {
+							scrollTopAccounts = document.scrollingElement.scrollTop
+							activityAccountEdit.quewrySelector('input.account').value = account.querySelector('.value').innerText
+							activityAccountEdit.quewrySelector('input.description').value = account.querySelector('.description').innerText
+							switchActivity(activityAccountEdit)
+						}
+					})
+				})
+
 				switchActivity(activityAccounts)
-				//document.scrollingElement.scrollTop = 0
 			}
 
 			nameNode.onclick = pick
