@@ -774,7 +774,7 @@ h1, h2, h3, h4, h5, h6 {
 				<div class="service">Междугородняя/международная связь ВымпелКом</div>
 			</div>
 
-			<div class="account">
+			<div class="account ex-1">
 				<div class="details">
 					<div class="info">
 						<div class="name"><span class="acc-name">Лицевой счет</span></div>
@@ -798,7 +798,7 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 			</div>
 
-			<div class="account">
+			<div class="account ex-2">
 				<div class="details">
 					<div class="info">
 						<div class="name"><span class="acc-name">Лицевой счет</span></div>
@@ -822,7 +822,7 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 			</div>
 
-			<div class="account">
+			<div class="account ex-3">
 				<div class="details">
 					<div class="info">
 						<div class="name"><span class="acc-name">Лицевой счет</span></div>
@@ -846,7 +846,7 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 			</div>
 
-			<div class="account">
+			<div class="account ex-4">
 				<div class="details">
 					<div class="info">
 						<div class="name"><span class="acc-name">Лицевой счет</span></div>
@@ -870,7 +870,7 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 			</div>
 
-			<div class="account">
+			<div class="account ex-5">
 				<div class="details">
 					<div class="info">
 						<div class="name"><span class="acc-name">Лицевой счет</span></div>
@@ -1706,7 +1706,7 @@ async function mainInit() {
 				})
 
 				activityAccounts.querySelectorAll('.account').forEach(account => {
-					activityAccounts.querySelectorAll('.account-edit').forEach(node => {
+					account.querySelectorAll('.account-edit').forEach(node => {
 						node.onclick = () => {
 							scrollTopAccounts = document.scrollingElement.scrollTop
 							activityAccountEdit.querySelector('input.account').value = account.querySelector('.value').innerText
