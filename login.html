@@ -611,8 +611,12 @@ h1, h2, h3, h4, h5, h6 {
 	padding-top: 4rem;
 }
 
-.activity.accounts .container {
+.activity.accounts .container > * {
 	max-width: 24rem;
+}
+
+.activity.accounts .container {
+	align-items: center;
 }
 
 .activity.accounts .provider-details {
@@ -1695,8 +1699,8 @@ async function mainInit() {
 					activityAccounts.querySelectorAll('.account-edit').forEach(node => {
 						node.onclick = () => {
 							scrollTopAccounts = document.scrollingElement.scrollTop
-							activityAccountEdit.quewrySelector('input.account').value = account.querySelector('.value').innerText
-							activityAccountEdit.quewrySelector('input.description').value = account.querySelector('.description').innerText
+							activityAccountEdit.querySelector('input.account').value = account.querySelector('.value').innerText
+							activityAccountEdit.querySelector('input.description').value = account.querySelector('.description').innerText
 							switchActivity(activityAccountEdit)
 						}
 					})
