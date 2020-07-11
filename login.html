@@ -1449,6 +1449,15 @@ async function mainInit() {
 					switchActivity(activityMain)
 					document.scrollingElement.scrollTop = scrollTopMain
 				})
+				activityAccounts.querySelectorAll('.provider-details .name').forEach(node => {
+					node.innerText = item.name_portal
+				})
+				activityAccounts.querySelectorAll('.provider-details .inn').forEach(node => {
+					node.innerText = 'ИНН ' + item.inn
+				})
+				activityAccounts.querySelectorAll('.provider-details .service').forEach(node => {
+					node.innerText = item.service_name
+				})
 				switchActivity(activityAccounts)
 				document.scrollingElement.scrollTop = 0
 			}
