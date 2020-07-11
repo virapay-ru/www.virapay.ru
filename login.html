@@ -766,7 +766,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="account">
 				<div class="details">
 					<div class="info">
-						<div class="name">Лицевой счет</div>
+						<div class="name"><span class="acc-name">Лицевой счет</span></div>
 						<div class="value">1892123123</div>
 						<div class="description">Телефон в квартире на Куконковых</div>
 					</div>
@@ -790,7 +790,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="account">
 				<div class="details">
 					<div class="info">
-						<div class="name">Лицевой счет</div>
+						<div class="name"><span class="acc-name">Лицевой счет</span></div>
 						<div class="value">1892</div>
 						<div class="description">Мамин счет на оплату тепловой энергии</div>
 					</div>
@@ -814,7 +814,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="account">
 				<div class="details">
 					<div class="info">
-						<div class="name">Лицевой счет</div>
+						<div class="name"><span class="acc-name">Лицевой счет</span></div>
 						<div class="value">1892123123</div>
 						<div class="description">Телефон в квартире на Куконковых</div>
 					</div>
@@ -838,7 +838,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="account">
 				<div class="details">
 					<div class="info">
-						<div class="name">Лицевой счет</div>
+						<div class="name"><span class="acc-name">Лицевой счет</span></div>
 						<div class="value">1892</div>
 						<div class="description">Мамин счет на оплату тепловой энергии</div>
 					</div>
@@ -862,7 +862,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="account">
 				<div class="details">
 					<div class="info">
-						<div class="name">Лицевой счет</div>
+						<div class="name"><span class="acc-name">Лицевой счет</span></div>
 						<div class="value">1892123123</div>
 						<div class="description">Телефон в квартире на Куконковых</div>
 					</div>
@@ -886,7 +886,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="button-container">
 				<button class="button primary profile-save">
 					<i class="icon mdi mdi-plus"></i>
-	    	        <span>Добавить Лицевой счет</span>
+	    	        <span>Добавить <span class="acc-name">Лицевой счет</span></span>
 				</button>
 			</div>
 
@@ -1457,6 +1457,9 @@ async function mainInit() {
 				})
 				activityAccounts.querySelectorAll('.provider-details .service').forEach(node => {
 					node.innerText = item.service_name
+				})
+				activityAccounts.querySelectorAll('.acc-name').forEach(node => {
+					node.innerText = item.acc_name
 				})
 				switchActivity(activityAccounts)
 				document.scrollingElement.scrollTop = 0
