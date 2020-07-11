@@ -547,7 +547,7 @@ h1, h2, h3, h4, h5, h6 {
 	</div>
 -->
 
-	<div class="activity at-center loading">
+	<div class="activity at-center loading -is-hidden">
 		<div class="container">
 			<i class="mdi mdi-loading display4 spin"></i>
 		</div>
@@ -600,10 +600,247 @@ h1, h2, h3, h4, h5, h6 {
 
 			<p class="info">Вы можете выйти в любое время. Если возникла такая необходимость, нажмите кнопку <q>Выход</q>.</p>
 
-			<button class="button light logout">Выход</div>
+			<button class="button light logout">Выход</button>
 
 		</div>
 	</div>
+
+<style>
+
+.activity.accounts {
+	padding-top: 4rem;
+}
+
+.activity.accounts .provider-details {
+	margin-bottom: 1rem;
+}
+
+.activity.accounts .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.activity.accounts .account {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid rgba(77, 144, 254, 0.2);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 5px;
+	background: #fff;
+	z-index: 0;
+}
+
+.activity.accounts .account .description {
+	opacity: 0.5;
+}
+
+.activity.accounts .account .value {
+	font-size: 2.5rem;
+	font-weight: 600;
+	line-height: 1;
+	margin: 0;
+}
+
+.activity.accounts .account .button-container {
+    display: flex;
+    flex-flow: row;
+	justify-content: flex-end;
+}
+
+.activity.accounts .account .button-container button {
+	width: 100%;
+	max-width: 100%;
+    color: rgb(24, 119, 242);
+    margin: 0 0 0 0;
+    box-shadow: none;
+	background-color: rgba(215, 231, 251, 0.3);
+	transition: background-color 0.3s ease-out;
+}
+
+.activity.accounts .account .button-container button:hover {
+	background-color: rgba(215, 231, 251, 1);
+}
+
+.activity.accounts > .container > .button-container {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.activity.accounts .button-container button {
+	margin: 0;
+}
+
+.activity.accounts .account .details {
+	display: flex;
+	flex-flow: row;
+	padding: 0.5rem;
+	align-items: start;
+}
+
+.activity.accounts .account .details .info {
+	width: calc(100% - 2rem);
+}
+
+.activity.accounts .account .details .commands {
+	width: 1.5rem;
+}
+
+.activity.accounts .account .details .popup-trigger {
+	width: 2rem;
+	height: 1.5rem;
+	line-height: 1.5;
+	cursor: pointer;
+	display: block;
+	text-align: center;
+	-webkit-tap-highlight-color: transparent;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.activity.accounts .account .details .popup-trigger.is-active {
+	background-color: #fff;
+    box-shadow: 0 -0.5rem 1rem rgba(0,0,0,0.1);
+    z-index: 2;
+    position: relative;
+}
+
+.activity.accounts .account .details .popup-trigger + .popup {
+	position: absolute;
+	z-index: 1;
+	width: 11rem;
+	max-height: 0;
+	margin-left: -9rem;
+	background-color: #fff;
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	display: inline-flex;
+	flex-flow: column;
+	box-sizing: border-box;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	opacity: 0;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.activity.accounts .account .details .popup-trigger.is-active + .popup {
+	max-height: 10rem;
+	opacity: 1;
+	box-shadow: 0 0 5rem rgba(0,0,0,0.3);
+}
+
+.activity.accounts .account .details .popup-trigger + .popup > a {
+	display: block;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: all 0.3s ease-out;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.accounts .account .details .popup-trigger + .popup > a:hover {
+	background-color: rgba(215, 231, 251, 0.7);
+}
+
+</style>
+
+	<div class="activity accounts is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left back"></a>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<div class="provider-details">
+				<div class="name">Интеркомтел ООО </div>
+				<div class="inn">ИНН 3702087103</div>
+				<div class="service">Междугородняя/международная связь ВымпелКом</div>
+			</div>
+
+			<div class="account">
+				<div class="details">
+					<div class="info">
+						<div class="name">Лицевой счет</div>
+						<div class="value">1892123123</div>
+						<div class="description">Телефон в квартире на Куконковых</div>
+					</div>
+					<div class="commands">
+						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
+						<div class="popup">
+							<a>Удалить</a>
+							<a>Изменить</a>
+							<a>Перейти к оплате</a>
+						</div>
+					</div>					
+				</div>
+				<div class="button-container">
+					<button class="button">
+			            <span>Перейти к оплате</span>
+						<i class="icon mdi mdi-arrow-right"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="account">
+				<div class="details">
+					<div class="info">
+						<div class="name">Лицевой счет</div>
+						<div class="value">1892</div>
+						<div class="description">Мамин счет на оплату тепловой энергии</div>
+					</div>
+					<div class="commands">
+						<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
+						<div class="popup">
+							<a>Удалить</a>
+							<a>Изменить</a>
+							<a>Перейти к оплате</a>
+						</div>
+					</div>					
+				</div>
+				<div class="button-container">
+					<button class="button">
+			            <span>Перейти к оплате</span>
+						<i class="icon mdi mdi-arrow-right"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="button-container">
+				<button class="button primary profile-save">
+					<i class="icon mdi mdi-plus"></i>
+	    	        <span>Добавить Лицевой счет</span>
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+<script>
+
+// test
+
+(function () {
+
+	let triggers = document.querySelectorAll('.popup-trigger')
+	triggers.forEach((node, i) => {
+		node.onclick = () => {
+			triggers.forEach((node_, j) => {
+				if (i != j) node_.classList.remove('is-active')
+			})
+			node.classList.toggle('is-active')
+		}
+	})
+
+})();
+
+</script>
+
 
 	<div class="activity navbar is-hidden">
 
@@ -959,6 +1196,7 @@ let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? 
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
 let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
+let activityAccounts = activities.reduce((_, a) => a.classList.contains('accounts') ? a : _, null)
 
 // activities switcher
 
@@ -1133,6 +1371,14 @@ async function mainInit() {
 				}
 			}
 
+			function pick() {
+				showActivity(activityAccounts)
+			}
+
+			nameNode.onclick = pick
+			serviceNode.onclick = pick
+			btnNode.onclick = pick
+
 			item.node = providerNode
 		})
 
@@ -1141,7 +1387,9 @@ async function mainInit() {
 
 	filterProviders()
 	switchActivity(activityMain)
-	document.querySelector('.bottom-panel').classList.remove('hide')
+	setTimeout(function () {
+		document.querySelector('.bottom-panel').classList.remove('hide')
+	}, 750)
 }
 
 function filterProviders() {
