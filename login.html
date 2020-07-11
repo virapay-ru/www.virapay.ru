@@ -920,12 +920,17 @@ h1, h2, h3, h4, h5, h6 {
 
 <style>
 
+.activity.account-edit .container {
+	align-items: center;
+}
+
 .activity.account-edit {
 	padding-top: 4rem;
 }
 
 .activity.account-edit .provider-details {
 	margin-bottom: 1rem;
+	max-width: 20rem;
 }
 
 .activity.account-edit .provider-details .name {
@@ -945,6 +950,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.account-edit .button-container {
 	margin-top: 1rem;
+}
+
+.activity.account-edit .button-container button {
+	min-width: 20rem;
 }
 
 </style>
@@ -997,12 +1006,23 @@ h1, h2, h3, h4, h5, h6 {
 
 <style>
 
+.activity.account-add .container {
+	align-items: center;
+}
+
+.activity.account-add .container {
+	width: 100%;
+	max-width: 40rem;
+	align-items: center;
+}
+
 .activity.account-add {
 	padding-top: 4rem;
 }
 
 .activity.account-add .provider-details {
 	margin-bottom: 1rem;
+	max-width: 20rem;
 }
 
 .activity.account-add .provider-details .name {
@@ -1022,6 +1042,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.account-add .button-container {
 	margin-top: 1rem;
+}
+
+.activity.account-add .button-container button {
+	min-width: 20rem;
 }
 
 </style>
@@ -1637,9 +1661,13 @@ async function mainInit() {
 				activityAccounts.querySelectorAll('.popup-trigger').forEach(node => {
 					node.classList.remove('is-active')
 				})
+
+				activityAccountEdit.querySelectorAll('.back').forEach(node => {
+					switchActivity(activityAccounts)
+				})
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
 					node.onclick = () => {
-						switchActivity(activityAccountAdd)
+						switchActivity(activityAccountEdit)
 					}
 				})
 				switchActivity(activityAccounts)
