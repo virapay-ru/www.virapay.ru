@@ -911,6 +911,7 @@ h1, h2, h3, h4, h5, h6 {
 (function () {
 
 	let triggers = document.querySelectorAll('.popup-trigger')
+
 	triggers.forEach((node, i) => {
 		node.onclick = () => {
 			triggers.forEach((node_, j) => {
@@ -918,6 +919,12 @@ h1, h2, h3, h4, h5, h6 {
 			})
 			node.classList.toggle('is-active')
 		}
+	})
+
+	document.querySelectorAll('.popup > a').forEach(a => a.onclick = () => {
+		triggers.forEach(node => {
+			node.classList.remove('is-active')
+		})
 	})
 
 })();
