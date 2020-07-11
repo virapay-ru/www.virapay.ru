@@ -1372,6 +1372,7 @@ async function mainInit() {
 			}
 
 			function pick() {
+				activityAccounts.querySelectorAll('.back').forEach(node => node.onclick = () => switchActivity(activityMain))
 				switchActivity(activityAccounts)
 			}
 
