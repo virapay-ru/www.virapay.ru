@@ -884,7 +884,7 @@ h1, h2, h3, h4, h5, h6 {
 			</div>
 
 			<div class="button-container">
-				<button class="button primary profile-save">
+				<button class="button primary account-add">
 					<i class="icon mdi mdi-plus"></i>
 	    	        <span>Добавить <span class="acc-name">Лицевой счет</span></span>
 				</button>
@@ -912,6 +912,173 @@ h1, h2, h3, h4, h5, h6 {
 })();
 
 </script>
+
+
+
+
+
+
+<style>
+
+.activity.account-edit {
+	padding-top: 4rem;
+}
+
+.activity.account-edit .provider-details {
+	margin-bottom: 1rem;
+}
+
+.activity.account-edit .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.activity.account-edit .label {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.activity.account-edit .hint {
+	font-weight: 100;
+}
+
+.activity.account-edit .button-container {
+	margin-top: 1rem;
+}
+
+</style>
+
+
+	<div class="activity account-edit is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left back"></a>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<div class="provider-details">
+				<div class="name">Интеркомтел ООО </div>
+				<div class="inn">ИНН 3702087103</div>
+				<div class="service">Междугородняя/международная связь ВымпелКом</div>
+			</div>
+
+			<label class="label">
+				<div class="acc-name">Лицевой счет</div>
+				<div><input class="account"/></div>
+				<div class="hint"><span class="acc-description">Номер лицевого счета вида X-Y.</span></div>
+				<div class="hint">Например <span class="acc-example">123456789-123</span></div>
+			</label>
+
+			<label class="label">
+				<div>Описание</div>
+				<div><input class="description"/></div>
+				<div class="hint">Краткое описание для вашего удобства</div>
+			</label>
+
+			<div class="button-container">
+				<button class="button primary account-save">
+	    	        <span>Сохранить</span>
+					<i class="icon mdi mdi-arrow-right"></i>
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+<style>
+
+.activity.account-add {
+	padding-top: 4rem;
+}
+
+.activity.account-add .provider-details {
+	margin-bottom: 1rem;
+}
+
+.activity.account-add .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.activity.account-add .label {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.activity.account-add .hint {
+	font-weight: 100;
+}
+
+.activity.account-add .button-container {
+	margin-top: 1rem;
+}
+
+</style>
+
+
+	<div class="activity account-add is-hidden">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon mdi mdi-chevron-left back"></a>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<div class="provider-details">
+				<div class="name">Интеркомтел ООО </div>
+				<div class="inn">ИНН 3702087103</div>
+				<div class="service">Междугородняя/международная связь ВымпелКом</div>
+			</div>
+
+			<label class="label">
+				<div class="acc-name">Лицевой счет</div>
+				<div><input class="account"/></div>
+				<div class="hint"><span class="acc-description">Номер лицевого счета вида X-Y.</span></div>
+				<div class="hint">Например <span class="acc-example">123456789-123</span></div>
+			</label>
+
+			<label class="label">
+				<div>Описание</div>
+				<div><input class="description"/></div>
+				<div class="hint">Краткое описание для вашего удобства</div>
+			</label>
+
+			<label class="label">
+				<div>Сумма в рублях</div>
+				<div><input class="summ" value="500.00"/></div>
+				<div class="hint">Сумма к перечислению</div>
+			</label>
+
+			<label class="label">
+				<div>Сервисный сбор: <span class="commision">5.00</span> руб.</div>
+				<div>Итого: <span class="total">505.00</span> руб.</div>
+			</label>
+
+			<div class="button-container">
+				<button class="button primary prepare-payment">
+	    	        <span>Оплатить</span>
+					<i class="icon mdi mdi-arrow-right"></i>
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+
+
 
 
 	<div class="activity navbar is-hidden">
@@ -1235,6 +1402,8 @@ h1, h2, h3, h4, h5, h6 {
 
 'use strict';
 
+//throw 'LOCK';
+
 let isLoggedInWith = {
 	google: undefined,
 	facebook: undefined,
@@ -1269,12 +1438,15 @@ let activityProfile = activities.reduce((_, a) => a.classList.contains('profile'
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
 let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
 let activityAccounts = activities.reduce((_, a) => a.classList.contains('accounts') ? a : _, null)
+let activityAccountEdit = activities.reduce((_, a) => a.classList.contains('account-edit') ? a : _, null)
+let activityAccountAdd = activities.reduce((_, a) => a.classList.contains('account-add') ? a : _, null)
 
 // activities switcher
 
 function switchActivity(activity) {
 	activities.forEach(a => a.classList.add('is-hidden'))
 	activity.classList.remove('is-hidden')
+	document.scrollingElement.scrollTop = 0
 }
 
 // message
@@ -1458,14 +1630,20 @@ async function mainInit() {
 				activityAccounts.querySelectorAll('.provider-details .service').forEach(node => {
 					node.innerText = item.service_name
 				})
+				// TODO profileData.accList[rowKey]
 				activityAccounts.querySelectorAll('.acc-name').forEach(node => {
 					node.innerText = item.acc_name
 				})
 				activityAccounts.querySelectorAll('.popup-trigger').forEach(node => {
 					node.classList.remove('is-active')
 				})
+				activityAccounts.querySelectorAll('.account-add').forEach(node => {
+					node.onclick = () => {
+						switchActivity(activityAccountAdd)
+					}
+				})
 				switchActivity(activityAccounts)
-				document.scrollingElement.scrollTop = 0
+				//document.scrollingElement.scrollTop = 0
 			}
 
 			nameNode.onclick = pick
@@ -1589,6 +1767,15 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 
 		if (result) {
 
+			if (!result.data) {
+				result.data = { }
+			}
+			if (!(result.data.favList instanceof Array)) {
+				result.data.favList = [ ]
+			}
+			if (typeof result.data.accList !== 'object') {
+				result.data.accList = { }
+			}
 			profileData = result.data
 
 			activityProfile.querySelector('.avatar').src = imageUrl
