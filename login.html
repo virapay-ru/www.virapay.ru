@@ -1444,8 +1444,13 @@ async function mainInit() {
 			}
 
 			function pick() {
-				activityAccounts.querySelectorAll('.back').forEach(node => node.onclick = () => switchActivity(activityMain))
+				let scrollTopMain = document.scrollingElement.scrollTop
+				activityAccounts.querySelectorAll('.back').forEach(node => node.onclick = () => {
+					switchActivity(activityMain)
+					document.scrollingElement.scrollTop = scrollTopMain
+				})
 				switchActivity(activityAccounts)
+				document.scrollingElement.scrollTop = 0
 			}
 
 			nameNode.onclick = pick
