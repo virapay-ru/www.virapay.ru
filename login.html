@@ -1721,6 +1721,38 @@ async function mainInit() {
 
 				accountNode.appendChild(buttonContainerNode)
 
+				accountNode.querySelectorAll('.account-edit').forEach(commandNode => commandNode.onclick = () => {
+
+					let inputAccount = activityAccountEdit.querySelector('input.account')
+					let inputDescription = activityAccountEdit.querySelector('input.description')
+
+					scrollTopAccounts = document.scrollingElement.scrollTop
+
+					activityAccountEdit.querySelector('.acc-description').innerText = item.acc_description
+					activityAccountEdit.querySelector('.acc-example').innerText = item.acc_example
+					inputAccount.value = accItem.acc
+					inputDescription.value = accItem.desc
+					activityAccountEdit.querySelector('.account-save').onclick = () => {
+						let prevAcc = accItem.acc
+						let prevDesc = accItem.desc
+						accItem.acc = inputAccount.value
+						accItem.desc = inputDescription.value
+						let result = profileSave()
+						if (result) {
+							accountNode.querySelector('.value').innerText = inputAccount.value
+							accountNode.querySelector('.description').innerText = inputDescription.value
+							activityAccountEdit.querySelector('.back').onclick()
+						} else {
+							showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+								accItem.acc = prevAcc
+								accItem.desc = prevDesc
+							})
+						}
+					}
+
+					switchActivity(activityAccountEdit)
+				})
+
 				accountsList.appendChild(accountNode)
 
 				accountsListUpdateTriggers()
@@ -2310,7 +2342,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 108)
+	console.log('VERSION', 109)
 
 })();
 
