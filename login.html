@@ -1758,15 +1758,15 @@ async function mainInit() {
 				})
 
 				accountNode.querySelectorAll('.account-delete').forEach(commandNode => commandNode.onclick = () => {
-					let prevList = profileData.accList
+					let prevList = profileData.accList[rowKey]
 					accItem.removed = true
-					profileData.accList = profileData.accList.filter(x => !x.removed)
+					profileData.accList[rowKey] = profileData.accList.filter(x => !x.removed)
 					let result = profileSave()
 					if (result) {
 						accountNode.remove()
 					} else {
 						showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
-							profileData.accList = prevList
+							profileData.accList[rowKey] = prevList
 							delete accItem.removed
 						})
 					}
@@ -2361,7 +2361,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 113)
+	console.log('VERSION', 114)
 
 })();
 
