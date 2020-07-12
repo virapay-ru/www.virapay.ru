@@ -1722,6 +1722,7 @@ async function mainInit() {
 							activityAccountEdit.querySelector('.account-save').onclick = () => {
 								account.querySelector('.value').innerText = activityAccountEdit.querySelector('input.account').value
 								account.querySelector('.description').innerText = activityAccountEdit.querySelector('input.description').value
+								activityAccountEdit.querySelector('.back').onclick()
 							}
 console.log('edit account', account)
 							switchActivity(activityAccountEdit)
