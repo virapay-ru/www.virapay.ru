@@ -781,6 +781,7 @@ h1, h2, h3, h4, h5, h6 {
 			</div>
 
 			<div class="accounts-list">
+<!--
 				<div class="account ex-1">
 					<div class="details">
 						<div class="info">
@@ -900,7 +901,7 @@ h1, h2, h3, h4, h5, h6 {
 						</button>
 					</div>
 				</div>
-
+-->
 			</div>
 
 			<div class="button-container">
@@ -1774,16 +1775,25 @@ async function mainInit() {
 				})
 
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
+
+					let inputAccount = activityAccountEdit.querySelector('input.account')
+					let inputDescription = activityAccountEdit.querySelector('input.description')
+
 					node.onclick = () => {
+
 						scrollTopAccounts = document.scrollingElement.scrollTop
+
+						inputAccount.value = ''
+						inputDescription.value = ''
+
 						activityAccountEdit.querySelector('.account-save').onclick = () => {
 
 							if (!(profileData.accList[rowKey] instanceof Array)) {
 								profileData.accList[rowKey] = [ ]
 							}
 							let accItem = {
-								acc: activityAccountEdit.querySelector('input.account').value,
-								desc: activityAccountEdit.querySelector('input.description').value,
+								acc: inputAccount.value,
+								desc: inputDescription.value,
 								sum: '0.00'
 							}
 							profileData.accList[rowKey].push(accItem)
@@ -1796,9 +1806,9 @@ async function mainInit() {
 								showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 									profileData.accList[rowKey].pop()
 								})
-							}
-							
+							}							
 						}
+
 						switchActivity(activityAccountEdit)
 					}
 				})
@@ -2292,7 +2302,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 105)
+	console.log('VERSION', 106)
 
 })();
 
