@@ -1735,6 +1735,7 @@ async function mainInit() {
 					activityAccountEdit.querySelector('.acc-example').innerText = item.acc_example
 					inputAccount.value = accItem.acc
 					inputDescription.value = accItem.desc
+
 					activityAccountEdit.querySelector('.account-save').onclick = () => {
 						let prevAcc = accItem.acc
 						let prevDesc = accItem.desc
@@ -1749,6 +1750,21 @@ async function mainInit() {
 							showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 								accItem.acc = prevAcc
 								accItem.desc = prevDesc
+							})
+						}
+					}
+
+					activityAccountEdit.querySelector('.account-delete').onclick = () => {
+						let prevList = profileData.accList
+						accItem.removed = true
+						profileData.accList = profileData.accList.filter(x => !x.removed)
+						let result = profileSave()
+						if (result) {
+							accountNode.remove()
+						} else {
+							showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
+								profileData.accList = prevList
+								delete accItem.removed
 							})
 						}
 					}
@@ -2345,7 +2361,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 111)
+	console.log('VERSION', 112)
 
 })();
 
