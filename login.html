@@ -1715,8 +1715,14 @@ async function mainInit() {
 					account.querySelectorAll('.account-edit').forEach(node => {
 						node.onclick = () => {
 							scrollTopAccounts = document.scrollingElement.scrollTop
+							activityAccountEdit.querySelector('.acc-description').innerText = item.acc_description
+							activityAccountEdit.querySelector('.acc-example').innerText = item.acc_example
 							activityAccountEdit.querySelector('input.account').value = account.querySelector('.value').innerText
 							activityAccountEdit.querySelector('input.description').value = account.querySelector('.description').innerText
+							activityAccountEdit.querySelector('.account-save').onclick = () => {
+								account.querySelector('.value').innerText = activityAccountEdit.querySelector('input.account').value
+								account.querySelector('.description').innerText = activityAccountEdit.querySelector('input.description').value
+							}
 console.log('edit account', account)
 							switchActivity(activityAccountEdit)
 						}
