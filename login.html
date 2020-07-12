@@ -1707,6 +1707,19 @@ async function mainInit() {
 					detailsNode.appendChild(infoNode)
 					detailsNode.appendChild(commandsNode)
 
+				accountNode.appendChild(detailsNode)
+
+				let buttonContainerNode = document.createElement('div')
+				buttonContainerNode.classList.add('button-container')
+				buttonContainerNode.innerHTML = `
+					<button class="button">
+			            <span>Перейти к оплате</span>
+						<i class="icon mdi mdi-arrow-right"></i>
+					</button>
+				`
+
+				accountNode.appendChild(buttonContainerNode)
+
 				accountsList.appendChild(accountNode)
 
 				accountsListUpdateTriggers()
@@ -2279,7 +2292,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 104)
+	console.log('VERSION', 105)
 
 })();
 
