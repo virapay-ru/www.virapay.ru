@@ -1754,22 +1754,22 @@ async function mainInit() {
 						}
 					}
 
-					activityAccountEdit.querySelector('.account-delete').onclick = () => {
-						let prevList = profileData.accList
-						accItem.removed = true
-						profileData.accList = profileData.accList.filter(x => !x.removed)
-						let result = profileSave()
-						if (result) {
-							accountNode.remove()
-						} else {
-							showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
-								profileData.accList = prevList
-								delete accItem.removed
-							})
-						}
-					}
-
 					switchActivity(activityAccountEdit)
+				})
+
+				accountNode.querySelectorAll('.account-delete').forEach(commandNode => commandNode.onclick = () => {
+					let prevList = profileData.accList
+					accItem.removed = true
+					profileData.accList = profileData.accList.filter(x => !x.removed)
+					let result = profileSave()
+					if (result) {
+						accountNode.remove()
+					} else {
+						showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
+							profileData.accList = prevList
+							delete accItem.removed
+						})
+					}
 				})
 
 				accountsList.appendChild(accountNode)
