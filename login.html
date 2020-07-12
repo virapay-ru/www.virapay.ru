@@ -1760,7 +1760,7 @@ async function mainInit() {
 					switchActivity(activityAccounts)
 					document.scrollingElement.scrollTop = scrollTopAccounts
 				})
-// TODO check acc-description, acc-name, acc-example
+
 				activityAccountEdit.querySelectorAll('.provider-details .name').forEach(node => {
 					node.innerText = item.name_portal
 				})
@@ -1769,6 +1769,16 @@ async function mainInit() {
 				})
 				activityAccountEdit.querySelectorAll('.provider-details .service').forEach(node => {
 					node.innerText = item.service_name
+				})
+
+				activityAccountEdit.querySelectorAll('.acc-name').forEach(node => {
+					node.innerText = item.acc_name
+				})
+				activityAccountEdit.querySelectorAll('.acc-description').forEach(node => {
+					node.innerText = item.acc_description
+				})
+				activityAccountEdit.querySelectorAll('.acc-example').forEach(node => {
+					node.innerText = item.acc_example
 				})
 
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
@@ -2300,7 +2310,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 107)
+	console.log('VERSION', 108)
 
 })();
 
