@@ -1667,6 +1667,9 @@ async function mainInit() {
 
 			}
 
+			let scrollTopMain = 0
+			let scrollTopAccounts = 0
+
 			function addAccountNode(accItem) {
 
 				let accountNode = document.createElement('div')
@@ -1760,7 +1763,8 @@ async function mainInit() {
 
 			function pick() {
 
-				let scrollTopMain = document.scrollingElement.scrollTop
+				scrollTopMain = document.scrollingElement.scrollTop
+
 				activityAccounts.querySelectorAll('.back').forEach(node => node.onclick = () => {
 					switchActivity(activityMain)
 					document.scrollingElement.scrollTop = scrollTopMain
@@ -1787,7 +1791,6 @@ async function mainInit() {
 					node.classList.remove('is-active')
 				})
 
-				let scrollTopAccounts = 0
 				activityAccountEdit.querySelectorAll('.back').forEach(node => node.onclick = () => {
 					switchActivity(activityAccounts)
 					document.scrollingElement.scrollTop = scrollTopAccounts
@@ -2342,7 +2345,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 110)
+	console.log('VERSION', 111)
 
 })();
 
