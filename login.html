@@ -1760,6 +1760,7 @@ async function mainInit() {
 					switchActivity(activityAccounts)
 					document.scrollingElement.scrollTop = scrollTopAccounts
 				})
+// TODO check acc-description, acc-name, acc-example
 				activityAccountEdit.querySelectorAll('.provider-details .name').forEach(node => {
 					node.innerText = item.name_portal
 				})
@@ -1822,6 +1823,7 @@ async function mainInit() {
 								account.querySelector('.description').innerText = activityAccountEdit.querySelector('input.description').value
 								activityAccountEdit.querySelector('.back').onclick()
 							}
+							// TODO update accItem
 console.log('edit account', account)
 							switchActivity(activityAccountEdit)
 						}
