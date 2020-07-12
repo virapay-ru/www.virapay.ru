@@ -1707,6 +1707,28 @@ async function mainInit() {
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
 					node.onclick = () => {
 						scrollTopAccounts = document.scrollingElement.scrollTop
+						activityAccountEdit.querySelector('.account-save').onclick = () => {
+
+							if (!(profileData.accList[rowKey] instanceof Array)) {
+								profileData.accList[rowKey] = [ ]
+							}
+							profileData.accList[rowKey].push({
+								acc: activityAccountEdit.querySelector('input.account').value,
+								desc: activityAccountEdit.querySelector('input.description').value,
+								sum: '0.00'
+							})
+
+							let result = profileSave()
+							if (result) {
+// TODO add acc								
+								activityAccountEdit.querySelector('.back').onclick()
+							} else {
+								showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+									profileData.accList[rowKey].pop()
+								})
+							}
+							
+						}
 						switchActivity(activityAccountEdit)
 					}
 				})
