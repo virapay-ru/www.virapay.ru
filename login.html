@@ -1734,7 +1734,6 @@ async function mainInit() {
 					document.scrollingElement.scrollTop = scrollTopMain
 				})
 
-
 				activityAccounts.querySelectorAll('.provider-details .name').forEach(node => {
 					node.innerText = item.name_portal
 				})
@@ -1745,19 +1744,16 @@ async function mainInit() {
 					node.innerText = item.service_name
 				})
 
-
 				accountsList.innerHTML = ''
 				if (profileData.accList[rowKey] instanceof Array) {
 					profileData.accList[rowKey].forEach(accItem => addAccountNode(accItem))
 				}
-
-// TODO remove old code				
-//				activityAccounts.querySelectorAll('.acc-name').forEach(node => {
-//					node.innerText = item.acc_name
-//				})
-//				activityAccounts.querySelectorAll('.popup-trigger').forEach(node => {
-//					node.classList.remove('is-active')
-//				})
+				activityAccounts.querySelectorAll('.acc-name').forEach(node => {
+					node.innerText = item.acc_name
+				})
+				activityAccounts.querySelectorAll('.popup-trigger').forEach(node => {
+					node.classList.remove('is-active')
+				})
 
 				let scrollTopAccounts = 0
 				activityAccountEdit.querySelectorAll('.back').forEach(node => node.onclick = () => {
@@ -2302,7 +2298,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 106)
+	console.log('VERSION', 107)
 
 })();
 
