@@ -1470,6 +1470,20 @@ let activityAccounts = activities.reduce((_, a) => a.classList.contains('account
 let activityAccountEdit = activities.reduce((_, a) => a.classList.contains('account-edit') ? a : _, null)
 let activityAccountAdd = activities.reduce((_, a) => a.classList.contains('account-add') ? a : _, null)
 
+// history
+
+function historyPut(activityName, data = null) {
+	history.pushState(
+		{
+			activity: activityName,
+			scrollTop: document.scrollingElement.scrollTop,
+			data
+		},
+		document.title,
+		location.pathname
+	)
+}
+
 // activities switcher
 
 function switchActivity(activity) {
@@ -1754,6 +1768,7 @@ async function mainInit() {
 						}
 					}
 
+					historyPut('accounts')
 					switchActivity(activityAccountEdit)
 				})
 
@@ -1867,30 +1882,12 @@ async function mainInit() {
 							}							
 						}
 
+						historyPut('accounts')
 						switchActivity(activityAccountEdit)
 					}
 				})
-/*
-				activityAccounts.querySelectorAll('.account').forEach(account => {
-					account.querySelectorAll('.account-edit').forEach(node => {
-						node.onclick = () => {
-							scrollTopAccounts = document.scrollingElement.scrollTop
-							activityAccountEdit.querySelector('.acc-description').innerText = item.acc_description
-							activityAccountEdit.querySelector('.acc-example').innerText = item.acc_example
-							activityAccountEdit.querySelector('input.account').value = account.querySelector('.value').innerText
-							activityAccountEdit.querySelector('input.description').value = account.querySelector('.description').innerText
-							activityAccountEdit.querySelector('.account-save').onclick = () => {
-								account.querySelector('.value').innerText = activityAccountEdit.querySelector('input.account').value
-								account.querySelector('.description').innerText = activityAccountEdit.querySelector('input.description').value
-								activityAccountEdit.querySelector('.back').onclick()
-							}
-							// TODO update accItem
-console.log('edit account', account)
-							switchActivity(activityAccountEdit)
-						}
-					})
-				})
-*/
+
+				historyPut('main')
 				switchActivity(activityAccounts)
 			}
 
@@ -2043,7 +2040,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 					}
 				} else {
 					node.onclick = function () {
-						mainInit() //switchActivity(activityMain)
+						mainInit()
 					}
 				}
 			})
@@ -2089,10 +2086,9 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			activityMain.querySelector('.avatar').src = imageUrl
 			activityMain.querySelector('.fullname').innerText = result.name
 
-			document.querySelectorAll('.profile-show').forEach(node => {
-				node.onclick = function () {
-					switchActivity(activityProfile)
-				}
+			document.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {
+				historyPut('main')
+				switchActivity(activityProfile)
 			})
 			activityMain.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
@@ -2106,9 +2102,10 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 
 
 			if (result.isNew) {
+				historyPut('main')
 				switchActivity(activityProfile)
 			} else {
-				mainInit() //switchActivity(activityMain)
+				mainInit()
 			}
 
 		} else {
@@ -2344,6 +2341,13 @@ let navBarHide = () => { }
 
 (function () {
 
+	historyPut('main')
+
+	window.onpopstate = function (evt) {
+		let state = evt.state
+		console.log('HISTORY.ONPOPSTATE', state)
+	}
+
 	let sessionKey = `/${location.hostname}/session`
 	let user = storageGet(sessionKey)
 	if (user) {
@@ -2361,7 +2365,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 115)
+	console.log('VERSION', 116)
 
 })();
 
