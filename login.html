@@ -913,35 +913,6 @@ h1, h2, h3, h4, h5, h6 {
 		</div>
 	</div>
 
-<script>
-
-// test
-
-(function () {
-
-	let triggers = document.querySelectorAll('.popup-trigger')
-
-	triggers.forEach((node, i) => {
-		node.onclick = () => {
-			triggers.forEach((node_, j) => {
-				if (i != j) node_.classList.remove('is-active')
-			})
-			node.classList.toggle('is-active')
-		}
-	})
-
-	document.querySelectorAll('.popup > a').forEach(a => a.onmousedown = () => {
-		triggers.forEach(node => {
-			node.classList.remove('is-active')
-		})
-	})
-
-})();
-
-</script>
-
-
-
 
 
 
@@ -1672,8 +1643,73 @@ async function mainInit() {
 				}
 			}
 
+			let accountsList = activityAccounts.querySelector('.accounts-list')
+
+			function accountsListUpdateTriggers() {
+
+				let triggers = document.querySelectorAll('.popup-trigger')
+
+				triggers.forEach((node, i) => {
+					node.onclick = () => {
+						triggers.forEach((node_, j) => {
+							if (i != j) node_.classList.remove('is-active')
+						})
+						node.classList.toggle('is-active')
+					}
+				})
+
+				document.querySelectorAll('.popup > a').forEach(a => a.onmousedown = () => {
+					triggers.forEach(node => {
+						node.classList.remove('is-active')
+					})
+				})
+
+			}
+
 			function addAccountNode(accItem) {
 
+				let accountNode = document.createElement('div')
+				accountNode.classList.add('account')
+
+					let detailsNode = document.createElement('div')
+					detailsNode.classList.add('details')
+
+						let infoNode = document.createElement('div')
+						infoNode.classList.add('info')
+
+							let nameNode = document.createElement('div')
+							nameNode.classList.add('name')
+							nameNode.innerText = item.acc_name
+
+							let valueNode = document.createElement('div')
+							valueNode.classList.add('value')
+							valueNode.innerText = accItem.acc
+
+							let descriptionNode = document.createElement('div')
+							descriptionNode.classList.add('description')
+							descriptionNode.innerText = accItem.desc
+
+						infoNode.appendChild(nameNode)
+						infoNode.appendChild(valueNode)
+						infoNode.appendChild(descriptionNode)
+
+						let commandsNode = document.createElement('div')
+						commandsNode.classList.add('commands')
+						commandsNode.innerHTML = `
+							<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
+							<div class="popup">
+								<a class="account-delete">Удалить</a>
+								<a class="account-edit">Изменить</a>
+								<a class="account-payment">Перейти к оплате</a>
+							</div>
+						`
+
+					detailsNode.appendChild(infoNode)
+					detailsNode.appendChild(commandsNode)
+
+				accountsList.appendChild(accountNode)
+
+				accountsListUpdateTriggers()
 			}
 
 			function pick() {
@@ -1694,20 +1730,20 @@ async function mainInit() {
 				activityAccounts.querySelectorAll('.provider-details .service').forEach(node => {
 					node.innerText = item.service_name
 				})
-				// TODO profileData.accList[rowKey]
 
 
-//				document.querySelectorAll('.activity.accounts .account')
-//				document.querySelectorAll('.activity.accounts .account')
+				accountsList.innerHTML = ''
+				if (profileData.accList[rowKey] instanceof Array) {
+					profileData.accList[rowKey].forEach(accItem => addAccountNode(accItem))
+				}
 
-
-				
-				activityAccounts.querySelectorAll('.acc-name').forEach(node => {
-					node.innerText = item.acc_name
-				})
-				activityAccounts.querySelectorAll('.popup-trigger').forEach(node => {
-					node.classList.remove('is-active')
-				})
+// TODO remove old code				
+//				activityAccounts.querySelectorAll('.acc-name').forEach(node => {
+//					node.innerText = item.acc_name
+//				})
+//				activityAccounts.querySelectorAll('.popup-trigger').forEach(node => {
+//					node.classList.remove('is-active')
+//				})
 
 				let scrollTopAccounts = 0
 				activityAccountEdit.querySelectorAll('.back').forEach(node => node.onclick = () => {
@@ -1732,15 +1768,16 @@ async function mainInit() {
 							if (!(profileData.accList[rowKey] instanceof Array)) {
 								profileData.accList[rowKey] = [ ]
 							}
-							profileData.accList[rowKey].push({
+							let accItem = {
 								acc: activityAccountEdit.querySelector('input.account').value,
 								desc: activityAccountEdit.querySelector('input.description').value,
 								sum: '0.00'
-							})
+							}
+							profileData.accList[rowKey].push(accItem)
 
 							let result = profileSave()
 							if (result) {
-// TODO add acc								
+								addAccountNode(accItem)
 								activityAccountEdit.querySelector('.back').onclick()
 							} else {
 								showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
@@ -2242,7 +2279,7 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 103)
+	console.log('VERSION', 104)
 
 })();
 
