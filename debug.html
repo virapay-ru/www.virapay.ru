@@ -56,16 +56,12 @@
 			let apiName = 'debug'
 
 			function homepage() {
-//				location.replace('https://virapay.ru/login.html')
-console.log('TODO homepage')
+				location.replace('https://virapay.ru/login.html')
 			}
 
 			let p = parseParameters(location.search)
-console.log('parameters', p)
 			if (p.code) {
-console.log('doAuth', apiName, p.code)
 				backend.auth(apiName, p.code).then(user => {
-console.log('result', user)
 					user.apiName = apiName
 					storagePut(`/${location.hostname}/session`, user)
 					homepage()
