@@ -13,7 +13,7 @@
 
 	<!-- Webfonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet" crossorigin="anonymous">
 	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
 
 	<!-- UI framework -->
@@ -114,6 +114,8 @@ h1, h2, h3, h4, h5, h6 {
 	width: 10rem;
 	height: 10rem;
 	border-radius: 50%;
+	background-size: cover;
+	background-position: center center;
 }
 
 .activity.profile h2, .activity.profile small, .activity.profile .label, .activity.profile .button {
@@ -339,7 +341,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.main .partners > .provider .name {
-	font-weight: bold;
+	font-weight: 400;
 }
 
 .activity.main .partners > .provider .inn {
@@ -371,9 +373,8 @@ h1, h2, h3, h4, h5, h6 {
 	height: 2.5rem;
 	border-radius: 50%;
 	margin-right: 0.5rem;
-	/*margin-left: 0.1rem;
-	margin-top: 0.1rem;
-	margin-bottom: 0.1rem;*/
+	background-size: cover;
+	background-position: center center;
 }
 
 .activity.main .fullname {
@@ -414,7 +415,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 1rem;
 	font-size: 1.25rem;
 	cursor: pointer;
-	font-weight: bold;
+	font-weight: 400;
 	display: block;
 	text-decoration: none;
 	color: inherit;
@@ -579,7 +580,7 @@ h1, h2, h3, h4, h5, h6 {
 
 			<h2>Добро пожаловать!</h2>
 
-			<img class="avatar"/>
+			<div class="avatar"></div>
 
 			<small><span class="apiname"></span>/<span class="id"></span></small>
 
@@ -651,7 +652,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.accounts .account .value {
 	font-size: 2.5rem;
-	font-weight: 600;
+	font-weight: 400;
 	line-height: 1;
 	margin: 0;
 }
@@ -683,10 +684,12 @@ h1, h2, h3, h4, h5, h6 {
 	justify-content: center;
 	margin-top: 2rem;
 	margin-bottom: 2rem;
+	width: 100%;
 }
 
 .activity.accounts .button-container button {
 	margin: 0;
+	min-width: 100%;
 }
 
 .activity.accounts .account .details {
@@ -982,7 +985,14 @@ h1, h2, h3, h4, h5, h6 {
 
 			<label class="label">
 				<div class="acc-name">Лицевой счет</div>
-				<div><input class="account"/></div>
+				<div>
+					<input class="account"/>
+					<div class="verification-result">
+						<i class="mdi mdi-check valid"></i>
+						<i class="mdi mdi-close error"></i>
+						<i class="mdi mdi-loading verification spin"></i>
+					</div>
+				</div>
 				<div class="hint"><span class="acc-description">Номер лицевого счета вида X-Y.</span></div>
 				<div class="hint">Например <span class="acc-example">123456789-123</span></div>
 			</label>
@@ -1193,8 +1203,8 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 
 				<div class="profile-show">
-					<img class="avatar"/>
-					<span class="fullname">VIRAPAY</span>
+					<div class="avatar"></div>
+					<span class="fullname"></span>
 				</div>
 
 			</div>
@@ -1390,6 +1400,116 @@ h1, h2, h3, h4, h5, h6 {
 			</div>
 		</div>
 
+<style>
+
+.regions-selector {
+	width: 100%;
+	border-radius: 10px;
+	border: 1px solid #eee;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+}
+
+.regions-selector .trigger {
+	display: block;
+	padding: 0.5rem;
+	text-align: center;
+	margin: 0.5rem;
+	color: rgb(77, 144, 254);
+}
+
+.regions-selector .list {
+	max-height: 0;
+	margin-bottom: 0;
+	overflow: auto;
+	border: 1px solid #eee;
+	transition: all 0.3s ease-out;
+}
+
+.regions-selector.open {
+	margin-bottom: 2rem;
+}
+
+.regions-selector.open .list {
+	max-height: 15.9rem;
+}
+
+.regions-selector .list label {
+	display: block;
+	padding: 0.5rem;
+	border-top: 1px solid #eee;
+}
+
+.regions-selector .list label input {
+	margin-right: 0.5rem;
+}
+
+</style>
+
+		<div class="regions-selector">
+			<div class="trigger">
+				<i class="mdi mdi-map-marker"></i>
+				<span class="label">Все регионы</span>
+			</div>
+			<div class="list">
+				<label>
+					<input type="checkbox"/>
+					<span>Ивановская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Владимирская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Ярославская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Ивановская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Владимирская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Ярославская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Ивановская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Владимирская область</span>
+				</label>
+				<label>
+					<input type="checkbox"/>
+					<span>Ярославская область</span>
+				</label>
+			</div>
+		</div>
+
+<script>
+
+(function () {
+
+	let regionsSelector = document.querySelector('.regions-selector')
+	regionsSelector.querySelector('.trigger').onclick = function () {
+		if (!regionsSelector.classList.contains('open')) {
+			scrollByYTo(document.scrollingElement, regionsSelector.offsetTop - parseInt(getComputedStyle(regionsSelector).marginTop), 300, function () {
+				regionsSelector.classList.toggle('open')
+			})
+		} else {
+			regionsSelector.classList.toggle('open')
+		}
+	}
+
+})();
+
+</script>
+
 		<div class="partners">
 <!--
 				<div class="provider">
@@ -1523,7 +1643,7 @@ let scrollByYTo = (function () {
 
 	let t0 = Date.now()
 
-	function frame(el) {
+	function frame(el, callback) {
 		let time = JSON.parse(el.dataset.scrollingTime)
 		let t = Math.abs(Date.now() - t0) / time
 		let sourceY = JSON.parse(el.dataset.scrollingSourceY)
@@ -1531,13 +1651,14 @@ let scrollByYTo = (function () {
 		if (t >= 1) {
 			el.scrollTop = targetY
 			el.dataset.scrollingProgress = JSON.stringify(false)
+			callback()
 		} else {
 			el.scrollTop = sourceY + (targetY - sourceY) * t
-			requestAnimationFrame(function () { frame(el) })
+			requestAnimationFrame(function () { frame(el, callback) })
 		}
 	}
 
-	return function (el, y, time = 300) {
+	return function (el, y, time = 300, callback) {
 
 		t0 = Date.now()
 
@@ -1550,7 +1671,7 @@ let scrollByYTo = (function () {
 		let flag = JSON.parse(el.dataset.scrollingProgress)
 		if (!flag) {
 			el.dataset.scrollingProgress = JSON.stringify(true)
-			frame(el)
+			frame(el, callback)
 		}
 
 	}
@@ -1560,6 +1681,7 @@ let scrollByYTo = (function () {
 // main activity
 
 let mainInited = false
+let accountsCache = { }
 
 async function mainInit() {
 
@@ -1567,19 +1689,97 @@ async function mainInit() {
 
 		switchActivity(activityLoading)
 
-		let storageProvidersKey = `/${location.hostname}/providers`
+		let storageRegionsKey = `/${location.hostname}/regions`
+		let regionsData = storageGet(storageRegionsKey)
+		let regionsVersion = (regionsData ? regionsData.version : 0)
+		let regionsNewData = await backend.regionsGetUpdate(regionsVersion)
+		if (regionsNewData !== null) {
+			regionsData = regionsNewData
+			storagePut(storageRegionsKey, regionsData)
+		}
 
-		let data = storageGet(storageProvidersKey)
-		let version = (data ? data.version : 0)
-		let newData = await backend.providersGetUpdate(version)
-		if (newData !== null) {
-			data = newData
-			storagePut(storageProvidersKey, data)
+		let regionsSelector = document.querySelector('.regions-selector')
+		let regionsList = regionsSelector.querySelector('.list')
+		regionsList.innerHTML = `
+			<label>
+				<input type="checkbox" class="all"/>
+				<b>Все</b>
+			</label>
+		`
+
+		let regionsNodes = []
+
+		function updateRegionsLabel() {
+			let numSelected = 0
+			regionsNodes.forEach(node => {
+				if (node.checked)
+					numSelected ++
+			})
+			let label = (numSelected >= regionsNodes.length || numSelected <= 0 ? 'Все регионы' : 'Выбрано регионов: ' + numSelected)
+			regionsSelector.querySelector('.trigger .label').innerText = label
+		}
+
+		function updateProfileRegions() {
+			profileData.rgnList = []
+			regionsNodes.forEach(node => {
+				if (node.checked)
+					profileData.rgnList.push(parseInt(node.value))
+			})
+			profileSave()
+		}
+
+		let allRegionsTrigger = regionsList.querySelector('.all')
+		allRegionsTrigger.onchange = function () {
+			regionsNodes.forEach(node => node.checked = allRegionsTrigger.checked)
+			updateRegionsLabel()
+			updateProfileRegions()
+			filterProviders()
+		}
+
+		regionsData.regions.forEach(item => {
+
+			let labelNode = document.createElement('label')
+
+			let checkboxNode = document.createElement('input')
+			checkboxNode.setAttribute('type', 'checkbox')
+			checkboxNode.setAttribute('value', item.id)
+			checkboxNode.classList.add('region')
+
+			if (profileData.rgnList.indexOf(item.id) >= 0) {
+				checkboxNode.checked = true
+			}
+
+			let spanNode = document.createElement('span')
+			spanNode.innerText = item.name
+
+			labelNode.appendChild(checkboxNode)
+			labelNode.appendChild(spanNode)
+			regionsList.appendChild(labelNode)
+			regionsNodes.push(checkboxNode)
+		})
+
+		regionsNodes.forEach(node => {
+			node.onchange = function () {
+				updateRegionsLabel()
+				updateProfileRegions()
+				filterProviders()
+			}
+		})
+
+		updateRegionsLabel()
+
+		let storageProvidersKey = `/${location.hostname}/providers`
+		let providersData = storageGet(storageProvidersKey)
+		let providersVersion = (providersData ? providersData.version : 0)
+		let providersNewData = await backend.providersGetUpdate(providersVersion)
+		if (providersNewData !== null) {
+			providersData = providersNewData
+			storagePut(storageProvidersKey, providersData)
 		}
 
 		let listNode = activityMain.querySelector('.partners')
 		listNode.innerHTML = ''
-		providersList = data.providers
+		providersList = providersData.providers
 		providersList.forEach(item => {
 
 			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
@@ -1664,8 +1864,14 @@ async function mainInit() {
 
 				let triggers = document.querySelectorAll('.popup-trigger')
 
+				document.onmousedown = function (evt) {
+					triggers.forEach(node => node.classList.remove('is-active'))
+				}
+
 				triggers.forEach((node, i) => {
-					node.onclick = () => {
+					node.onmousedown = (evt) => {
+						evt.stopPropagation()
+						evt.preventDefault()
 						triggers.forEach((node_, j) => {
 							if (i != j) node_.classList.remove('is-active')
 						})
@@ -1769,6 +1975,7 @@ async function mainInit() {
 					}
 
 					historyPut('accounts')
+					inputAccount.oninput()
 					switchActivity(activityAccountEdit)
 				})
 
@@ -1851,6 +2058,7 @@ async function mainInit() {
 
 					let inputAccount = activityAccountEdit.querySelector('input.account')
 					let inputDescription = activityAccountEdit.querySelector('input.description')
+					let saveButton = activityAccountEdit.querySelector('.account-save')
 
 					node.onclick = () => {
 
@@ -1859,7 +2067,7 @@ async function mainInit() {
 						inputAccount.value = ''
 						inputDescription.value = ''
 
-						activityAccountEdit.querySelector('.account-save').onclick = () => {
+						saveButton.onclick = () => {
 
 							if (!(profileData.accList[rowKey] instanceof Array)) {
 								profileData.accList[rowKey] = [ ]
@@ -1885,7 +2093,76 @@ async function mainInit() {
 						historyPut('accounts')
 						switchActivity(activityAccountEdit)
 					}
+
+					let accountCheckTimeout = null
+					inputAccount.oninput = function () {
+console.log('acc', inputAccount.value, item.id, item.inn, item.service_id)
+						if (accountCheckTimeout !== null) {
+							clearTimeout(accountCheckTimeout)
+							accountCheckTimeout = null
+						}
+						saveButton.setAttribute('disabled', true)
+						accountCheckTimeout = setTimeout(function () {
+
+							accountCheckTimeout = null
+							inputAccount.classList.remove('valid')
+							inputAccount.classList.remove('error')
+							inputAccount.classList.add('verification')
+
+							let acc = inputAccount.value
+							if (acc === '') {
+								inputAccount.classList.remove('verification')
+								return
+							}
+
+							function handleResult(result) {
+								inputAccount.classList.remove('verification')
+								if (result && result.account == acc) {
+									inputAccount.classList.add('valid')
+									saveButton.removeAttribute('disabled')
+								} else {
+									inputAccount.classList.add('error')
+								}
+							}
+
+							if (accountsCache[rowKey] && accountsCache[rowKey][acc]) {
+								let accRec = accountsCache[rowKey][acc]
+								let dt = Date.now() - accRec.time
+								if (dt < accRec.ttl) {
+console.log('acc cached check result', accRec.result)
+									handleResult(accRec.result)
+									return
+								} else {
+console.log('acc cached check result expired', dt, accRec.ttl)
+								}
+							}
+
+							backend.accountCheck(rowKey, item.inn, acc).then(result => {
+
+								if (!accountsCache[rowKey]) {
+									accountsCache[rowKey] = { }
+								}
+								accountsCache[rowKey][acc] = {
+									result,
+									time: Date.now(),
+									ttl: (result ? 60 : 10) * 1000
+								}
+
+console.log('acc check result', result)
+								handleResult(result)
+
+							}).catch(err => {
+
+								inputAccount.classList.remove('verification')
+								console.log(err)
+
+							})
+
+						}, 500)
+					}
+
 				})
+
 
 				historyPut('main')
 				switchActivity(activityAccounts)
@@ -1913,10 +2190,16 @@ function filterProviders() {
 	let favlistOnly = activityMain.querySelector('.open-favorites').classList.contains('selected')
 
 	let selectedCategories = []
-
 	activityMain.querySelectorAll('.category').forEach(category => {
 		if (category.classList.contains('selected')) {
 			selectedCategories.push(JSON.parse(category.dataset.id))
+		}
+	})
+
+	let selectedRegions = []
+	activityMain.querySelectorAll('.regions-selector .region').forEach(region => {
+		if (region.checked) {
+			selectedRegions.push(parseInt(region.value))
 		}
 	})
 
@@ -1953,6 +2236,19 @@ function filterProviders() {
 			let categories = row.categories
 			selectedCategories.forEach(selectedCategory => {
 				if (categories.indexOf(selectedCategory) >= 0) {
+					found = true
+				}
+			})
+			if (!found) {
+				row.isMatch = false
+			}
+		}
+
+		if (selectedRegions.length > 0) {
+			let found = false
+			let regions = row.regions
+			selectedRegions.forEach(selectedRegion => {
+				if (regions.indexOf(selectedRegion) >= 0) {
 					found = true
 				}
 			})
@@ -2021,9 +2317,12 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			if (typeof result.data.accList !== 'object') {
 				result.data.accList = { }
 			}
+			if (!(result.data.rgnList instanceof Array)) {
+				result.data.rgnList = [ ]
+			}
 			profileData = result.data
 
-			activityProfile.querySelector('.avatar').src = imageUrl
+			activityProfile.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
 			activityProfile.querySelector('.apiname').innerText = apiName
 			activityProfile.querySelector('.id').innerText = id
 			activityProfile.querySelector('.fullname').value = result.name
@@ -2083,7 +2382,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 
 				}
 			})
-			activityMain.querySelector('.avatar').src = imageUrl
+			activityMain.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
 			activityMain.querySelector('.fullname').innerText = result.name
 
 			document.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {

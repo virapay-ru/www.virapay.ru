@@ -26,6 +26,10 @@ h5 {
 	text-transform: uppercase;
 }
 
+b {
+	font-weight: 900;
+}
+
 
 /* logo */
 
@@ -185,6 +189,10 @@ h5 {
 	background: #eee;
 }
 
+.button[disabled], .button[disabled]:hover, .button[disabled]:focus {
+	opacity: 0.3;
+}
+
 
 /* label */
 
@@ -210,6 +218,60 @@ h5 {
 	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
 	outline: 0;
 }
+
+
+/* verification */
+
+input + .verification-result {
+	display: none;
+	margin-top: -2.5rem;
+	height: 2.5rem;
+	justify-content: flex-end;
+}
+
+input + .verification-result > * {
+	line-height: 2.5rem;
+	font-size: 1.25rem;
+	height: 2.5rem;
+	width: 2.5rem;
+	text-align: center;
+	display: none;
+}
+
+input.valid {
+	padding-right: 3rem;
+}
+
+input.valid + .verification-result {
+	display: flex;
+}
+
+input.valid + .verification-result > .valid {
+	display: inline-block;
+	color: green;
+}
+
+input.error {
+	padding-right: 2.5rem;
+}
+
+input.error + .verification-result {
+	display: flex;
+}
+
+input.error + .verification-result > .error {
+	display: inline-block;
+	color: red;
+}
+
+input.verification + .verification-result {
+	display: flex;
+}
+
+input.verification + .verification-result > .verification {
+	display: inline-block;
+}
+
 
 /* utilities */
 
