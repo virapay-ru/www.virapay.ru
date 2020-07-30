@@ -682,8 +682,8 @@ h1, h2, h3, h4, h5, h6 {
 	display: flex;
 	flex-flow: row;
 	justify-content: center;
-	margin-top: 2rem;
-	margin-bottom: 2rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 	width: 100%;
 }
 
@@ -730,9 +730,9 @@ h1, h2, h3, h4, h5, h6 {
 .activity.accounts .account .details .popup-trigger + .popup {
 	position: absolute;
 	z-index: 1;
-	width: 11rem;
+	width: 10rem;
 	max-height: 0;
-	margin-left: -9rem;
+	margin-left: -8rem;
 	background-color: #fff;
 	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
 	display: inline-flex;
@@ -763,6 +763,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.accounts .account .details .popup-trigger + .popup > a:hover {
 	background-color: rgba(215, 231, 251, 0.7);
+}
+
+.activity.accounts .account .details .popup-trigger + .popup > a > i {
+	display: inline-block;
+	margin-right: 1em;
 }
 
 </style>
@@ -1021,52 +1026,57 @@ h1, h2, h3, h4, h5, h6 {
 
 <style>
 
-.activity.account-add .container {
+.activity.account-payment .container {
 	align-items: center;
 	width: 100%;
 	max-width: 26rem;
 }
 
-.activity.account-add {
+.activity.account-payment {
 	padding-top: 4rem;
 	padding-bottom: 40rem;
 }
 
-.activity.account-add .provider-details {
+.activity.account-payment .provider-details {
 	margin-bottom: 1rem;
 	width: 100%;
 }
 
-.activity.account-add .provider-details .name {
+.activity.account-payment .provider-details .name {
 	font-weight: bold;
 	font-size: 1.25rem;
     margin-bottom: 1rem;
 }
 
-.activity.account-add .label {
+.activity.account-payment .label {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 	width: 100%;
 	max-width: 26rem;
 }
 
-.activity.account-add .hint {
+.activity.account-payment .hint {
 	font-weight: 100;
 }
 
-.activity.account-add .button-container {
+.activity.account-payment .button-container {
 	margin-top: 1rem;
 	width: 100%;
 }
 
-.activity.account-add .button-container button {
+.activity.account-payment .button-container button {
 	min-width: 100%;
+}
+
+.activity.account-payment .total-line {
+	font-weight: 900;
+    font-size: 1.5rem;
 }
 
 </style>
 
 
-	<div class="activity account-add is-hidden">
+	<div class="activity account-payment is-hidden">
 
 		<div class="action-bar">
 			<div class="container">
@@ -1084,7 +1094,14 @@ h1, h2, h3, h4, h5, h6 {
 
 			<label class="label">
 				<div class="acc-name">Лицевой счет</div>
-				<div><input class="account"/></div>
+				<div>
+					<input class="account"/>
+					<div class="verification-result">
+						<i class="mdi mdi-check valid"></i>
+						<i class="mdi mdi-close error"></i>
+						<i class="mdi mdi-loading verification spin"></i>
+					</div>
+				</div>
 				<div class="hint"><span class="acc-description">Номер лицевого счета вида X-Y.</span></div>
 				<div class="hint">Например <span class="acc-example">123456789-123</span></div>
 			</label>
@@ -1102,8 +1119,8 @@ h1, h2, h3, h4, h5, h6 {
 			</label>
 
 			<label class="label">
-				<div>Сервисный сбор: <span class="commision">5.00</span> руб.</div>
-				<div>Итого: <span class="total">505.00</span> руб.</div>
+				<div>Сервисный сбор: <span class="commission">5.00</span> руб.</div>
+				<div class="total-line">Итого: <span class="total">505.00</span> руб.</div>
 			</label>
 
 			<div class="button-container">
@@ -1452,6 +1469,7 @@ h1, h2, h3, h4, h5, h6 {
 				<span class="label">Все регионы</span>
 			</div>
 			<div class="list">
+<!--
 				<label>
 					<input type="checkbox"/>
 					<span>Ивановская область</span>
@@ -1488,6 +1506,7 @@ h1, h2, h3, h4, h5, h6 {
 					<input type="checkbox"/>
 					<span>Ярославская область</span>
 				</label>
+-->
 			</div>
 		</div>
 
@@ -1496,7 +1515,9 @@ h1, h2, h3, h4, h5, h6 {
 (function () {
 
 	let regionsSelector = document.querySelector('.regions-selector')
-	regionsSelector.querySelector('.trigger').onclick = function () {
+	regionsSelector.querySelector('.trigger').onmousedown = function (evt) {
+		evt.preventDefault()
+		evt.stopPropagation()
 		if (!regionsSelector.classList.contains('open')) {
 			scrollByYTo(document.scrollingElement, regionsSelector.offsetTop - parseInt(getComputedStyle(regionsSelector).marginTop), 300, function () {
 				regionsSelector.classList.toggle('open')
@@ -1505,6 +1526,10 @@ h1, h2, h3, h4, h5, h6 {
 			regionsSelector.classList.toggle('open')
 		}
 	}
+	document.onmousedown = function (evt) {
+		regionsSelector.classList.remove('open')
+	}
+
 
 })();
 
@@ -1588,7 +1613,7 @@ let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a 
 let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
 let activityAccounts = activities.reduce((_, a) => a.classList.contains('accounts') ? a : _, null)
 let activityAccountEdit = activities.reduce((_, a) => a.classList.contains('account-edit') ? a : _, null)
-let activityAccountAdd = activities.reduce((_, a) => a.classList.contains('account-add') ? a : _, null)
+let activityAccountPayment = activities.reduce((_, a) => a.classList.contains('account-payment') ? a : _, null)
 
 // history
 
@@ -1651,7 +1676,9 @@ let scrollByYTo = (function () {
 		if (t >= 1) {
 			el.scrollTop = targetY
 			el.dataset.scrollingProgress = JSON.stringify(false)
-			callback()
+			if (callback) {
+				callback()
+			}
 		} else {
 			el.scrollTop = sourceY + (targetY - sourceY) * t
 			requestAnimationFrame(function () { frame(el, callback) })
@@ -1767,6 +1794,17 @@ async function mainInit() {
 		})
 
 		updateRegionsLabel()
+
+		regionsList.querySelectorAll('label').forEach(node => {
+
+			node.onmousedown = function (evt) {
+				evt.preventDefault()
+				evt.stopPropagation()
+			}
+		})
+
+
+
 
 		let storageProvidersKey = `/${location.hostname}/providers`
 		let providersData = storageGet(storageProvidersKey)
@@ -1922,9 +1960,9 @@ async function mainInit() {
 						commandsNode.innerHTML = `
 							<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
 							<div class="popup">
-								<a class="account-delete">Удалить</a>
-								<a class="account-edit">Изменить</a>
-								<a class="account-payment">Перейти к оплате</a>
+								<a class="account-delete"><i class="mdi mdi-trash-can-outline"></i>Удалить</a>
+								<a class="account-edit"><i class="mdi mdi-pencil-outline"></i>Изменить</a>
+								<a class="account-history"><i class="mdi mdi-history"></i>История</a>
 							</div>
 						`
 
@@ -1936,7 +1974,7 @@ async function mainInit() {
 				let buttonContainerNode = document.createElement('div')
 				buttonContainerNode.classList.add('button-container')
 				buttonContainerNode.innerHTML = `
-					<button class="button">
+					<button class="button account-payment">
 			            <span>Перейти к оплате</span>
 						<i class="icon mdi mdi-arrow-right"></i>
 					</button>
@@ -1992,6 +2030,50 @@ async function mainInit() {
 							delete accItem.removed
 						})
 					}
+				})
+
+				accountNode.querySelectorAll('.account-payment').forEach(commandNode => commandNode.onclick = () => {
+
+					let inputAccount = activityAccountPayment.querySelector('input.account')
+					let inputDescription = activityAccountPayment.querySelector('input.description')
+					let inputSum = activityAccountPayment.querySelector('input.summ')
+
+					scrollTopAccounts = document.scrollingElement.scrollTop
+
+					activityAccountPayment.querySelector('.acc-description').innerText = item.acc_description
+					activityAccountPayment.querySelector('.acc-example').innerText = item.acc_example
+					inputAccount.value = accItem.acc
+					inputDescription.value = accItem.desc
+					inputSum.value = accItem.sum
+
+					activityAccountPayment.querySelector('.prepare-payment').onclick = () => {
+
+						let prevAcc = accItem.acc
+						let prevDesc = accItem.desc
+						let prevSum = accItem.sum
+						accItem.acc = inputAccount.value
+						accItem.desc = inputDescription.value
+						accItem.sum = inputSum.value
+						let result = profileSave()
+						if (result) {
+							accountNode.querySelector('.value').innerText = inputAccount.value
+							accountNode.querySelector('.description').innerText = inputDescription.value
+							activityAccountPayment.querySelector('.back').onclick()
+						} else {
+							showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+								accItem.acc = prevAcc
+								accItem.desc = prevDesc
+								accItem.sum = prevSum
+							})
+						}
+
+						// TODO payment
+					}
+
+					historyPut('accounts')
+					inputAccount.oninput()
+					inputSum.oninput()
+					switchActivity(activityAccountPayment)
 				})
 
 				accountsList.appendChild(accountNode)
@@ -2054,6 +2136,11 @@ async function mainInit() {
 					node.innerText = item.acc_example
 				})
 
+				activityAccountPayment.querySelectorAll('.back').forEach(node => node.onclick = () => {
+					switchActivity(activityAccounts)
+					document.scrollingElement.scrollTop = scrollTopAccounts
+				})
+
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
 
 					let inputAccount = activityAccountEdit.querySelector('input.account')
@@ -2094,14 +2181,22 @@ async function mainInit() {
 						switchActivity(activityAccountEdit)
 					}
 
-					let accountCheckTimeout = null
+					
+
+				})
+
+				// accounts validation
+
+				function enableAccountValidation(inputAccount, actionButton) {
+
+let accountCheckTimeout = null
 					inputAccount.oninput = function () {
 console.log('acc', inputAccount.value, item.id, item.inn, item.service_id)
 						if (accountCheckTimeout !== null) {
 							clearTimeout(accountCheckTimeout)
 							accountCheckTimeout = null
 						}
-						saveButton.setAttribute('disabled', true)
+						actionButton.setAttribute('disabled', true)
 						accountCheckTimeout = setTimeout(function () {
 
 							accountCheckTimeout = null
@@ -2119,7 +2214,7 @@ console.log('acc', inputAccount.value, item.id, item.inn, item.service_id)
 								inputAccount.classList.remove('verification')
 								if (result && result.account == acc) {
 									inputAccount.classList.add('valid')
-									saveButton.removeAttribute('disabled')
+									actionButton.removeAttribute('disabled')
 								} else {
 									inputAccount.classList.add('error')
 								}
@@ -2160,8 +2255,71 @@ console.log('acc check result', result)
 
 						}, 500)
 					}
+				}
 
-				})
+				enableAccountValidation(
+					activityAccountEdit.querySelector('input.account'),
+					activityAccountEdit.querySelector('.account-save')
+				);
+
+				enableAccountValidation(
+					activityAccountPayment.querySelector('input.account'),
+					activityAccountPayment.querySelector('.prepare-payment')
+				);
+
+				(function () {
+
+					let inputSum = activityAccountPayment.querySelector('input.summ')
+					let outputCommission = activityAccountPayment.querySelector('.commission')
+					let outputTotal = activityAccountPayment.querySelector('.total')
+
+					function updateSumms() {
+
+						let sum = parseFloat(inputSum.value).toFixed(2)
+						if (isNaN(sum)) {
+							sum = '0.00'
+						}
+console.log('sum', sum)
+						let commission = ((sum / 100) * 5 + 3).toFixed(2) // TODO commission
+console.log('commission', commission)
+						let total = (parseFloat(sum) + parseFloat(commission)).toFixed(2)
+console.log('total', total)
+
+						outputCommission.innerText = commission
+						outputTotal.innerText = total
+					}
+
+					inputSum.oninput = function (evt) {
+
+						/*let c = String.fromCharCode(evt.keyCode)
+						if (/^\d$/.test(c)) {
+							return true
+						} else {
+							evt.preventDefault()
+							if (c === ',' || c === '.') {
+								let el = evt.srcElement
+								let val = '' + el.value
+								let start = el.selectionStart
+								let end = el.selectionEnd
+								let lval = val.substring(0, start)
+								let rval = val.substring(end)
+								let replacement = '.'
+								let offset = -1 + replacement.length
+								el.value = lval.replace(/\./g, '') + replacement + rval.replace(/\./g, '')
+								el.selectionStart = start + offset + 1
+								el.selectionEnd = el.selectionStart
+								el.dispatchEvent(new Event('input'))
+							}
+							return false
+						}*/
+
+						updateSumms()
+					}
+
+				})();
+				
+
+
 
 
 				historyPut('main')
@@ -2319,6 +2477,9 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			}
 			if (!(result.data.rgnList instanceof Array)) {
 				result.data.rgnList = [ ]
+			}
+			if (typeof result.data.history !== 'object') {
+				result.data.history = { }
 			}
 			profileData = result.data
 
