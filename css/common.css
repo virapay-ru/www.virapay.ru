@@ -31,6 +31,19 @@ b {
 }
 
 
+/* custom */
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: inherit;
+}
+
+.icon {
+	font-size: 1.25em;
+	display: inline-flex;
+    align-items: center;
+}
+
+
 /* logo */
 
 .logo {
@@ -93,6 +106,35 @@ b {
 	box-sizing: border-box;
 	margin: 0 auto;
 }
+
+.activity h5 {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.activity.navbar {
+	background: rgba(255,255,255,0.75);
+	padding-top: 4rem;
+	z-index: 10;
+}
+
+.activity.navbar .links {
+	margin-top: 4rem;
+	background: #fff;
+	padding: 1rem;
+	border-radius: 10px;
+}
+
+.activity.navbar .links a {
+	margin: 1rem;
+	font-size: 1.25rem;
+	cursor: pointer;
+	font-weight: 400;
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+
 
 /* message */
 
@@ -273,8 +315,785 @@ input.verification + .verification-result > .verification {
 }
 
 
+/* activity main */
+
+.activity.loading > .container {
+	padding-bottom: 4rem;
+}
+
+.activity > .container > i.display1 {
+	color: gainsboro;
+	line-height: 10rem;
+    font-size: 10rem;
+}
+
+.activity.login > .container {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.activity.login .logo {
+	margin-bottom: 2rem;
+}
+
+.activity.login p {
+    width: 20rem;
+    font-size: 0.8rem;
+}
+
+.activity.profile {
+	padding-top: 4rem;
+}
+
+.activity.profile .container {
+	width: 100%;
+	max-width: 40rem;
+	align-items: center;
+}
+
+.activity.profile .avatar {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+	background-size: cover;
+	background-position: center center;
+}
+
+.activity.profile h2, .activity.profile small, .activity.profile .label, .activity.profile .button {
+	margin-bottom: 2rem;
+}
+
+.activity.profile .avatar {
+	margin-bottom: 1rem;
+}
+
+.activity.profile .info {
+	max-width: 20em;
+	border-top: 1px solid #eee;
+	padding-top: 2rem;
+}
+
+.activity.profile .button.logout {
+	margin-top: 2rem;
+}
+
+.activity.message button {
+	margin-top: 1rem;
+}
+
+.activity.main > .container {
+	align-items: center;
+	width: 100%;
+	max-width: 30rem;
+}
+
+.activity.main .hot-icons {
+	width: 100%;
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	max-width: 27rem;
+		background: #fff;
+		border-radius: 10px;
+    	box-shadow: 0 0 5rem rgba(0,0,0,0.2);
+}
+
+.activity.main .hot-icons a {
+	padding: 1rem;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	cursor: pointer;
+	width: calc((100% - 2rem) / 3);
+	height: 5rem;
+	font-weight: bold;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.main .hot-icons a .icon {
+	font-size: 2rem;
+}
+
+.activity.main .hot-icons a span {
+	font-size: 0.8rem;
+}
+
+.activity.main .hot-icons .open-favorites .icon {
+	color: #fc0;
+}
+
+.activity.main .hot-icons .open-scanner .icon {
+	color: #fd0000;
+}
+
+.activity.main .hot-icons .open-history .icon {
+	color: #4a0;
+}
+
+.activity.main .hot-icons .open-search .icon {
+	color: rgb(77, 144, 254);
+}
+
+.activity.main .categories {
+	display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+	box-sizing: border-box;
+}
+
+.activity.main .categories a {
+    width: 6.5rem;
+    min-width: 6.5rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+	border: 1px solid rgba(77, 144, 254, 0.2);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 5px;
+    height: 6.5rem;
+    cursor: pointer;
+	margin-right: 1rem;
+	user-select: none;
+}
+
+.activity.main .categories a .icon {
+	font-size: 2rem;
+	color: rgb(77, 144, 254);
+	user-select: none;
+}
+
+.activity.main .categories a span {
+	text-align: center;
+	display: block;
+	font-size: 0.8rem;
+	user-select: none;
+}
+
+.activity.main .categories a.selected {
+	background: rgb(77, 144, 254);
+}
+
+.activity.main .categories a.selected > * {
+	color: #fff;
+}
+
+.activity.main .partners > .provider {
+
+	flex-flow: row;
+	justify-content: space-between;
+	overflow: hidden;
+	width: 100%;
+	cursor: pointer;
+	border-style: solid;
+	border-color: #eee;
+	box-sizing: border-box;
+
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+	animation-name: provider-hide;
+
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-width: 0;
+	border-top-width: 1px;
+
+	display: none;
+	-webkit-tap-highlight-color: transparent;
+
+		transition: margin-bottom 0.5s ease-out;
+}
+
+@keyframes provider-show {
+  0% {
+	transform: scale(1, 0);
+	opacity: 0;
+  }
+  100% {
+	transform: scale(1, 1);
+	opacity: 1;
+  }
+}
+
+@keyframes provider-hide {
+  0% {
+	transform: scale(1, 1);
+	opacity: 1;
+  }
+  100% {
+	transform: scale(1, 0);
+	opacity: 0;
+  }
+}
+
+.activity.main .partners > .provider.show {
+	animation-name: provider-show;
+	display: flex;
+}
+
+.activity.main .partners > .provider.hide {
+	animation-name: provider-hide;
+	display: flex;
+}
+
+.activity.main .partners > .provider .icon {
+	width: 3rem;
+	font-size: 1.5rem;
+	justify-content: center;
+	transition: color 0.3s ease-out;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.main .partners {
+	width: 100%;
+	padding-bottom: 40rem;
+	margin-top: 1rem;
+}
+
+.activity.main .partners > .provider .details {
+	width: calc(100% - 3rem * 2);
+}
+
+.activity.main .partners > .provider .name {
+	font-weight: 400;
+}
+
+.activity.main .partners > .provider .inn {
+	opacity: 0.7;
+	font-weight: 300;
+}
+
+.activity.main .partners > .provider .service {
+	opacity: 0.7;
+	font-weight: 300;
+}
+
+.activity.main .partners > .provider .icon.selected {
+	color: rgb(77, 144, 254);
+}
+
+.activity.main .profile-show {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	border-radius: 2rem;
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.main .avatar {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	margin-right: 0.5rem;
+	background-size: cover;
+	background-position: center center;
+}
+
+.activity.main .fullname {
+    margin-right: 1rem;
+    max-width: 8rem;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.activity.main .profile-show {
+	z-index: 11;
+}
+
+
+
+.activity.main .header {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	min-height: 3rem;
+}
+
+.activity.main .header .logo {
+	font-size: 1.25rem;
+}
+
+.activity.main .header .logo img {
+	height: 2.5rem;
+}
+
+
+
+.activity.main .banner {
+	border-radius: 10px;
+	background-image: url(/images/banner-stub.jpg);
+	background-size: cover;
+	color: #fff;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 8rem;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+
+.activity.main .banner > * {
+	margin: 0;
+}
+
+
+
+.activity.main .search-field {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.activity.main .search-field .icon {
+	width: 3rem;
+	color: rgb(77, 144, 254);
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	cursor: pointer;
+	font-size: 1.8rem;
+
+	height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+
+	margin-right: -3rem;
+	z-index: 1;
+}
+
+.activity.main .search-field .label {
+	width: 100%;
+	display: flex;
+	max-width: 100%;
+}
+
+.activity.main .search-field .label div {
+	width: 100%;
+}
+
+.activity.main .search-field .label input {
+	padding-left: 3rem;
+	height: 3rem;
+	font-size: 1.2rem;
+	border: 1px solid rgb(77, 144, 254);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+}
+
+.activity.main .search-field .label input:focus {
+	border: 1px solid rgb(77, 144, 254);
+	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
+}
+
+
+
+
+
+/* activity accounts */
+
+.activity.accounts {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
+.activity.accounts .container {
+	max-width: 26rem;
+	width: 100%;
+	align-items: center;
+}
+
+.activity.accounts .provider-details {
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.accounts .accounts-list {
+	width: 100%;
+}
+
+.activity.accounts .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.accounts .account {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid rgba(77, 144, 254, 0.2);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 5px;
+	background: #fff;
+	z-index: 0;
+	width: 100%;
+}
+
+.activity.accounts .account .description {
+	opacity: 0.5;
+}
+
+.activity.accounts .account .value {
+	font-size: 2.5rem;
+	font-weight: 400;
+	line-height: 1;
+	margin: 0;
+}
+
+.activity.accounts .account .button-container {
+    display: flex;
+    flex-flow: row;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.activity.accounts .account .button-container button {
+	width: 100%;
+	max-width: 100%;
+    color: rgb(24, 119, 242);
+    margin: 0 0 0 0;
+    box-shadow: none;
+	background-color: rgba(215, 231, 251, 0.3);
+	transition: background-color 0.3s ease-out;
+}
+
+.activity.accounts .account .button-container button:hover {
+	background-color: rgba(215, 231, 251, 1);
+}
+
+.activity.accounts > .container > .button-container {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.accounts .button-container button {
+	margin: 0;
+	min-width: 100%;
+}
+
+.activity.accounts .account .details {
+	display: flex;
+	flex-flow: row;
+	padding: 0.5rem;
+	align-items: start;
+}
+
+.activity.accounts .account .details .info {
+	width: calc(100% - 2rem);
+}
+
+.activity.accounts .account .details .commands {
+	width: 1.5rem;
+}
+
+.activity.accounts .account .details .popup-trigger {
+	width: 2rem;
+	height: 1.5rem;
+	line-height: 1.5;
+	cursor: pointer;
+	display: block;
+	text-align: center;
+	-webkit-tap-highlight-color: transparent;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	user-select: none;
+}
+
+.activity.accounts .account .details .popup-trigger.is-active {
+	background-color: #fff;
+    box-shadow: 0 -0.5rem 1rem rgba(0,0,0,0.1);
+    z-index: 2;
+    position: relative;
+}
+
+.activity.accounts .account .details .popup-trigger + .popup {
+	position: absolute;
+	z-index: 1;
+	width: 10rem;
+	max-height: 0;
+	margin-left: -8rem;
+	background-color: #fff;
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	display: inline-flex;
+	flex-flow: column;
+	box-sizing: border-box;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	opacity: 0;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.activity.accounts .account .details .popup-trigger.is-active + .popup {
+	max-height: 10rem;
+	opacity: 1;
+	box-shadow: 0 0 5rem rgba(0,0,0,0.3);
+}
+
+.activity.accounts .account .details .popup-trigger + .popup > a {
+	display: block;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: all 0.3s ease-out;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.accounts .account .details .popup-trigger + .popup > a:hover {
+	background-color: rgba(215, 231, 251, 0.7);
+}
+
+.activity.accounts .account .details .popup-trigger + .popup > a > i {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+
+/* activity account-edit */
+
+.activity.account-edit .container {
+	align-items: center;
+	max-width: 26rem;
+	width: 100%;
+}
+
+.activity.account-edit {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
+.activity.account-edit .provider-details {
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.account-edit .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.activity.account-edit .label {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	width: 100%;
+	max-width: 26rem;
+}
+
+.activity.account-edit .hint {
+	font-weight: 100;
+}
+
+.activity.account-edit .button-container {
+	margin-top: 1rem;
+	width: 100%;
+}
+
+.activity.account-edit .button-container button {
+	min-width: 100%;
+}
+
+/* activity account-payment */
+
+.activity.account-payment .container {
+	align-items: center;
+	width: 100%;
+	max-width: 26rem;
+}
+
+.activity.account-payment {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
+.activity.account-payment .provider-details {
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.account-payment .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.activity.account-payment .label {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	width: 100%;
+	max-width: 26rem;
+}
+
+.activity.account-payment .hint {
+	font-weight: 100;
+}
+
+.activity.account-payment .button-container {
+	margin-top: 1rem;
+	width: 100%;
+}
+
+.activity.account-payment .button-container button {
+	min-width: 100%;
+}
+
+.activity.account-payment .total-line {
+	font-weight: 900;
+    font-size: 1.5rem;
+}
+
+
+/* regions selector */
+
+.regions-selector {
+	width: 100%;
+	border-radius: 10px;
+	border: 1px solid #eee;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+}
+
+.regions-selector .trigger {
+	display: block;
+	padding: 0.5rem;
+	text-align: center;
+	margin: 0.5rem;
+	color: rgb(77, 144, 254);
+}
+
+.regions-selector .list {
+	max-height: 0;
+	margin-bottom: 0;
+	overflow: auto;
+	border: 1px solid #eee;
+	transition: all 0.3s ease-out;
+}
+
+.regions-selector.open {
+	margin-bottom: 2rem;
+}
+
+.regions-selector.open .list {
+	max-height: 18.6rem;
+}
+
+.regions-selector .list label {
+	display: block;
+	padding: 0.5rem;
+	border-top: 1px solid #eee;
+}
+
+.regions-selector .list label input {
+	margin-right: 0.5rem;
+}
+
+
+/* bottom panel */
+
+.bottom-panel {
+	width: 100%;
+	height: 6rem;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 5;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: bottom 0.3s ease-out;
+}
+
+.bottom-panel.hide {
+	bottom: -6rem;
+}
+
+
+/* signin buttons */
+
+.signin-with-google {
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+.signin-with-facebook {
+	color: #fff;
+	background: rgb(24, 119, 242);
+}
+
+.signin-with-vk {
+	color: #fff;
+	background: #4c75a3;
+}
+
+
 /* utilities */
 
 .is-hidden {
+	display: none;
+}
+
+.scroll-horizontal {
+	overflow-x: hidden;
+	max-width: 100%;
+}
+
+.spin {
+	animation: spin 0.3s linear infinite;	
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+
+/* focus trigger */
+
+#focus-trigger {
+	background: transparent;
+	color: transparent;
+	width: 1rem;
+	height: 0;
+	outline: 0;
+	box-shadow: none;
+	border: 0;
+	padding: 0;
+	font-size: 0;
+}
+
+#focus-trigger:focus {
+	border: 0;
+	outline: 0;
+	box-shadow: none;
+	padding: 0;
+}
+
+#focus-trigger.hide {
 	display: none;
 }
