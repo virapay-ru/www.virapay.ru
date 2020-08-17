@@ -1113,6 +1113,18 @@ let navBarHide = () => { }
 
 (function () {
 
+	historyPut('main')
+
+	window.onpopstate = function (evt) {
+		let state = evt.state
+		console.log('HISTORY.ONPOPSTATE', state)
+		activities.forEach(activity => {
+			if (!activity.classList.contains('is-hidden')) {
+				activity.querySelectorAll('.back').forEach(node => node.onclick())
+			}
+		})
+	}
+
 	let sessionKey = `/${location.hostname}/session`
 	let user = storageGet(sessionKey)
 	if (user) {
@@ -1130,6 +1142,6 @@ let navBarHide = () => { }
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 121)
+	console.log('VERSION', 122)
 
 })();

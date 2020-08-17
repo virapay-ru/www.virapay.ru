@@ -40,12 +40,30 @@ let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? 
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
 let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
+let activityAccounts = activities.reduce((_, a) => a.classList.contains('accounts') ? a : _, null)
+let activityAccountEdit = activities.reduce((_, a) => a.classList.contains('account-edit') ? a : _, null)
+let activityAccountPayment = activities.reduce((_, a) => a.classList.contains('account-payment') ? a : _, null)
+
+// history
+
+function historyPut(activityName, data = null) {
+	history.pushState(
+		{
+			activity: activityName,
+			scrollTop: document.scrollingElement.scrollTop,
+			data
+		},
+		document.title,
+		location.pathname
+	)
+}
 
 // activities switcher
 
 function switchActivity(activity) {
 	activities.forEach(a => a.classList.add('is-hidden'))
 	activity.classList.remove('is-hidden')
+	document.scrollingElement.scrollTop = 0
 }
 
 // message
@@ -59,4 +77,63 @@ function showMessage(title, text, actionCallback) {
 		}
 	})
 	switchActivity(activityMessage)
+}
+
+// scrolling
+
+let scrollByYTo = (function () {
+
+//document.scrollingElement.scrollTop
+
+	let t0 = Date.now()
+
+	function frame(el, callback) {
+		let time = JSON.parse(el.dataset.scrollingTime)
+		let t = Math.abs(Date.now() - t0) / time
+		let sourceY = JSON.parse(el.dataset.scrollingSourceY)
+		let targetY = JSON.parse(el.dataset.scrollingTargetY)
+		if (t >= 1) {
+			el.scrollTop = targetY
+			el.dataset.scrollingProgress = JSON.stringify(false)
+			if (callback) {
+				callback()
+			}
+		} else {
+			el.scrollTop = sourceY + (targetY - sourceY) * t
+			requestAnimationFrame(function () { frame(el, callback) })
+		}
+	}
+
+	return function (el, y, time = 300, callback) {
+
+		t0 = Date.now()
+
+		el.dataset.scrollingTime = JSON.stringify(time)
+		el.dataset.scrollingSourceY = JSON.stringify(el.scrollTop)
+		el.dataset.scrollingTargetY = JSON.stringify(y)
+		if (el.dataset.scrollingProgress === undefined) {
+			el.dataset.scrollingProgress = JSON.stringify(false)
+		}
+		let flag = JSON.parse(el.dataset.scrollingProgress)
+		if (!flag) {
+			el.dataset.scrollingProgress = JSON.stringify(true)
+			frame(el, callback)
+		}
+
+	}
+
+})();
+
+// focus
+
+function leaveFocusedElement() {
+	let el = document.querySelector('#focus-trigger')
+	el.classList.remove('hide')
+console.log('leave focused element')
+	setTimeout(function () {
+		el.focus()
+		setTimeout(function () {
+			el.classList.add('hide')
+		}, 50)
+	}, 50)
 }
