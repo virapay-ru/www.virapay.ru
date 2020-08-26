@@ -3,6 +3,7 @@
 let profileData = null
 let providersList = null
 let profileSave = function () { };
+let profilePaymentInit = function (rowKey, account, summ) { };
 
 
 // regions selector 
@@ -371,7 +372,7 @@ async function mainInit() {
 					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
 
-					activityAccountPayment.querySelector('.prepare-payment').onclick = () => {
+					activityAccountPayment.querySelector('.prepare-payment').onclick = async () => {
 
 						let prevAcc = accItem.acc
 						let prevDesc = accItem.desc
@@ -379,20 +380,59 @@ async function mainInit() {
 						accItem.acc = inputAccount.value
 						accItem.desc = inputDescription.value
 						accItem.sum = inputSum.value
+
+						switchActivity(activityLoading)
+						let payment = await profilePaymentInit(rowKey, accItem.acc, accItem.sum)
+						if (payment && payment.id && payment.url) {
+							if (!(profileData.history[rowKey] instanceof Array)) {
+								profileData.history[rowKey] = []
+							}
+							profileData.history[rowKey].push({
+								id: payment.id,
+								acc: accItem.acc,
+								sum: accItem.sum,
+								url: payment.url,
+								created: payment.created
+							})
+							let result = await profileSave()
+							if (result) {
+								location.replace(payment.url)
+							} else {
+								showMessage('Подготовка платежа', 'Не удалось сохранить историю платежей. Попробуйте позднее.', () => {
+									accItem.acc = prevAcc
+									accItem.desc = prevDesc
+									accItem.sum = prevSum
+									switchActivity(activityAccountPayment)
+								})
+							}
+						} else {
+							showMessage('Подготовка платежа', 'Не удалось подготовить платеж. Попробуйте позднее.', () => {
+								accItem.acc = prevAcc
+								accItem.desc = prevDesc
+								accItem.sum = prevSum
+								switchActivity(activityAccountPayment)
+							})
+						}
+
+/*
 						let result = profileSave()
 						if (result) {
 							accountNode.querySelector('.value').innerText = inputAccount.value
 							accountNode.querySelector('.description').innerText = inputDescription.value
-							activityAccountPayment.querySelector('.back').onclick()
+//							activityAccountPayment.querySelector('.back').onclick()
+
+							// TODO payment
+							let payment = await profilePaymentInit(rowKey, accItem.acc, accItem.sum)
+console.log('TODO payment', payment)
+
 						} else {
-							showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
+							showMessage('Подготовка платежа', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 								accItem.acc = prevAcc
 								accItem.desc = prevDesc
 								accItem.sum = prevSum
 							})
 						}
-
-						// TODO payment
+*/
 					}
 
 					historyPut('accounts')
@@ -459,6 +499,16 @@ async function mainInit() {
 				})
 				activityAccountEdit.querySelectorAll('.acc-example').forEach(node => {
 					node.innerText = item.acc_example
+				})
+
+				activityAccountPayment.querySelectorAll('.provider-details .name').forEach(node => {
+					node.innerText = item.name_portal
+				})
+				activityAccountPayment.querySelectorAll('.provider-details .inn').forEach(node => {
+					node.innerText = 'ИНН ' + item.inn
+				})
+				activityAccountPayment.querySelectorAll('.provider-details .service').forEach(node => {
+					node.innerText = item.service_name
 				})
 
 				activityAccountPayment.querySelectorAll('.back').forEach(node => node.onclick = () => {
@@ -777,6 +827,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		doLogout()
 		profileData = null
 		profileSave = function () { }
+		profilePaymentInit = function (rowKey, account, summ) { };
 	}
 
 	switchActivity(activityLoading)
@@ -844,6 +895,25 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				} catch (errorProfileSaving) {
 					console.log('SAVING PROFILE FAILED', errorProfileSaving)
 					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+				}
+				return null
+			}
+			profilePaymentInit = async function (rowKey, account, summ) {
+				try {
+					let name = activityProfile.querySelector('.fullname').value
+					let email = activityProfile.querySelector('.email').value
+					let result = await backend.paymentRegister(
+						apiName, id, token,
+						name, email, imageUrl,
+						rowKey, account, summ
+					)
+console.log('PAYMENT', result)
+					if (result) {
+						// TODO put it to history
+					}
+					return result
+				} catch (errorPaymentRegistering) {
+					console.log('REGISTERING PAYMENT FAILED', errorPaymentRegistering)
 				}
 				return null
 			}
