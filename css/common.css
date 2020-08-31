@@ -30,6 +30,10 @@ b {
 	font-weight: 900;
 }
 
+:focus {
+	outline: 0;	
+}
+
 
 /* custom */
 
@@ -237,6 +241,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+
 /* label */
 
 .label {
@@ -420,11 +425,12 @@ input.verification + .verification-result > .verification {
     justify-content: center;
     border-radius: 1rem;
     background-color: #fff;
-	transition: all 0.6s ease-out;
+	transition: all 0.3s ease-out;
 }
 
 .activity.main .hot-icons a.selected .icon {
-    background-color: #eee;
+    background-color: #ccc;
+	color: #fff;
 }
 
 .activity.main .hot-icons a span {
@@ -435,17 +441,31 @@ input.verification + .verification-result > .verification {
 	color: #fc0;
 }
 
+.activity.main .hot-icons .open-favorites.selected .icon {
+    background-color: #fc0;
+}
+
 .activity.main .hot-icons .open-scanner .icon {
 	color: #fd0000;
+}
+
+.activity.main .hot-icons .open-scanner.selected .icon {
+    background-color: #fd0000;
 }
 
 .activity.main .hot-icons .open-history .icon {
 	color: #4a0;
 }
 
+.activity.main .hot-icons .open-history.selected .icon {
+    background-color: #4a0;
+}
+
 .activity.main .hot-icons .open-search .icon {
 	color: rgb(77, 144, 254);
 }
+
+
 
 .activity.main .categories {
 	display: flex;
@@ -709,6 +729,7 @@ input.verification + .verification-result > .verification {
 .activity.main .search-field .label input:focus {
 	border: 1px solid rgb(77, 144, 254);
 	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
+	outline: 0;
 }
 
 

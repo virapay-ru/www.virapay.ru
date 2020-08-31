@@ -164,6 +164,12 @@ async function mainInit() {
 				item.isFavorite = false
 			}
 
+			if ((rowKey in profileData.history) && (profileData.history[rowKey] instanceof Array) && profileData.history[rowKey].length > 0) {
+				item.hasHistory = true
+			} else {
+				item.hasHistory = false
+			}
+
 			let detailsNode = document.createElement('div')
 			detailsNode.classList.add('details')
 
@@ -394,6 +400,7 @@ async function mainInit() {
 								url: payment.url,
 								created: payment.created
 							})
+							item.hasHistory = true
 							let result = await profileSave()
 							if (result) {
 								location.replace(payment.url)
@@ -720,7 +727,8 @@ console.log('total', total)
 
 function filterProviders() {
 
-	let favlistOnly = activityMain.querySelector('.open-favorites').classList.contains('selected')
+	let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
+	let historyFlag = activityMain.querySelector('.open-history').classList.contains('selected')
 
 	let selectedCategories = []
 	activityMain.querySelectorAll('.category').forEach(category => {
@@ -790,7 +798,11 @@ function filterProviders() {
 			}
 		}
 
-		if (favlistOnly && !row.isFavorite) {
+		if (favoritesFlag && !row.isFavorite) {
+			row.isMatch = false
+		}
+
+		if (historyFlag && !row.hasHistory) {
 			row.isMatch = false
 		}
 
@@ -822,6 +834,8 @@ function filterProviders() {
 // profile functions
 
 async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogout, doUpdate) {
+
+	let updatingKey = `/${location.hostname}/updatingToken`
 
 	let logoutCallback = function () {
 		doLogout()
@@ -955,6 +969,7 @@ console.log('PAYMENT', result)
 				}
 			})
 
+			storagePut(updatingKey, false)
 
 			if (result.isNew) {
 				historyPut('main')
@@ -965,7 +980,36 @@ console.log('PAYMENT', result)
 
 		} else {
 
-			showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
+			let updating = storageGet(updatingKey)
+
+			if (updating) {
+
+				storagePut(updatingKey, false)
+				showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
+
+			} else {
+
+				storagePut(updatingKey, true)
+				console.log('AUTO UPDATE TOKEN')
+
+				let url = null
+				if (apiName === 'google') {
+					url = document.querySelector('.signin-with-google').href
+				} else if (apiName === 'facebook') {
+					url = document.querySelector('.signin-with-facebook').href
+				} else if (apiName === 'vk') {
+					url = document.querySelector('.signin-with-vk').href
+				} else if (apiName === 'debug') {
+					url = 'http://127.0.0.1:8080/debug/auth'
+				}
+				if (url !== null) {
+					setTimeout(function () {
+						location.replace(url)
+					}, 750)
+				}
+
+			}
+
 		}
 
 	} catch (errorLogin) {
@@ -1039,10 +1083,7 @@ let navBarHide = () => { }
 
 	activityMain.querySelectorAll('.open-favorites').forEach(btn => {
 		btn.onclick = () => {
-			let icon = btn.querySelector('.icon')
-			if (icon.classList.contains('mdi-star-outline')) {
-				icon.classList.remove('mdi-star-outline')
-				icon.classList.add('mdi-star')
+			if (!btn.classList.contains('selected')) {
 				btn.classList.add('selected')
 				setTimeout(function () {
 					let el = document.querySelector('.search-field')
@@ -1050,8 +1091,36 @@ let navBarHide = () => { }
 				}, 500)
 			} else {
 				btn.classList.remove('selected')
-				icon.classList.remove('mdi-star')
-				icon.classList.add('mdi-star-outline')
+			}
+			filterProviders()
+		}
+	})
+
+	activityMain.querySelectorAll('.open-scanner').forEach(btn => {
+		btn.onclick = () => {
+			if (!btn.classList.contains('selected')) {
+				btn.classList.add('selected')
+				setTimeout(function () {
+					let el = document.querySelector('.search-field')
+					scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+				}, 500)
+			} else {
+				btn.classList.remove('selected')
+			}
+			filterProviders()
+		}
+	})
+
+	activityMain.querySelectorAll('.open-history').forEach(btn => {
+		btn.onclick = () => {
+			if (!btn.classList.contains('selected')) {
+				btn.classList.add('selected')
+				setTimeout(function () {
+					let el = document.querySelector('.search-field')
+					scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
+				}, 500)
+			} else {
+				btn.classList.remove('selected')
 			}
 			filterProviders()
 		}
