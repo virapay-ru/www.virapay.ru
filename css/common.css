@@ -995,6 +995,193 @@ input.verification + .verification-result > .verification {
 }
 
 
+/* activity account-history */
+
+.activity.account-history {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
+.activity.account-history .container {
+	max-width: 26rem;
+	width: 100%;
+	align-items: center;
+}
+
+.activity.account-history .provider-details {
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.account-history .history-list {
+	width: 100%;
+}
+
+.activity.account-history .provider-details .name {
+	font-weight: bold;
+	font-size: 1.25rem;
+    margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.account-history .payment {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid rgba(77, 144, 254, 0.2);
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 5px;
+	background: #fff;
+	z-index: 0;
+	width: 100%;
+}
+
+.activity.account-history .payment.color-normal {
+	border-color: rgba(91, 254, 77, 0.2);
+}
+
+.activity.account-history .payment.color-warning {
+	border-color: rgba(254, 77, 77, 0.2);
+}
+
+.activity.account-history .payment .description {
+	opacity: 0.5;
+}
+
+.activity.account-history .payment .value {
+	font-size: 2.5rem;
+	font-weight: 400;
+	line-height: 1;
+	margin: 0;
+}
+
+.activity.account-history .payment .button-container {
+    display: flex;
+    flex-flow: row;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.activity.account-history .payment .button-container .button {
+	width: 100%;
+	max-width: 100%;
+    color: rgb(24, 119, 242);
+    margin: 0 0 0 0;
+    box-shadow: none;
+	background-color: rgba(215, 231, 251, 0.3);
+	transition: background-color 0.3s ease-out;
+	cursor: default;
+}
+
+/*.activity.account-history .payment .button-container .button:hover {
+	background-color: rgba(215, 231, 251, 1);
+}*/
+
+.activity.account-history .payment.color-normal .button-container .button {
+    color: rgb(37, 160, 22);
+	background-color: rgba(213, 247, 206, 0.3);
+}
+
+.activity.account-history .payment.color-warning .button-container .button {
+    color: rgb(242, 24, 24);
+	background-color: rgba(239, 198, 198, 0.3);
+}
+
+.activity.account-history > .container > .button-container {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.activity.account-history .button-container .button {
+	margin: 0;
+	min-width: 100%;
+}
+
+.activity.account-history .payment .details {
+	display: flex;
+	flex-flow: row;
+	padding: 0.5rem;
+	align-items: start;
+}
+
+.activity.account-history .payment .details .info {
+	width: calc(100% - 2rem);
+}
+
+.activity.account-history .payment .details .commands {
+	width: 1.5rem;
+}
+
+/*
+.activity.account-history .payment .details .popup-trigger {
+	width: 2rem;
+	height: 1.5rem;
+	line-height: 1.5;
+	cursor: pointer;
+	display: block;
+	text-align: center;
+	-webkit-tap-highlight-color: transparent;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	user-select: none;
+}
+
+.activity.account-history .payment .details .popup-trigger.is-active {
+	background-color: #fff;
+    box-shadow: 0 -0.5rem 1rem rgba(0,0,0,0.1);
+    z-index: 2;
+    position: relative;
+}
+
+.activity.account-history .payment .details .popup-trigger + .popup {
+	position: absolute;
+	z-index: 1;
+	width: 10rem;
+	max-height: 0;
+	margin-left: -8rem;
+	background-color: #fff;
+	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	display: inline-flex;
+	flex-flow: column;
+	box-sizing: border-box;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	opacity: 0;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.activity.account-history .payment .details .popup-trigger.is-active + .popup {
+	max-height: 10rem;
+	opacity: 1;
+	box-shadow: 0 0 5rem rgba(0,0,0,0.3);
+}
+
+.activity.account-history .payment .details .popup-trigger + .popup > a {
+	display: block;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: all 0.3s ease-out;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.account-history .payment .details .popup-trigger + .popup > a:hover {
+	background-color: rgba(215, 231, 251, 0.7);
+}
+
+.activity.account-history .payment .details .popup-trigger + .popup > a > i {
+	display: inline-block;
+	margin-right: 1em;
+}
+*/
+
+
+
 /* regions selector */
 
 .regions-selector {
