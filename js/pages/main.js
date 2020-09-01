@@ -366,10 +366,65 @@ async function mainInit() {
 
 				accountNode.querySelectorAll('.account-history').forEach(commandNode => commandNode.onclick = () => {
 
+					function formatSum(val) {
+						return val.replace(/\./, ',')
+					}
+
 					activityAccountHistory.querySelector('.acc-value').innerText = accItem.acc
 
+					let listNode = activityAccountHistory.querySelector('.history-list')
 
-					// TODO
+					let payments = profileData.history[rowKey].filter(row => row.acc == accItem.acc)
+					console.log('payments', payments)
+
+					// TODO clear list
+
+					payments.forEach(paymItem => {
+
+						let paymentNode = document.createElement('div')
+						paymentNode.classList.add('payment')
+						paymentNode.classList.add('color-neutral') // TODO status
+
+						let detailsNode = document.createElement('div')
+						detailsNode.classList.add('details')
+
+						let infoNode = document.createElement('div')
+						infoNode.classList.add('info')
+
+						let dateNode = document.createElement('div')
+						dateNode.classList.add('date')
+
+						let valueNode = document.createElement('div')
+						valueNode.classList.add('value')
+						valueNode.innerHTML = '' + formatSum(paymItem.sum) + ' <i class="mdi mdi-currency-rub"></i>'
+
+						let descriptionNode = document.createElement('div')
+						descriptionNode.classList.add('description')
+						descriptionNode.innerHTML = '<i class="mdi mdi-qrcode"></i> Система быстрых платежей' // TODO payment type
+
+						infoNode.appendChild(dateNode)
+						infoNode.appendChild(valueNode)
+						infoNode.appendChild(descriptionNode)
+
+						detailsNode.appendChild(infoNode)
+
+						let btnContainerNode = document.createElement('div')
+						btnContainerNode.classList.add('button-container')
+
+						// TODO status
+						btnContainerNode.innerHTML = `
+							<a class="button">
+				            	<span>Обновление...</span>
+								<i class="icon mdi mdi-loading spin"></i>
+							</a>
+						`
+
+						paymentNode.appendChild(detailsNode)
+						paymentNode.appendChild(btnContainerNode)
+
+						listNode.appendChild(paymentNode)
+
+					})
 
 					historyPut('accounts')
 					switchActivity(activityAccountHistory)
