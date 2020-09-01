@@ -1024,6 +1024,11 @@ input.verification + .verification-result > .verification {
 	width: 100%;
 }
 
+.activity.account-history .provider-details .acc-val {
+	font-weight: bold;
+    border-bottom: 2px solid;
+}
+
 .activity.account-history .payment {
 	margin-top: 1rem;
 	margin-bottom: 1rem;

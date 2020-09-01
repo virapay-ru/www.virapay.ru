@@ -364,6 +364,18 @@ async function mainInit() {
 					}
 				})
 
+				accountNode.querySelectorAll('.account-history').forEach(commandNode => commandNode.onclick = () => {
+
+					activityAccountHistory.querySelector('.acc-value').innerText = accItem.acc
+
+
+					// TODO
+
+					historyPut('accounts')
+					switchActivity(activityAccountHistory)
+
+				})
+
 				accountNode.querySelectorAll('.account-payment').forEach(commandNode => commandNode.onclick = () => {
 
 					let inputAccount = activityAccountPayment.querySelector('input.account')
@@ -515,6 +527,21 @@ console.log('TODO payment', payment)
 					node.innerText = 'ИНН ' + item.inn
 				})
 				activityAccountPayment.querySelectorAll('.provider-details .service').forEach(node => {
+					node.innerText = item.service_name
+				})
+
+				activityAccountHistory.querySelectorAll('.back').forEach(node => node.onclick = () => {
+					switchActivity(activityAccounts)
+					document.scrollingElement.scrollTop = scrollTopAccounts
+				})
+
+				activityAccountHistory.querySelectorAll('.provider-details .name').forEach(node => {
+					node.innerText = item.name_portal
+				})
+				activityAccountHistory.querySelectorAll('.provider-details .inn').forEach(node => {
+					node.innerText = 'ИНН ' + item.inn
+				})
+				activityAccountHistory.querySelectorAll('.provider-details .service').forEach(node => {
 					node.innerText = item.service_name
 				})
 
