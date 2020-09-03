@@ -392,7 +392,7 @@ async function mainInit() {
 					// TODO clear list
 
 					payments.forEach(paymItem => {
-
+/*
 						let paymentNode = document.createElement('div')
 						paymentNode.classList.add('payment')
 						paymentNode.classList.add('color-neutral') // TODO status
@@ -435,7 +435,7 @@ async function mainInit() {
 						paymentNode.appendChild(btnContainerNode)
 
 						listNode.appendChild(paymentNode)
-
+*/
 					})
 
 					historyPut('accounts')
@@ -500,25 +500,6 @@ async function mainInit() {
 							})
 						}
 
-/*
-						let result = profileSave()
-						if (result) {
-							accountNode.querySelector('.value').innerText = inputAccount.value
-							accountNode.querySelector('.description').innerText = inputDescription.value
-//							activityAccountPayment.querySelector('.back').onclick()
-
-							// TODO payment
-							let payment = await profilePaymentInit(rowKey, accItem.acc, accItem.sum)
-console.log('TODO payment', payment)
-
-						} else {
-							showMessage('Подготовка платежа', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
-								accItem.acc = prevAcc
-								accItem.desc = prevDesc
-								accItem.sum = prevSum
-							})
-						}
-*/
 					}
 
 					historyPut('accounts')
@@ -757,19 +738,23 @@ console.log('acc check result', result)
 						if (isNaN(sum)) {
 							sum = '0.00'
 						}
-console.log('sum', sum)
+						if (sum !== inputSum.value && sum !== '0.00') {
+							let start = inputSum.selectionStart
+							inputSum.value = sum
+							inputSum.selectionStart = start
+							inputSum.selectionEnd = inputSum.selectionStart
+						}
+
 						let commission = ((sum / 100) * 5 + 3).toFixed(2) // TODO commission
-console.log('commission', commission)
 						let total = (parseFloat(sum) + parseFloat(commission)).toFixed(2)
-console.log('total', total)
 
 						outputCommission.innerText = commission
 						outputTotal.innerText = total
 					}
 
-					inputSum.oninput = function (evt) {
+					inputSum.onkeypress = function (evt) {
 
-						/*let c = String.fromCharCode(evt.keyCode)
+						let c = String.fromCharCode(evt.keyCode)
 						if (/^\d$/.test(c)) {
 							return true
 						} else {
@@ -783,15 +768,31 @@ console.log('total', total)
 								let rval = val.substring(end)
 								let replacement = '.'
 								let offset = -1 + replacement.length
+								let shiftOffset = (/\./.test(lval) ? 0 : 1)
 								el.value = lval.replace(/\./g, '') + replacement + rval.replace(/\./g, '')
-								el.selectionStart = start + offset + 1
+								el.selectionStart = start + offset + shiftOffset
 								el.selectionEnd = el.selectionStart
 								el.dispatchEvent(new Event('input'))
 							}
 							return false
-						}*/
+						}
+						
+					}
 
+					inputSum.oninput = function () {
 						updateSumms()
+					}
+
+					inputSum.onfocus = function () {
+						if (Math.abs(parseFloat(inputSum.value)) < 0.01) {
+							inputSum.value = ''
+						}
+					}
+
+					inputSum.onblur = function () {
+						if (inputSum.value == '') {
+							inputSum.value = '0.00'
+						}
 					}
 
 				})();

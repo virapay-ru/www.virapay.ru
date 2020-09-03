@@ -1041,7 +1041,7 @@ input.verification + .verification-result > .verification {
 	width: 100%;
 }
 
-.activity.account-history .provider-details .acc-val {
+.activity.account-history .provider-details .acc-value {
 	font-weight: bold;
     border-bottom: 2px solid;
 }
@@ -1069,11 +1069,44 @@ input.verification + .verification-result > .verification {
 	opacity: 0.5;
 }
 
-.activity.account-history .payment .value {
-	font-size: 2.5rem;
+.activity.account-history .payment .info {
+	width: 100%;
+}
+
+.activity.account-history .payment .row {
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.activity.account-history .payment .row.summary {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.activity.account-history .payment .summ {
+	font-size: 2.25rem;
 	font-weight: 400;
 	line-height: 1;
 	margin: 0;
+}
+
+.activity.account-history .payment .commission {
+	line-height: 1;
+	opacity: 0.5;
+	margin-left: 1rem;
+	text-align: center;
+}
+
+.activity.account-history .payment .commission > *:first-child {
+	font-size: 1.4rem;
+	font-weight: 400;
+}
+
+.activity.account-history .payment .commission > *:last-child {
+	font-size: 0.75rem;
 }
 
 .activity.account-history .payment .button-container {
@@ -1127,10 +1160,6 @@ input.verification + .verification-result > .verification {
 	flex-flow: row;
 	padding: 0.5rem;
 	align-items: start;
-}
-
-.activity.account-history .payment .details .info {
-	width: calc(100% - 2rem);
 }
 
 .activity.account-history .payment .details .commands {
