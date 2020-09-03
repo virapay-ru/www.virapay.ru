@@ -147,6 +147,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/* confirm */
+
+.activity.confirm .buttons {
+	display: flex;
+	flex-flow: row;
+}
+
+.activity.confirm button {
+	margin-top: 1rem;
+	width: 30%;
+}
+
+.activity.confirm button + button {
+	margin-left: 1rem;
+}
+
+
 /* page */
 
 .page {
@@ -425,7 +442,7 @@ input.verification + .verification-result > .verification {
     justify-content: center;
     border-radius: 1rem;
     background-color: #fff;
-	transition: all 0.3s ease-out;
+	-transition: all 0.3s ease-out;
 }
 
 .activity.main .hot-icons a.selected .icon {

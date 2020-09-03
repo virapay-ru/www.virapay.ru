@@ -248,10 +248,13 @@ async function mainInit() {
 					}
 				})
 
-				document.querySelectorAll('.popup > a').forEach(a => a.onmousedown = () => {
+				document.querySelectorAll('.popup > a').forEach(a => a.onmousedown = (evt) => {
+					evt.stopPropagation()
+					evt.preventDefault()
 					triggers.forEach(node => {
 						node.classList.remove('is-active')
 					})
+					a.onclick()
 				})
 
 			}
@@ -350,18 +353,27 @@ async function mainInit() {
 				})
 
 				accountNode.querySelectorAll('.account-delete').forEach(commandNode => commandNode.onclick = () => {
-					let prevList = profileData.accList[rowKey]
-					accItem.removed = true
-					profileData.accList[rowKey] = profileData.accList[rowKey].filter(x => !x.removed)
-					let result = profileSave()
-					if (result) {
-						accountNode.remove()
-					} else {
-						showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
-							profileData.accList[rowKey] = prevList
-							delete accItem.removed
-						})
-					}
+					let scrollTop = document.scrollingElement.scrollTop
+					getConfirm('Удаление данных', 'Вы действительно хотите удалить' + (item.acc_name ? ' ' + item.acc_name : '') + '?', () => {
+						let prevList = profileData.accList[rowKey]
+						accItem.removed = true
+						profileData.accList[rowKey] = profileData.accList[rowKey].filter(x => !x.removed)
+						// TODO remove history
+						let result = profileSave()
+						if (result) {
+							accountNode.remove()
+						} else {
+							showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
+								profileData.accList[rowKey] = prevList
+								delete accItem.removed
+							})
+						}
+						switchActivity(activityAccounts)
+						document.scrollingElement.scrollTop = scrollTop
+					}, () => {
+						switchActivity(activityAccounts)
+						document.scrollingElement.scrollTop = scrollTop
+					})
 				})
 
 				accountNode.querySelectorAll('.account-history').forEach(commandNode => commandNode.onclick = () => {
@@ -653,7 +665,7 @@ console.log('TODO payment', payment)
 
 				function enableAccountValidation(inputAccount, actionButton) {
 
-let accountCheckTimeout = null
+					let accountCheckTimeout = null
 					inputAccount.oninput = function () {
 console.log('acc', inputAccount.value, item.id, item.inn, item.service_id)
 						if (accountCheckTimeout !== null) {
@@ -675,6 +687,8 @@ console.log('acc', inputAccount.value, item.id, item.inn, item.service_id)
 							}
 
 							function handleResult(result) {
+								inputAccount.classList.remove('valid')
+								inputAccount.classList.remove('error')
 								inputAccount.classList.remove('verification')
 								if (result && result.account == acc) {
 									inputAccount.classList.add('valid')
@@ -717,7 +731,7 @@ console.log('acc check result', result)
 
 							})
 
-						}, 500)
+						}, 750)
 					}
 				}
 

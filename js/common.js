@@ -36,6 +36,7 @@ function parseParameters(str) {
 let activities = Array.from(document.querySelectorAll('.activity'))
 let activityLoading = activities.reduce((_, a) => a.classList.contains('loading') ? a : _, null)
 let activityMessage = activities.reduce((_, a) => a.classList.contains('message') ? a : _, null)
+let activityConfirm = activities.reduce((_, a) => a.classList.contains('confirm') ? a : _, null)
 let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
 let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
 let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
@@ -78,6 +79,24 @@ function showMessage(title, text, actionCallback) {
 		}
 	})
 	switchActivity(activityMessage)
+}
+
+// confirm
+
+function getConfirm(title, text, yesCallback, noCallback) {
+	activityConfirm.querySelector('.title').innerText = title
+	activityConfirm.querySelector('.text').innerText = text
+	activityConfirm.querySelectorAll('.action-yes').forEach(node => {
+		node.onclick = function () {
+			yesCallback();
+		}
+	})
+	activityConfirm.querySelectorAll('.action-no').forEach(node => {
+		node.onclick = function () {
+			noCallback();
+		}
+	})
+	switchActivity(activityConfirm)
 }
 
 // scrolling
