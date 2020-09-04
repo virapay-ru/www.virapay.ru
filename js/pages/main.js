@@ -1006,10 +1006,10 @@ function filterProviders() {
 		items.sort(comparator)
 		items.forEach((row, i) => {
 			parentNode.appendChild(row.node)
-			setTimeout(() => {
+//			setTimeout(() => {
 				row.node.classList.remove('hide')
 				row.node.classList.add('show')
-			}, i * 150)
+//			}, i * 150)
 		})
 	}, 0)
 
