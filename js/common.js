@@ -149,7 +149,7 @@ let scrollByYTo = (function () {
 function leaveFocusedElement() {
 	let el = document.querySelector('#focus-trigger')
 	el.classList.remove('hide')
-console.log('leave focused element')
+//console.log('leave focused element')
 	setTimeout(function () {
 		el.focus()
 		setTimeout(function () {

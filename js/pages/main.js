@@ -2,6 +2,7 @@
 
 let profileData = null
 let providersList = null
+let paymentsTypesList = null
 let profileSave = function () { };
 let profilePaymentInit = function (rowKey, account, summ) { };
 
@@ -143,6 +144,7 @@ async function mainInit() {
 		let listNode = activityMain.querySelector('.partners')
 		listNode.innerHTML = ''
 		providersList = providersData.providers
+		paymentsTypesList = providersData.paymentsTypes
 		providersList.forEach(item => {
 
 			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
@@ -1013,10 +1015,11 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
+					let paymentTypeId = 2 // TODO get from activity
 					let result = await backend.paymentRegister(
 						apiName, id, token,
 						name, email, imageUrl,
-						rowKey, account, summ
+						rowKey, paymentTypeId, account, summ
 					)
 console.log('PAYMENT', result)
 					if (result) {
