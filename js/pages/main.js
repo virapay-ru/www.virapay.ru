@@ -4,8 +4,7 @@ let profileData = null
 let providersList = null
 let paymentsTypesList = null
 let profileSave = function () { };
-let profilePaymentInit = function (rowKey, account, summ) { };
-
+let profilePaymentInit = function (rowKey, paymentTypeId, account, summ) { };
 
 // regions selector 
 
@@ -463,18 +462,25 @@ async function mainInit() {
 					inputAccount.value = accItem.acc
 					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
+					let initPaymentTypeId = parseInt(accItem.paymTyp)
+					if (!initPaymentTypeId) { initPaymentTypeId = 1 } // TODO default payment type
+					activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]').checked = true
 
 					activityAccountPayment.querySelector('.prepare-payment').onclick = async () => {
 
+						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
+
+						let prevPaymTyp = accItem.paymTyp
 						let prevAcc = accItem.acc
 						let prevDesc = accItem.desc
 						let prevSum = accItem.sum
 						accItem.acc = inputAccount.value
 						accItem.desc = inputDescription.value
 						accItem.sum = inputSum.value
+						accItem.paymTyp = paymentTypeId
 
 						switchActivity(activityLoading)
-						let payment = await profilePaymentInit(rowKey, accItem.acc, accItem.sum)
+						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum)
 						if (payment && payment.id && payment.url) {
 							if (!(profileData.history[rowKey] instanceof Array)) {
 								profileData.history[rowKey] = []
@@ -1035,9 +1041,9 @@ function filterProviders() {
 		items.forEach((row, i) => {
 			row.timeout = setTimeout(() => {
 				row.node.classList.add('show')
-			}, i * 50)
+			}, i * 150)
 		})
-	}, 0)
+	}, 300)
 
 }
 
@@ -1122,11 +1128,10 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				}
 				return null
 			}
-			profilePaymentInit = async function (rowKey, account, summ) {
+			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ) {
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
-					let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
 					let result = await backend.paymentRegister(
 						apiName, id, token,
 						name, email, imageUrl,
