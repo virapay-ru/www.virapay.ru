@@ -644,7 +644,7 @@ async function mainInit() {
 
 				})
 
-				// accounts validation
+				// account validation
 
 				function enableAccountValidation(inputAccount, actionButton) {
 
@@ -734,6 +734,34 @@ console.log('acc check result', result)
 					let outputCommission = activityAccountPayment.querySelector('.commission')
 					let outputTotal = activityAccountPayment.querySelector('.total')
 
+					function validateSumm() {
+/*
+							backend.accountCheck(rowKey, item.inn, acc).then(result => {
+
+								if (!accountsCache[rowKey]) {
+									accountsCache[rowKey] = { }
+								}
+								accountsCache[rowKey][acc] = {
+									result,
+									time: Date.now(),
+									ttl: (result ? 60 : 10) * 1000
+								}
+
+console.log('acc check result', result)
+								handleResult(result)
+
+							}).catch(err => {
+
+								inputAccount.classList.remove('verification')
+								console.log(err)
+
+							})
+*/
+
+// TODO validate summ
+
+					}
+
 					function updateSumms() {
 
 						let sum = parseFloat(inputSum.value).toFixed(2)
@@ -746,6 +774,8 @@ console.log('acc check result', result)
 							inputSum.selectionStart = start
 							inputSum.selectionEnd = inputSum.selectionStart
 						}
+
+						validateSumm()
 
 						let commission = ((sum / 100) * 5 + 3).toFixed(2) // TODO commission
 						let total = (parseFloat(sum) + parseFloat(commission)).toFixed(2)
@@ -1015,7 +1045,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
-					let paymentTypeId = 2 // TODO get from activity
+					let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
 					let result = await backend.paymentRegister(
 						apiName, id, token,
 						name, email, imageUrl,

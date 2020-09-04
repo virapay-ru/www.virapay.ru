@@ -138,13 +138,13 @@
 			<small><span class="apiname"></span>/<span class="id"></span></small>
 
 			<label class="label">
-				<div>Полное Имя</div>
-				<div><input class="fullname"/></div>
+				<div class="subject">Полное Имя</div>
+				<div><input class="fullname" type="text"/></div>
 			</label>
 
 			<label class="label">
-				<div>Email</div>
-				<div><input class="email"/></div>
+				<div class="subject">Email</div>
+				<div><input class="email" type="text"/></div>
 			</label>
 
 			<button class="button primary profile-save">
@@ -264,6 +264,7 @@
 								<div class="summ">500,00<i class="mdi mdi-currency-rub"></i></div>
 								<div class="commission"><div>+ 2,50<i class="mdi mdi-currency-rub"></i></div><div>сервисный сбор</div></div>
 							</div>
+							<div class="description"><i class="mdi mdi-qrcode"></i> Система быстрых платежей</div>
 						</div>
 					</div>
 					<div class="button-container">
@@ -285,10 +286,11 @@
 								<div class="summ">500,00<i class="mdi mdi-currency-rub"></i></div>
 								<div class="commission"><div>+ 2,50<i class="mdi mdi-currency-rub"></i></div><div>сервисный сбор</div></div>
 							</div>
+							<div class="description"><i class="mdi mdi-credit-card-outline"></i> Картой банка</div>
 						</div>
 					</div>
 					<div class="button-container">
-						<a class="button account-payment">
+						<a class="button">
 			            	<span>Отменен</span>
 							<i class="icon mdi mdi-close"></i>
 						</a>
@@ -321,9 +323,9 @@
 			</div>
 
 			<label class="label">
-				<div class="acc-name">Лицевой счет</div>
+				<div class="acc-name subject">Лицевой счет</div>
 				<div>
-					<input class="account"/>
+					<input class="account" type="text"/>
 					<div class="verification-result">
 						<i class="mdi mdi-check valid"></i>
 						<i class="mdi mdi-close error"></i>
@@ -335,8 +337,8 @@
 			</label>
 
 			<label class="label">
-				<div>Описание</div>
-				<div><input class="description"/></div>
+				<div class="subject">Описание</div>
+				<div><input class="description" type="text"/></div>
 				<div class="hint">Краткое описание для вашего удобства</div>
 			</label>
 
@@ -368,9 +370,9 @@
 			</div>
 
 			<label class="label">
-				<div class="acc-name">Лицевой счет</div>
+				<div class="acc-name subject">Лицевой счет</div>
 				<div>
-					<input class="account"/>
+					<input class="account" type="text"/>
 					<div class="verification-result">
 						<i class="mdi mdi-check valid"></i>
 						<i class="mdi mdi-close error"></i>
@@ -382,14 +384,41 @@
 			</label>
 
 			<label class="label">
-				<div>Описание</div>
-				<div><input class="description"/></div>
+				<div class="subject">Описание</div>
+				<div><input class="description" type="text"/></div>
 				<div class="hint">Краткое описание для вашего удобства</div>
 			</label>
 
+			<div class="payments-types">
+				<div class="subject">Способ оплаты</div>
+				<div class="list">
+					<label class="li">
+						<input type="radio" name="payment-type" value="1"/>
+						<div>
+							<div><!--<i class="mdi mdi-qrcode"></i> -->Система быстрых платежей</div>
+							<div class="hint">Используйте СПБ для минимизации затрат</div>
+						</div>
+					</label>
+					<label class="li">
+						<input type="radio" name="payment-type" value="2"/>
+						<div>
+							<div><!--<i class="mdi mdi-credit-card-outline"></i> -->Картой банка</div>
+							<div class="hint">МИР, MasterCard, VISA</div>
+						</div>
+					</label>
+				</div>
+			</div>
+
 			<label class="label">
-				<div>Сумма в рублях</div>
-				<div><input class="summ" value="500.00"/></div>
+				<div class="subject">Сумма в рублях</div>
+				<div>
+					<input class="summ" value="500.00" type="text"/>
+					<div class="verification-result">
+						<i class="mdi mdi-check valid"></i>
+						<i class="mdi mdi-close error"></i>
+						<i class="mdi mdi-loading verification spin"></i>
+					</div>
+				</div>
 				<div class="hint">Сумма к перечислению</div>
 			</label>
 
@@ -504,7 +533,7 @@
 			<div class="search-field">
 				<i class="icon mdi mdi-magnify"></i>
 				<label class="label">
-					<div><input class="search" placeholder="Поиск по ИНН, Названию..."/></div>
+					<div><input class="search" placeholder="Поиск по ИНН, Названию..." type="text"/></div>
 				</label>
 			</div>
 

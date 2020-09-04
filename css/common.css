@@ -266,7 +266,7 @@ h1, h2, h3, h4, h5, h6 {
 	max-width: 20rem;
 }
 
-.label input {
+.label input[type=text] {
 	height: 2.5rem;
 	width: 100%;
 	padding-left: 1rem;
@@ -278,10 +278,43 @@ h1, h2, h3, h4, h5, h6 {
 	box-sizing: border-box;
 }
 
-.label input:focus {
+.label input[type=text]:focus {
 	border: 1px solid rgb(77, 144, 254);
 	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
 	outline: 0;
+}
+
+
+/* subject */
+
+.subject {
+	font-weight: bold;
+}
+
+
+/* list */
+
+.list {
+	display: flex;
+	flex-flow: column;
+	width: 100%;
+	border-radius: 0.25rem;
+	border: 1px solid #eee;
+	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
+}
+
+.list > .li {
+	width: calc(100% - 1rem);;
+	display: flex;
+	flex-flow: row;
+	align-items: start;
+	padding: 1rem 0.5rem;
+	border-bottom: 1px solid #eee;	
+}
+
+.li input[type=radio] {
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
 
 
