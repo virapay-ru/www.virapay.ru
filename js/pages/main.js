@@ -1138,9 +1138,6 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 						rowKey, paymentTypeId, account, summ
 					)
 console.log('PAYMENT', result)
-					if (result) {
-						// TODO put it to history
-					}
 					return result
 				} catch (errorPaymentRegistering) {
 					console.log('REGISTERING PAYMENT FAILED', errorPaymentRegistering)
