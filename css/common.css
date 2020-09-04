@@ -1042,6 +1042,11 @@ input.verification + .verification-result > .verification {
 .activity.account-payment .total-line {
 	font-weight: 900;
     font-size: 1.5rem;
+	text-align: right;
+}
+
+.activity.account-payment .commission-line {
+	text-align: right;
 }
 
 
