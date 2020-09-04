@@ -987,29 +987,55 @@ function filterProviders() {
 	let comparator = (historyFlag ? compareByHistoryDate : compareBySortIndex)
 
 	let parentNode = activityMain.querySelector('.partners')
-
+/*
 	providersList
 		.forEach(row => {
 			row.node.classList.remove('show')
 			row.node.classList.add('hide')
 		})
 	providersList
-//		.filter(row => !row.isMatch)
+		.filter(row => !row.isMatch)
 		.forEach(row => {
 			if (row.node.parentElement) {
 				row.node.parentElement.removeChild(row.node)
 			}
 		})
+*/
+	providersList
+		.forEach(row => {
+			if (row.timeout) {
+				clearTimeout(row.timeout)
+			}
+			if (row.node.parentElement) {
+				row.node.parentElement.removeChild(row.node)
+			}
+			row.node.classList.remove('show')
+//			row.node.classList.add('hide')
+		})
 
+/*
 	setTimeout(function () {
 		let items = providersList.filter(row => row.isMatch)
 		items.sort(comparator)
 		items.forEach((row, i) => {
 			parentNode.appendChild(row.node)
-			setTimeout(() => {
-				row.node.classList.remove('hide')
+//			setTimeout(() => {
+//				row.node.classList.remove('hide')
 				row.node.classList.add('show')
-			}, i * 150)
+//			}, i * 150)
+		})
+	}, 0)
+*/
+	setTimeout(function () {
+		let items = providersList.filter(row => row.isMatch)
+		items.sort(comparator)
+		items.forEach((row, i) => {
+			parentNode.appendChild(row.node)
+		})
+		items.forEach((row, i) => {
+			row.timeout = setTimeout(() => {
+				row.node.classList.add('show')
+			}, i * 50)
 		})
 	}, 0)
 
