@@ -145,9 +145,11 @@ async function mainInit() {
 		listNode.innerHTML = ''
 		providersList = providersData.providers
 		paymentsTypesList = providersData.paymentsTypes
-		providersList.forEach(item => {
+		providersList.forEach((item, sortIndex) => {
 
 			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
+			item.rowKey = rowKey
+			item.sortIndex = sortIndex
 
 			let providerNode = document.createElement('div')
 			providerNode.classList.add('provider')
@@ -217,7 +219,10 @@ async function mainInit() {
 				}
 				let result = profileSave()
 				if (result) {
-					filterProviders()
+					let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
+					if (favoritesFlag) {
+						filterProviders()
+					}
 				} else {
 					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 						favNode.classList.remove('selected')
@@ -881,9 +886,6 @@ function filterProviders() {
 		.filter(word => word.length > 0)
 //console.log('searchWords', searchWords)
 
-
-	let hiddenItems = []
-
 	providersList.forEach(row => {
 
 		row.isMatch = true
@@ -935,29 +937,82 @@ function filterProviders() {
 			row.isMatch = false
 		}
 
-		if (row.isMatch) {
-			row.node.classList.add('show')
-		} else {
-			if (row.node.classList.contains('show')) {
-				row.node.classList.remove('show')
-				row.node.classList.add('hide')
-				hiddenItems.push(row.node)
-			}
-		}
-
 	})
 
-	setTimeout(function () {
-		hiddenItems.forEach(node => {
-			node.style.marginBottom = '-' + node.offsetHeight + 'px'
-		})
-		setTimeout(function () {
-			hiddenItems.forEach(node => {
-				node.classList.remove('hide')
-				node.style.marginBottom = '0'
+	function compareBySortIndex(a, b) {
+
+		if (a.sortIndex < b.sortIndex) {
+			return -1
+		}
+
+		if (a.sortIndex > b.sortIndex) {
+			return 1
+		}
+
+		return 0
+	}
+
+	function getLastPaymentDate(rowKey) {
+
+		let date = new Date("1970-01-01 00:00:00")
+
+		if (profileData.history[rowKey] && (profileData.history[rowKey] instanceof Array)) {
+			profileData.history[rowKey].forEach(paymItem => {
+				let paymDate = new Date(paymItem.created)
+				if (paymDate.getTime() > date.getTime()) {
+					date = paymDate
+				}
 			})
-		}, 500)
+		}
+
+		return date
+	}
+
+	function compareByHistoryDate(a, b) {
+		
+		let aDate = getLastPaymentDate(a.rowKey).getTime()
+		let bDate = getLastPaymentDate(b.rowKey).getTime()
+
+		if (aDate < bDate) {
+			return 1
+		}
+
+		if (aDate > bDate) {
+			return -1
+		}
+
+		return 0
+	}
+
+	let comparator = (historyFlag ? compareByHistoryDate : compareBySortIndex)
+
+	let parentNode = activityMain.querySelector('.partners')
+
+	providersList
+		.forEach(row => {
+			row.node.classList.remove('show')
+			row.node.classList.add('hide')
+		})
+	providersList
+		.filter(row => !row.isMatch)
+		.forEach(row => {
+			if (row.node.parentElement) {
+				row.node.parentElement.removeChild(row.node)
+			}
+		})
+
+	setTimeout(function () {
+		let items = providersList.filter(row => row.isMatch)
+		items.sort(comparator)
+		items.forEach((row, i) => {
+			parentNode.appendChild(row.node)
+			setTimeout(() => {
+				row.node.classList.remove('hide')
+				row.node.classList.add('show')
+			}, i * 150)
+		})
 	}, 0)
+
 }
 
 // profile functions
