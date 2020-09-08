@@ -1281,6 +1281,10 @@ input.verification + .verification-result > .verification {
 	width: 100%;
 }
 
+.activity.scanner .action-bar > .container {
+	background: #000;
+}
+
 
 /* regions selector */
 

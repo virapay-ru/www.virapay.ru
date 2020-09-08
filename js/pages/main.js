@@ -1312,15 +1312,20 @@ let navBarHide = () => { }
 	activityMain.querySelectorAll('.open-scanner').forEach(btn => {
 		btn.onclick = () => {
 
-
-
 			if (!btn.classList.contains('selected')) {
 				btn.classList.add('selected')
 
+				let doContinue = true
+
 				function closeScanner() {
+					doContinue = false
 					switchActivity(activityMain)
 					btn.classList.remove('selected')
 				}
+
+				activityScanner.querySelectorAll('.back').forEach(btn => {
+					btn.onclick = closeScanner
+				})
 
 				let video = document.createElement('video')
 				let canvas = activityScanner.querySelector('canvas')
@@ -1341,10 +1346,9 @@ let navBarHide = () => { }
 
 				function tick() {
 
-					let doContinue = true
-
 //					loadingMessage.innerText = "Loading video..."
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
+
 						loadingMessage.hidden = true
 						canvas.hidden = false
 //						outputContainer.hidden = false
@@ -1365,7 +1369,6 @@ let navBarHide = () => { }
 							drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58")
 							drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58")
 							console.log('QR code data', code.data)
-							video.srcObject.getTracks().forEach(track => track.stop())
 							doContinue = false
 							setTimeout(function () {
 								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
@@ -1375,6 +1378,8 @@ let navBarHide = () => { }
 
 					if (doContinue) {
 						requestAnimationFrame(tick)
+					} else {
+						video.srcObject.getTracks().forEach(track => track.stop())
 					}
 				}
 
@@ -1390,7 +1395,7 @@ let navBarHide = () => { }
 					console.log(err)
 				})
 
-				// TODO
+				historyPut('main')
 				switchActivity(activityScanner)
 
 			} else {
