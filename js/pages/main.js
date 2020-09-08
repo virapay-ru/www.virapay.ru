@@ -1311,12 +1311,82 @@ let navBarHide = () => { }
 
 	activityMain.querySelectorAll('.open-scanner').forEach(btn => {
 		btn.onclick = () => {
+
+
+
 			if (!btn.classList.contains('selected')) {
 				btn.classList.add('selected')
-				setTimeout(function () {
-					let el = document.querySelector('.search-field')
-					scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
-				}, 500)
+
+				function closeScanner() {
+					switchActivity(activityMain)
+					btn.classList.remove('selected')
+				}
+
+				let video = document.createElement('video')
+				let canvas = activityScanner.querySelector('canvas')
+				let ctx = canvas.getContext('2d')
+				let loadingMessage = activityScanner.querySelector('.loading')
+//    var outputContainer = document.getElementById("output");
+//    var outputMessage = document.getElementById("outputMessage");
+//    var outputData = document.getElementById("outputData");
+
+				function drawLine(begin, end, color) {
+					ctx.beginPath()
+					ctx.moveTo(begin.x, begin.y)
+					ctx.lineTo(end.x, end.y)
+					ctx.lineWidth = 4
+					ctx.strokeStyle = color
+					ctx.stroke()
+				}
+
+				function tick() {
+					let doContinue = true
+//					loadingMessage.innerText = "Loading video..."
+					if (video.readyState === video.HAVE_ENOUGH_DATA) {
+						loadingMessage.hidden = true
+						canvas.hidden = false
+//						outputContainer.hidden = false
+						canvas.height = video.videoHeight
+						canvas.width = video.videoWidth
+						ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+						let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+						let code = jsQR(imageData.data, imageData.width, imageData.height, {
+							inversionAttempts: "dontInvert",
+						})
+						if (code) {
+							drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58")
+							drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58")
+							drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58")
+							drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58")
+							console.log('QR code data', code.data)
+							video.srcObject.getTracks().forEach(track => track.stop())
+							doContinue = false
+							showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+//						} else {
+//							outputMessage.hidden = false
+//							outputData.parentElement.hidden = true
+						}
+					}
+					if (doContinue) {
+						requestAnimationFrame(tick)
+					}
+				}
+
+				navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function(stream) {
+					video.srcObject = stream
+					video.setAttribute('playsinline', true) // required to tell iOS safari we don't want fullscreen
+					video.play()
+					requestAnimationFrame(tick)
+				}).catch(err => {
+					showMessage('Сканирование кода', 'Не удалось получить доступ к камере.', closeScanner)
+					console.log(err)
+				})
+
+
+				// TODO
+				switchActivity(activityScanner)
+
+
 			} else {
 				btn.classList.remove('selected')
 			}
