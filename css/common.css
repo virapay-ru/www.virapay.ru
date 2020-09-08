@@ -1273,16 +1273,27 @@ input.verification + .verification-result > .verification {
 /* activity scanner */
 
 .activity.scanner {
-	background: #000;
-	color: #fff;
+	-background: #000;
+	-color: #fff;
+	overflow: hidden;
 }
 
 .activity.scanner canvas {
 	width: 100%;
+	border-radius: 10px;
+}
+
+.activity.scanner > .container {
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
 }
 
 .activity.scanner .action-bar > .container {
-	background: #000;
+	background: #fff;
+}
+
+.activity.scanner .info {
+	text-align: center;
 }
 
 

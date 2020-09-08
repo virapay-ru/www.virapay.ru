@@ -1327,52 +1327,82 @@ let navBarHide = () => { }
 					btn.onclick = closeScanner
 				})
 
+				let info = activityScanner.querySelectorAll('.info')
 				let video = document.createElement('video')
 				let canvas = activityScanner.querySelector('canvas')
-				//let offscreenCanvas = document.createElement('canvas')
+				let canvasOffscreen = document.createElement('canvas')
 				let ctx = canvas.getContext('2d')
+				let ctxOffscreen = canvasOffscreen.getContext('2d')
 				let loadingMessage = activityScanner.querySelector('.loading')
+
 				canvas.hidden = true
+				info.forEach(node => node.hidden = true)
 				loadingMessage.hidden = false
 
-				function drawLine(begin, end, color) {
-					ctx.beginPath()
-					ctx.moveTo(begin.x, begin.y)
-					ctx.lineTo(end.x, end.y)
-					ctx.lineWidth = 4
-					ctx.strokeStyle = color
-					ctx.stroke()
-				}
+				let inited = false
 
 				function tick() {
 
-//					loadingMessage.innerText = "Loading video..."
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
 
-						loadingMessage.hidden = true
-						canvas.hidden = false
-//						outputContainer.hidden = false
-						canvas.height = video.videoHeight
-						canvas.width = video.videoWidth
-						//offscreenCanvas.height = video.videoHeight
-						//offscreenCanvas.width = video.videoWidth
+						if (!inited) {
+							loadingMessage.hidden = true
+							info.forEach(node => node.hidden = false)
+							canvas.hidden = false
+							canvas.width = video.videoWidth
+							canvas.height = video.videoHeight
+							canvasOffscreen.width = video.videoWidth
+							canvasOffscreen.height = video.videoHeight
+							let w = canvas.offsetWidth
+							let h = canvas.offsetHeight
+							canvas.width = w
+							canvas.height = h
+							inited = true
+						}
 
-						ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-						let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+						let rectWidth = Math.min(canvasOffscreen.width, 200)
+						let rectHeight = Math.min(canvasOffscreen.height, 200)
+						let x = Math.floor((canvasOffscreen.width - rectWidth) / 2)
+						let y = Math.floor((canvasOffscreen.height - rectHeight) / 2)
+
+						ctxOffscreen.drawImage(video, 0, 0, canvasOffscreen.width, canvasOffscreen.height)
+						ctxOffscreen.fillStyle = 'rgba(0,0,0,0.5)'
+						ctxOffscreen.fillRect(0, 0, canvasOffscreen.width, y)
+						ctxOffscreen.fillRect(0, y + rectHeight, canvasOffscreen.width, y + 1)
+						ctxOffscreen.fillRect(0, y, x, rectHeight)
+						ctxOffscreen.fillRect(x + rectWidth, y, x, rectHeight)
+
+						//let imageData = ctxOffscreen.getImageData(0, 0, canvasOffscreen.width, canvasOffscreen.height)
+						let imageData = ctxOffscreen.getImageData(x, y, rectWidth, rectHeight)
 						let code = jsQR(imageData.data, imageData.width, imageData.height, {
 							inversionAttempts: "dontInvert",
 						})
+
+						ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
+						
 //let code = null;
 						if (code) {
-							drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58")
-							drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58")
-							drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58")
-							drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58")
+
+							ctxOffscreen.lineWidth = 4
+							ctxOffscreen.strokeStyle = '#FF3B58'
+							ctxOffscreen.beginPath()
+							ctxOffscreen.moveTo(x + code.location.topLeftCorner.x, y + code.location.topLeftCorner.y)
+							ctxOffscreen.lineTo(x + code.location.topRightCorner.x, y + code.location.topRightCorner.y)
+							ctxOffscreen.lineTo(x + code.location.bottomRightCorner.x, y + code.location.bottomRightCorner.y)
+							ctxOffscreen.lineTo(x + code.location.bottomLeftCorner.x, y + code.location.bottomLeftCorner.y)
+							ctxOffscreen.lineTo(x + code.location.topLeftCorner.x, y + code.location.topLeftCorner.y)
+							ctxOffscreen.stroke()
+
+							ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
+							beep()
+
 							console.log('QR code data', code.data)
+
 							doContinue = false
+
 							setTimeout(function () {
 								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
-							}, 3000)
+							}, 1000)
 						}
 					}
 
