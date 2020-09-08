@@ -1270,6 +1270,17 @@ input.verification + .verification-result > .verification {
 */
 
 
+/* activity scanner */
+
+.activity.scanner {
+	background: #000;
+	color: #fff;
+}
+
+.activity.scanner canvas {
+	width: 100%;
+}
+
 
 /* regions selector */
 

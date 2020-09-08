@@ -1361,10 +1361,9 @@ let navBarHide = () => { }
 							console.log('QR code data', code.data)
 							video.srcObject.getTracks().forEach(track => track.stop())
 							doContinue = false
-							showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
-//						} else {
-//							outputMessage.hidden = false
-//							outputData.parentElement.hidden = true
+							setTimeout(function () {
+								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+							}, 3000)
 						}
 					}
 					if (doContinue) {
@@ -1376,6 +1375,8 @@ let navBarHide = () => { }
 					video.srcObject = stream
 					video.setAttribute('playsinline', true) // required to tell iOS safari we don't want fullscreen
 					video.play()
+					ctx.fillStyle = '#000'
+					ctx.fillRect(0, 0, canvas.width, canvas.height)
 					requestAnimationFrame(tick)
 				}).catch(err => {
 					showMessage('Сканирование кода', 'Не удалось получить доступ к камере.', closeScanner)
