@@ -1324,11 +1324,11 @@ let navBarHide = () => { }
 
 				let video = document.createElement('video')
 				let canvas = activityScanner.querySelector('canvas')
+				//let offscreenCanvas = document.createElement('canvas')
 				let ctx = canvas.getContext('2d')
 				let loadingMessage = activityScanner.querySelector('.loading')
-//    var outputContainer = document.getElementById("output");
-//    var outputMessage = document.getElementById("outputMessage");
-//    var outputData = document.getElementById("outputData");
+				canvas.hidden = true
+				loadingMessage.hidden = false
 
 				function drawLine(begin, end, color) {
 					ctx.beginPath()
@@ -1340,7 +1340,9 @@ let navBarHide = () => { }
 				}
 
 				function tick() {
+
 					let doContinue = true
+
 //					loadingMessage.innerText = "Loading video..."
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
 						loadingMessage.hidden = true
@@ -1348,11 +1350,15 @@ let navBarHide = () => { }
 //						outputContainer.hidden = false
 						canvas.height = video.videoHeight
 						canvas.width = video.videoWidth
+						//offscreenCanvas.height = video.videoHeight
+						//offscreenCanvas.width = video.videoWidth
+
 						ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
 						let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 						let code = jsQR(imageData.data, imageData.width, imageData.height, {
 							inversionAttempts: "dontInvert",
 						})
+//let code = null;
 						if (code) {
 							drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58")
 							drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58")
@@ -1366,6 +1372,7 @@ let navBarHide = () => { }
 							}, 3000)
 						}
 					}
+
 					if (doContinue) {
 						requestAnimationFrame(tick)
 					}
@@ -1383,10 +1390,8 @@ let navBarHide = () => { }
 					console.log(err)
 				})
 
-
 				// TODO
 				switchActivity(activityScanner)
-
 
 			} else {
 				btn.classList.remove('selected')
