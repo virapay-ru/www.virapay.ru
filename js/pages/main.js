@@ -298,6 +298,87 @@ async function mainInit() {
 
 			}
 
+			function enableAccountValidation(inputAccount, rowKey, inn, onValidationProgress) {
+
+				let accountCheckTimeout = null
+
+				inputAccount.oninput = function () {
+//console.log('acc', inputAccount.value, rowKey, inn)
+					if (accountCheckTimeout !== null) {
+						clearTimeout(accountCheckTimeout)
+						accountCheckTimeout = null
+					}
+
+					inputAccount.classList.remove('valid')
+					inputAccount.classList.remove('error')
+					inputAccount.classList.add('verification')
+
+					onValidationProgress()
+
+					accountCheckTimeout = setTimeout(function () {
+
+						accountCheckTimeout = null
+//						inputAccount.classList.remove('valid')
+//						inputAccount.classList.remove('error')
+//						inputAccount.classList.add('verification')
+
+						let acc = inputAccount.value
+						if (acc === '') {
+							inputAccount.classList.remove('verification')
+							onValidationProgress()
+							return
+						}
+
+						function handleResult(result) {
+							inputAccount.classList.remove('valid')
+							inputAccount.classList.remove('error')
+							inputAccount.classList.remove('verification')
+							if (result && result.account == acc) {
+								inputAccount.classList.add('valid')
+							} else {
+								inputAccount.classList.add('error')
+							}
+							onValidationProgress()
+						}
+
+						if (accountsCache[rowKey] && accountsCache[rowKey][acc]) {
+							let accRec = accountsCache[rowKey][acc]
+							let dt = Date.now() - accRec.time
+							if (dt < accRec.ttl) {
+console.log('acc cached check result', accRec.result)
+								handleResult(accRec.result)
+								return
+							} else {
+console.log('acc cached check result expired', dt, accRec.ttl)
+							}
+						}
+
+						backend.accountCheck(rowKey, inn, acc).then(result => {
+
+							if (!accountsCache[rowKey]) {
+								accountsCache[rowKey] = { }
+							}
+							accountsCache[rowKey][acc] = {
+								result,
+								time: Date.now(),
+								ttl: (result ? 60 : 10) * 1000
+							}
+
+console.log('acc check result', result)
+							handleResult(result)
+
+						}).catch(err => {
+
+							inputAccount.classList.remove('verification')
+							onValidationProgress()
+							console.log(err) // TODO
+
+						})
+
+					}, 750)
+				}
+			}
+
 			let scrollTopMain = 0
 			let scrollTopAccounts = 0
 
@@ -431,6 +512,31 @@ async function mainInit() {
 					// TODO clear list
 
 					payments.forEach(paymItem => {
+
+/*
+				<div class="payment color-neutral">
+					<div class="details">
+						<div class="info">
+							<div class="row">
+								<div class="date">01.08.2020</div>
+								<div class="id">#1892729</div>
+							</div>
+							<div class="row summary">
+								<div class="summ">1 500,00<i class="mdi mdi-currency-rub"></i></div>
+								<div class="commission"><div>+ 112,50<i class="mdi mdi-currency-rub"></i></div><div>сервисный сбор</div></div>
+							</div>
+							<div class="description"><i class="mdi mdi-qrcode"></i> Система быстрых платежей</div>
+						</div>
+					</div>
+					<div class="button-container">
+						<a class="button">
+			            	<span>Ожидается</span>
+							<i class="icon mdi mdi-loading spin"></i>
+						</a>
+					</div>
+				</div>
+*/
+
 /*
 						let paymentNode = document.createElement('div')
 						paymentNode.classList.add('payment')
@@ -489,6 +595,7 @@ async function mainInit() {
 					let inputSum = activityAccountPayment.querySelector('input.summ')
 					let outputCommission = activityAccountPayment.querySelector('.commission')
 					let outputTotal = activityAccountPayment.querySelector('.total')
+					let actionButton = activityAccountPayment.querySelector('.prepare-payment')
 
 					scrollTopAccounts = document.scrollingElement.scrollTop
 
@@ -503,36 +610,29 @@ async function mainInit() {
 					paymentsTypesList.forEach(paymentType => {
 						let paymentTypeNode = activityAccountPayment.querySelector('.payments-types > .list > .li.id-' + paymentType.id)
 						let commissionNode = paymentTypeNode.querySelector('.commission-description')
-						let limitsNode = activityAccountPayment.querySelector('.limits-description')
 						paymentTypeNode.hidden = true
 						if (item.payments_types.indexOf(paymentType.id) >= 0) {
 							if (commissionNode) {
 								commissionNode.innerText = item.commission[paymentType.id].description
 							}
-							if (limitsNode) {
-								let limits = item.limits[paymentType.id]
-								let limitsDescription = []
-								if (limits) {
-									if (limits.min_summ !== null) {
-										limitsDescription.push('Минимальная сумма ' + parseFloat(limits.min_summ).toFixed(2))
-									}
-									if (limits.max_summ !== null) {
-										limitsDescription.push('Максимальная сумма ' + parseFloat(limits.max_summ).toFixed(2))
-									}
-									if (limits.day_summ !== null) {
-										limitsDescription.push('Максимальная сумма в сутки ' + parseFloat(limits.day_summ).toFixed(2))
-									}
-								}
-								if (limitsDescription.length > 0) {
-									limitsNode.innerText = limitsDescription.join('; ')
-									limitsNode.hidden = false
-								} else {
-									limitsNode.hidden = true
-								}
-							}
 							paymentTypeNode.hidden = false
 						}
 					})
+
+					function onValidationProgress() {
+
+						let isValid = true
+							&& inputAccount.classList.contains('valid')
+							&& inputSum.classList.contains('valid')
+
+						if (isValid) {
+							actionButton.removeAttribute('disabled')
+						} else {
+							actionButton.setAttribute('disabled', true)
+						}
+					}
+
+					enableAccountValidation(inputAccount, rowKey, item.inn, onValidationProgress)
 
 					function validateSumm() {
 
@@ -554,12 +654,14 @@ async function mainInit() {
 								valid = false
 							}
 							if (valid) {
+								// TODO validate day_summ
 								inputSum.classList.remove('verification')
 								inputSum.classList.add('valid')
-								// TODO validate day_summ
+								onValidationProgress()
 							} else {
 								inputSum.classList.remove('verification')
 								inputSum.classList.add('error')
+								onValidationProgress()
 							}
 
 						} else {
@@ -607,7 +709,34 @@ async function mainInit() {
 					}
 
 					activityAccountPayment.querySelectorAll('input.payment-type-id').forEach(option => option.onchange = function () {
+
+						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
+						let limitsNode = activityAccountPayment.querySelector('.limits-description')
+
+						if (limitsNode) {
+							let limits = item.limits[paymentTypeId]
+							let limitsDescription = []
+							if (limits) {
+								if (limits.min_summ !== null) {
+									limitsDescription.push('Минимальная сумма ' + parseFloat(limits.min_summ).toFixed(2))
+								}
+								if (limits.max_summ !== null) {
+									limitsDescription.push('Максимальная сумма ' + parseFloat(limits.max_summ).toFixed(2))
+								}
+								if (limits.day_summ !== null) {
+									limitsDescription.push('Максимальная сумма в сутки ' + parseFloat(limits.day_summ).toFixed(2))
+								}
+							}
+							if (limitsDescription.length > 0) {
+								limitsNode.innerText = limitsDescription.join('; ')
+								limitsNode.hidden = false
+							} else {
+								limitsNode.hidden = true
+							}
+						}
+
 						updateSumms()
+
 					})
 
 					inputSum.oninput = function () {
@@ -618,7 +747,7 @@ async function mainInit() {
 					paymentTypeControl.checked = true
 					paymentTypeControl.onchange()
 
-					activityAccountPayment.querySelector('.prepare-payment').onclick = async () => {
+					actionButton.onclick = async () => {
 
 						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
 
@@ -803,93 +932,23 @@ async function mainInit() {
 						switchActivity(activityAccountEdit)
 					}
 
-					
+				});
 
-				})
+				(function () {
 
-				// account validation
+					let inputAccount = activityAccountEdit.querySelector('input.account')
+					let actionButton = activityAccountEdit.querySelector('.account-save')
 
-				function enableAccountValidation(inputAccount, actionButton) {
-
-					let accountCheckTimeout = null
-					inputAccount.oninput = function () {
-console.log('acc', inputAccount.value, item.id, item.inn, item.service_id)
-						if (accountCheckTimeout !== null) {
-							clearTimeout(accountCheckTimeout)
-							accountCheckTimeout = null
+					enableAccountValidation(inputAccount, rowKey, item.inn, function () {
+						let isValid = inputAccount.classList.contains('valid')
+						if (isValid) {
+							actionButton.removeAttribute('disabled')
+						} else {
+							actionButton.setAttribute('disabled', true)
 						}
-						actionButton.setAttribute('disabled', true)
-						accountCheckTimeout = setTimeout(function () {
+					})
 
-							accountCheckTimeout = null
-							inputAccount.classList.remove('valid')
-							inputAccount.classList.remove('error')
-							inputAccount.classList.add('verification')
-
-							let acc = inputAccount.value
-							if (acc === '') {
-								inputAccount.classList.remove('verification')
-								return
-							}
-
-							function handleResult(result) {
-								inputAccount.classList.remove('valid')
-								inputAccount.classList.remove('error')
-								inputAccount.classList.remove('verification')
-								if (result && result.account == acc) {
-									inputAccount.classList.add('valid')
-									actionButton.removeAttribute('disabled')
-								} else {
-									inputAccount.classList.add('error')
-								}
-							}
-
-							if (accountsCache[rowKey] && accountsCache[rowKey][acc]) {
-								let accRec = accountsCache[rowKey][acc]
-								let dt = Date.now() - accRec.time
-								if (dt < accRec.ttl) {
-console.log('acc cached check result', accRec.result)
-									handleResult(accRec.result)
-									return
-								} else {
-console.log('acc cached check result expired', dt, accRec.ttl)
-								}
-							}
-
-							backend.accountCheck(rowKey, item.inn, acc).then(result => {
-
-								if (!accountsCache[rowKey]) {
-									accountsCache[rowKey] = { }
-								}
-								accountsCache[rowKey][acc] = {
-									result,
-									time: Date.now(),
-									ttl: (result ? 60 : 10) * 1000
-								}
-
-console.log('acc check result', result)
-								handleResult(result)
-
-							}).catch(err => {
-
-								inputAccount.classList.remove('verification')
-								console.log(err)
-
-							})
-
-						}, 750)
-					}
-				}
-
-				enableAccountValidation(
-					activityAccountEdit.querySelector('input.account'),
-					activityAccountEdit.querySelector('.account-save')
-				);
-
-				enableAccountValidation(
-					activityAccountPayment.querySelector('input.account'),
-					activityAccountPayment.querySelector('.prepare-payment')
-				);
+				})();
 
 				(function () {
 
