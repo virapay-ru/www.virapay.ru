@@ -498,22 +498,75 @@ async function mainInit() {
 					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
-					if (!initPaymentTypeId) { initPaymentTypeId = 1 } // TODO default payment type
+					if (!initPaymentTypeId) { initPaymentTypeId = paymentsTypesList[0].id } // default payment type
 
 					paymentsTypesList.forEach(paymentType => {
 						let paymentTypeNode = activityAccountPayment.querySelector('.payments-types > .list > .li.id-' + paymentType.id)
 						let commissionNode = paymentTypeNode.querySelector('.commission-description')
+						let limitsNode = activityAccountPayment.querySelector('.limits-description')
 						paymentTypeNode.hidden = true
 						if (item.payments_types.indexOf(paymentType.id) >= 0) {
 							if (commissionNode) {
 								commissionNode.innerText = item.commission[paymentType.id].description
+							}
+							if (limitsNode) {
+								let limits = item.limits[paymentType.id]
+								let limitsDescription = []
+								if (limits) {
+									if (limits.min_summ !== null) {
+										limitsDescription.push('Минимальная сумма ' + parseFloat(limits.min_summ).toFixed(2))
+									}
+									if (limits.max_summ !== null) {
+										limitsDescription.push('Максимальная сумма ' + parseFloat(limits.max_summ).toFixed(2))
+									}
+									if (limits.day_summ !== null) {
+										limitsDescription.push('Максимальная сумма в сутки ' + parseFloat(limits.day_summ).toFixed(2))
+									}
+								}
+								if (limitsDescription.length > 0) {
+									limitsNode.innerText = limitsDescription.join('; ')
+									limitsNode.hidden = false
+								} else {
+									limitsNode.hidden = true
+								}
 							}
 							paymentTypeNode.hidden = false
 						}
 					})
 
 					function validateSumm() {
-						// TODO validate summ
+
+						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
+						let limits = item.limits[paymentTypeId]
+
+						inputSum.classList.remove('valid')
+						inputSum.classList.remove('error')
+						inputSum.classList.add('verification')
+
+						if (limits) {
+
+							let sum = parseFloat(parseFloat(inputSum.value).toFixed(2))
+							let valid = true
+							if (limits.min_summ !== null && sum < parseFloat(limits.min_summ)) {
+								valid = false
+							}
+							if (limits.max_summ !== null && sum > parseFloat(limits.max_summ) ) {
+								valid = false
+							}
+							if (valid) {
+								inputSum.classList.remove('verification')
+								inputSum.classList.add('valid')
+								// TODO validate day_summ
+							} else {
+								inputSum.classList.remove('verification')
+								inputSum.classList.add('error')
+							}
+
+						} else {
+
+							inputSum.classList.remove('verification')
+							inputSum.classList.add('valid')
+						}
 					}
 
 					function updateSumms() {
