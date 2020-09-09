@@ -144,6 +144,9 @@ async function mainInit() {
 		listNode.innerHTML = ''
 		providersList = providersData.providers
 		paymentsTypesList = providersData.paymentsTypes
+
+		// TODO generate list of payments types to activityAccountPayment.querySelector('.payments-types > .list')
+
 		providersList.forEach((item, sortIndex) => {
 
 			// unpack list
@@ -168,17 +171,17 @@ async function mainInit() {
 			paymentsTypesList.forEach(pt => {
 				if (!(pt.id in item.commission)) {
 					item.commission[pt.id] = { rules: 0, description: '0.00%' }
-					if (!('description' in item.commission[pt.id])) {
-						item.commission[pt.id].description = parseFloat(item.commission.rules).toFixed(2) + '%'
-					}
+				}
+				if (!('description' in item.commission[pt.id])) {
+					item.commission[pt.id].description = parseFloat(item.commission[pt.id].rules).toFixed(2) + '%'
 				}
 			})
-
-			// process item
 
 			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
 			item.rowKey = rowKey
 			item.sortIndex = sortIndex
+
+			// process item
 
 			let providerNode = document.createElement('div')
 			providerNode.classList.add('provider')
@@ -484,6 +487,8 @@ async function mainInit() {
 					let inputAccount = activityAccountPayment.querySelector('input.account')
 					let inputDescription = activityAccountPayment.querySelector('input.description')
 					let inputSum = activityAccountPayment.querySelector('input.summ')
+					let outputCommission = activityAccountPayment.querySelector('.commission')
+					let outputTotal = activityAccountPayment.querySelector('.total')
 
 					scrollTopAccounts = document.scrollingElement.scrollTop
 
@@ -494,13 +499,71 @@ async function mainInit() {
 					inputSum.value = accItem.sum
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
 					if (!initPaymentTypeId) { initPaymentTypeId = 1 } // TODO default payment type
-					activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]').checked = true
 
-					activityAccountPayment.querySelectorAll('input.payment-type-id').forEach(option => option.onchange = function () {
+					paymentsTypesList.forEach(paymentType => {
+						let paymentTypeNode = activityAccountPayment.querySelector('.payments-types > .list > .li.id-' + paymentType.id)
+						let commissionNode = paymentTypeNode.querySelector('.commission-description')
+						paymentTypeNode.hidden = true
+						if (item.payments_types.indexOf(paymentType.id) >= 0) {
+							if (commissionNode) {
+								commissionNode.innerText = item.commission[paymentType.id].description
+							}
+							paymentTypeNode.hidden = false
+						}
+					})
+
+					function validateSumm() {
+						// TODO validate summ
+					}
+
+					function updateSumms() {
+
+						let sum = parseFloat(inputSum.value).toFixed(2)
+						if (isNaN(sum)) {
+							sum = '0.00'
+						}
+						if (sum !== inputSum.value && sum !== '0.00') {
+							let start = inputSum.selectionStart
+							inputSum.value = sum
+							inputSum.selectionStart = start
+							inputSum.selectionEnd = inputSum.selectionStart
+						}
+
+						validateSumm()
 
 						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
-						console.log(paymentTypeId, item)
+						let rules = item.commission[paymentTypeId].rules
+
+						let commission = '0.00'
+						if (typeof rules === 'number') {
+							let percent = rules
+							commission = ((sum * percent) / 100.0).toFixed(2)
+						} else {
+							rules.forEach(rule => {
+								let [ sumEnd, fixedSum, percent ] = rule
+								if ((sumEnd !== null && sum < sumEnd) || (sumEnd === null)) {
+									commission = (fixedSum + (sum * percent) / 100.0).toFixed(2)
+								}
+							})
+						}
+
+						let total = (parseFloat(sum) + parseFloat(commission)).toFixed(2)
+
+						outputCommission.innerText = commission
+						outputTotal.innerText = total
+					}
+
+					activityAccountPayment.querySelectorAll('input.payment-type-id').forEach(option => option.onchange = function () {
+						updateSumms()
 					})
+
+					inputSum.oninput = function () {
+						updateSumms()
+					}
+
+					let paymentTypeControl = activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]')
+					paymentTypeControl.checked = true
+					paymentTypeControl.onchange()
 
 					activityAccountPayment.querySelector('.prepare-payment').onclick = async () => {
 
@@ -778,58 +841,6 @@ console.log('acc check result', result)
 				(function () {
 
 					let inputSum = activityAccountPayment.querySelector('input.summ')
-					let outputCommission = activityAccountPayment.querySelector('.commission')
-					let outputTotal = activityAccountPayment.querySelector('.total')
-
-					function validateSumm() {
-/*
-							backend.accountCheck(rowKey, item.inn, acc).then(result => {
-
-								if (!accountsCache[rowKey]) {
-									accountsCache[rowKey] = { }
-								}
-								accountsCache[rowKey][acc] = {
-									result,
-									time: Date.now(),
-									ttl: (result ? 60 : 10) * 1000
-								}
-
-console.log('acc check result', result)
-								handleResult(result)
-
-							}).catch(err => {
-
-								inputAccount.classList.remove('verification')
-								console.log(err)
-
-							})
-*/
-
-// TODO validate summ
-
-					}
-
-					function updateSumms() {
-
-						let sum = parseFloat(inputSum.value).toFixed(2)
-						if (isNaN(sum)) {
-							sum = '0.00'
-						}
-						if (sum !== inputSum.value && sum !== '0.00') {
-							let start = inputSum.selectionStart
-							inputSum.value = sum
-							inputSum.selectionStart = start
-							inputSum.selectionEnd = inputSum.selectionStart
-						}
-
-						validateSumm()
-
-						let commission = ((sum / 100) * 5 + 3).toFixed(2) // TODO commission
-						let total = (parseFloat(sum) + parseFloat(commission)).toFixed(2)
-
-						outputCommission.innerText = commission
-						outputTotal.innerText = total
-					}
 
 					inputSum.onkeypress = function (evt) {
 
@@ -856,10 +867,6 @@ console.log('acc check result', result)
 							return false
 						}
 						
-					}
-
-					inputSum.oninput = function () {
-						updateSumms()
 					}
 
 					inputSum.onfocus = function () {
