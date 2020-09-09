@@ -146,6 +146,36 @@ async function mainInit() {
 		paymentsTypesList = providersData.paymentsTypes
 		providersList.forEach((item, sortIndex) => {
 
+			// unpack list
+
+			if (!('service_id' in item)) { item.service_id = null }
+			if (!('service_name' in item)) { item.service_name = null }
+			if (!('counters_type_id' in item)) { item.counters_type_id = 1 }
+			if (!('counters_title' in item)) { item.counters_title = null }
+			if (!('limits' in item)) {
+				item.limits = { }
+				paymentsTypesList.forEach(pt => item.limits[pt.id] = false)
+			}
+			paymentsTypesList.forEach(pt => {
+				if (!(pt.id in item.limits)) {
+					item.limits[pt.id] = false
+				}
+			})
+			if (!('commission' in item)) {
+				item.commission = { }
+				paymentsTypesList.forEach(pt => item.commission[pt.id] = { rules: 0, description: '0.00%' })
+			}
+			paymentsTypesList.forEach(pt => {
+				if (!(pt.id in item.commission)) {
+					item.commission[pt.id] = { rules: 0, description: '0.00%' }
+					if (!('description' in item.commission[pt.id])) {
+						item.commission[pt.id].description = parseFloat(item.commission.rules).toFixed(2) + '%'
+					}
+				}
+			})
+
+			// process item
+
 			let rowKey = '' + item.id + '/' + (item.service_id ? item.service_id : 0)
 			item.rowKey = rowKey
 			item.sortIndex = sortIndex
@@ -465,6 +495,12 @@ async function mainInit() {
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
 					if (!initPaymentTypeId) { initPaymentTypeId = 1 } // TODO default payment type
 					activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]').checked = true
+
+					activityAccountPayment.querySelectorAll('input.payment-type-id').forEach(option => option.onchange = function () {
+
+						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
+						console.log(paymentTypeId, item)
+					})
 
 					activityAccountPayment.querySelector('.prepare-payment').onclick = async () => {
 
@@ -1360,8 +1396,8 @@ let navBarHide = () => { }
 							inited = true
 						}
 
-						let rectWidth = Math.min(canvasOffscreen.width, 200)
-						let rectHeight = Math.min(canvasOffscreen.height, 200)
+						let rectWidth = Math.min(canvasOffscreen.width, 256)
+						let rectHeight = Math.min(canvasOffscreen.height, 256)
 						let x = Math.floor((canvasOffscreen.width - rectWidth) / 2)
 						let y = Math.floor((canvasOffscreen.height - rectHeight) / 2)
 
