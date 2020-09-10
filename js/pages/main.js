@@ -80,6 +80,25 @@ async function mainInit() {
 			profileSave()
 		}
 
+		function updateHistoryFlag(provider) {
+			let prevFlag = provider.hasHistory
+			let isMatch = false
+			let accounts = profileData.accList[provider.rowKey]
+			if (accounts instanceof Array) {
+				accounts = accounts.map(accItem => accItem.acc)
+				let history = profileData.history[provider.rowKey]
+				if (history instanceof Array) {
+					if (history.find(paymItem => accounts.indexOf(paymItem.a) >= 0)) {
+						isMatch = true
+					}
+				}
+			}
+			provider.hasHistory = isMatch
+			if (prevFlag !== provider.hasHistory) {
+				filterProviders()
+			}
+		}
+
 		let allRegionsTrigger = regionsList.querySelector('.all')
 		allRegionsTrigger.onchange = function () {
 			regionsNodes.forEach(node => node.checked = allRegionsTrigger.checked)
@@ -458,6 +477,7 @@ console.log('acc check result', result)
 						if (result) {
 							accountNode.querySelector('.value').innerText = inputAccount.value
 							accountNode.querySelector('.description').innerText = inputDescription.value
+							updateHistoryFlag(item)
 							activityAccountEdit.querySelector('.back').onclick()
 						} else {
 							showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
@@ -478,10 +498,10 @@ console.log('acc check result', result)
 						let prevList = profileData.accList[rowKey]
 						accItem.removed = true
 						profileData.accList[rowKey] = profileData.accList[rowKey].filter(x => !x.removed)
-						// TODO remove history
 						let result = profileSave()
 						if (result) {
 							accountNode.remove()
+							updateHistoryFlag(item)
 						} else {
 							showMessage('Учетные данные', 'Не удалось удалить данные. Попробуйте позднее.', () => {
 								profileData.accList[rowKey] = prevList
@@ -612,7 +632,7 @@ console.log('acc check result', result)
 
 					})
 
-					if (pendingIds.length > 0) {
+/*					if (pendingIds.length > 0) {
 						let intervalId = setInterval(function () {
 							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
 							if (pendingIds.length <= 0) {
@@ -623,12 +643,14 @@ console.log('acc check result', result)
 								backend.paymentGetStatus(ids).then(result => {
 									console.log('status', ids, '->', result)
 									// TODO auto update payment status pendingIds
+									// TODO break on back-button clicked
 								}).catch(err => {
 									console.log(err)
 								})
 							}
 						}, 10*1000)
 					}
+*/
 
 					historyPut('accounts')
 					switchActivity(activityAccountHistory)
@@ -983,6 +1005,7 @@ console.log('acc check result', result)
 							let result = profileSave()
 							if (result) {
 								addAccountNode(accItem)
+								updateHistoryFlag(item)
 								activityAccountEdit.querySelector('.back').onclick()
 							} else {
 								showMessage('Учетные данные', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
