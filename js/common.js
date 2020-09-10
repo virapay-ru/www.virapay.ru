@@ -4,6 +4,7 @@ let backend = new JSONRPC2.RemoteProxyObject(
 	// using JSON RPC over HTTP
 	new JSONRPC2.Transports.HTTP(
 		'https://virapay.herokuapp.com/rpc/json',
+//		'http://127.0.0.1:8080/rpc/json',
 		 {
 			mode: 'cors'
 		 }

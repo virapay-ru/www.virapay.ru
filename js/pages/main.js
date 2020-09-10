@@ -506,7 +506,7 @@ console.log('acc check result', result)
 
 					let listNode = activityAccountHistory.querySelector('.history-list')
 
-					let payments = profileData.history[rowKey].filter(row => row.acc == accItem.acc)
+					let payments = profileData.history[rowKey].filter(row => row.a == accItem.acc)
 					console.log('payments', payments)
 
 					// TODO clear list
