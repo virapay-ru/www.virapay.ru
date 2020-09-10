@@ -1155,7 +1155,7 @@ function filterProviders() {
 
 		if (profileData.history[rowKey] && (profileData.history[rowKey] instanceof Array)) {
 			profileData.history[rowKey].forEach(paymItem => {
-				let paymDate = new Date(paymItem.created)
+				let paymDate = new Date(paymItem.d)
 				if (paymDate.getTime() > date.getTime()) {
 					date = paymDate
 				}
