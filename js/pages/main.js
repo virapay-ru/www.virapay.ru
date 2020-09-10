@@ -773,6 +773,18 @@ console.log('acc check result', result)
 								url: payment.url,
 								created: payment.created
 							})
+/*
+							profileData.history[rowKey].push({
+								i: payment.id,
+								a: accItem.account,
+								s: accItem.summ,
+								c: accItem.commission,
+								u: payment.url,
+								d: payment.date,
+								t: payment.type,
+								e: payment.status
+							})
+*/
 							item.hasHistory = true
 							let result = await profileSave()
 							if (result) {
