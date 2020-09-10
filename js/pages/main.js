@@ -502,6 +502,62 @@ console.log('acc check result', result)
 						return val.replace(/\./, ',')
 					}
 
+					function formatDate(val) {
+						return val.replace(/^(\d\d\d\d)\-(\d\d)\-(\d\d).*$/, '$3.$2.$1')
+					}
+
+					function formatStatusColor(val) {
+						val = parseInt(val)
+						if (val === 3 || val === 4) {
+							return 'color-normal'
+						}
+						if (val === 5) {
+							return 'color-warning'
+						}
+						return 'color-neutral'
+					}
+
+					function formatStatus(val) {
+						switch (parseInt(val)) {
+						case 1: return "Подготавливается";
+						case 2: return "Ожидается";
+						case 3: return "Поступил";
+						case 4: return "Проведен";
+						case 5: return "Отменен";
+						case 6: return "Обработка банком";
+						}
+						return 'Ошибка: статус'
+					}
+
+					function formatStatusIcon(val) {
+						val = parseInt(val)
+						if (val === 3) {
+							return '<i class="icon mdi mdi-check"></i>'
+						}
+						if (val === 4) {
+							return '<i class="icon mdi mdi-check-all"></i>'
+						}
+						if (val === 5) {
+							return '<i class="icon mdi mdi-close"></i>'
+						}
+						return '<i class="icon mdi mdi-loading spin"></i>'
+					}
+
+					function formatStatusHtml(val) {
+						return '<span class="val">' + formatStatus(val) + '</span>' + formatStatusIcon(val)
+					}
+
+					function formatPaymentTypeHtml(val) { // TODO use paymentsTypesList
+						val = parseInt(val)
+						if (val === 1) {
+							return '<i class="mdi mdi-qrcode"></i> Система быстрых платежей'
+						}
+						if (val === 2) {
+							return '<i class="mdi mdi-credit-card-outline"></i> Картой банка'
+						}
+						return ''
+					}
+
 					activityAccountHistory.querySelector('.acc-value').innerText = accItem.acc
 
 					let listNode = activityAccountHistory.querySelector('.history-list')
@@ -509,78 +565,42 @@ console.log('acc check result', result)
 					let payments = profileData.history[rowKey].filter(row => row.a == accItem.acc)
 					console.log('payments', payments)
 
-					// TODO clear list
+					listNode.innerHTML = '' // clear list
 
 					payments.forEach(paymItem => {
 
-/*
-				<div class="payment color-neutral">
-					<div class="details">
-						<div class="info">
-							<div class="row">
-								<div class="date">01.08.2020</div>
-								<div class="id">#1892729</div>
-							</div>
-							<div class="row summary">
-								<div class="summ">1 500,00<i class="mdi mdi-currency-rub"></i></div>
-								<div class="commission"><div>+ 112,50<i class="mdi mdi-currency-rub"></i></div><div>сервисный сбор</div></div>
-							</div>
-							<div class="description"><i class="mdi mdi-qrcode"></i> Система быстрых платежей</div>
-						</div>
-					</div>
-					<div class="button-container">
-						<a class="button">
-			            	<span>Ожидается</span>
-							<i class="icon mdi mdi-loading spin"></i>
-						</a>
-					</div>
-				</div>
-*/
-
-/*
 						let paymentNode = document.createElement('div')
 						paymentNode.classList.add('payment')
-						paymentNode.classList.add('color-neutral') // TODO status
-
-						let detailsNode = document.createElement('div')
-						detailsNode.classList.add('details')
-
-						let infoNode = document.createElement('div')
-						infoNode.classList.add('info')
-
-						let dateNode = document.createElement('div')
-						dateNode.classList.add('date')
-
-						let valueNode = document.createElement('div')
-						valueNode.classList.add('value')
-						valueNode.innerHTML = '' + formatSum(paymItem.sum) + ' <i class="mdi mdi-currency-rub"></i>'
-
-						let descriptionNode = document.createElement('div')
-						descriptionNode.classList.add('description')
-						descriptionNode.innerHTML = '<i class="mdi mdi-qrcode"></i> Система быстрых платежей' // TODO payment type
-
-						infoNode.appendChild(dateNode)
-						infoNode.appendChild(valueNode)
-						infoNode.appendChild(descriptionNode)
-
-						detailsNode.appendChild(infoNode)
-
-						let btnContainerNode = document.createElement('div')
-						btnContainerNode.classList.add('button-container')
-
-						// TODO status
-						btnContainerNode.innerHTML = `
-							<a class="button">
-				            	<span>Обновление...</span>
-								<i class="icon mdi mdi-loading spin"></i>
-							</a>
+						paymentNode.innerHTML = `
+							<div class="details">
+								<div class="info">
+									<div class="row">
+										<div class="date"><span class="val"></span></div>
+										<div class="id">#<span class="val"></span></div>
+									</div>
+									<div class="row summary">
+										<div class="summ"><span class="val"></span><i class="mdi mdi-currency-rub"></i></div>
+										<div class="commission"><div>+ <span class="val"></span><i class="mdi mdi-currency-rub"></i></div><div>сервисный сбор</div></div>
+									</div>
+									<div class="description"></div>
+								</div>
+							</div>
+							<div class="button-container">
+								<a class="button status"></a>
+							</div>
 						`
+						paymentNode.querySelector('.id .val').innerText = paymItem.i
+						paymentNode.querySelector('.date .val').innerText = formatDate(paymItem.d)
+						paymentNode.querySelector('.summ .val').innerText = formatSum(paymItem.s)
+						paymentNode.querySelector('.commission .val').innerText = formatSum(paymItem.c)
+						paymentNode.querySelector('.status').innerHTML = formatStatusHtml(paymItem.e)
+						paymentNode.querySelector('.description').innerHTML = formatPaymentTypeHtml(paymItem.t)
+						paymentNode.classList.add(formatStatusColor(paymItem.e))
 
-						paymentNode.appendChild(detailsNode)
-						paymentNode.appendChild(btnContainerNode)
+						// TODO auto update payment status
 
 						listNode.appendChild(paymentNode)
-*/
+
 					})
 
 					historyPut('accounts')
