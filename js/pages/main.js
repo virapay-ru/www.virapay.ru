@@ -766,6 +766,8 @@ console.log('acc check result', result)
 							if (!(profileData.history[rowKey] instanceof Array)) {
 								profileData.history[rowKey] = []
 							}
+
+/*
 							profileData.history[rowKey].push({
 								id: payment.id,
 								acc: accItem.acc,
@@ -773,18 +775,20 @@ console.log('acc check result', result)
 								url: payment.url,
 								created: payment.created
 							})
-/*
+*/
+
 							profileData.history[rowKey].push({
 								i: payment.id,
-								a: accItem.account,
-								s: accItem.summ,
-								c: accItem.commission,
+								s: payment.summ,
+								c: payment.commission,
+								o: payment.discount,
 								u: payment.url,
-								d: payment.date,
-								t: payment.type,
+								d: payment.created,
+								a: accItem.acc,
+								t: accItem.paymTyp,
 								e: payment.status
 							})
-*/
+
 							item.hasHistory = true
 							let result = await profileSave()
 							if (result) {
@@ -1299,7 +1303,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
-					let result = await backend.paymentRegister(
+					let result = await backend.paymentInit(
 						apiName, id, token,
 						name, email, imageUrl,
 						rowKey, paymentTypeId, account, summ
