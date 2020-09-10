@@ -529,6 +529,11 @@ console.log('acc check result', result)
 						return 'Ошибка: статус'
 					}
 
+					function isFinalStatus(val) {
+						val = parseInt(val)
+						return val === 4 && val === 5
+					}
+
 					function formatStatusIcon(val) {
 						val = parseInt(val)
 						if (val === 3) {
@@ -567,6 +572,8 @@ console.log('acc check result', result)
 
 					listNode.innerHTML = '' // clear list
 
+					let pendingIds = []
+
 					payments.forEach(paymItem => {
 
 						let paymentNode = document.createElement('div')
@@ -597,11 +604,31 @@ console.log('acc check result', result)
 						paymentNode.querySelector('.description').innerHTML = formatPaymentTypeHtml(paymItem.t)
 						paymentNode.classList.add(formatStatusColor(paymItem.e))
 
-						// TODO auto update payment status
+						if (!isFinalStatus(paymItem.e)) {
+							pendingIds.push(paymItem)
+						}
 
 						listNode.appendChild(paymentNode)
 
 					})
+
+					if (pendingIds.length > 0) {
+						let intervalId = setInterval(function () {
+							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
+							if (pendingIds.length <= 0) {
+								clearInterval(intervalId)
+								intervalId = null
+							} else {
+								let ids = pendingIds.map(paymItem => paymItem.i)
+								backend.paymentGetStatus(ids).then(result => {
+									console.log('status', ids, '->', result)
+									// TODO auto update payment status pendingIds
+								}).catch(err => {
+									console.log(err)
+								})
+							}
+						}, 10*1000)
+					}
 
 					historyPut('accounts')
 					switchActivity(activityAccountHistory)
