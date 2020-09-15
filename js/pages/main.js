@@ -6,6 +6,16 @@ let paymentsTypesList = null
 let profileSave = function () { };
 let profilePaymentInit = function (rowKey, paymentTypeId, account, summ) { };
 
+// qrcode generator
+
+let qrcode = new QRCode('qrcode', {
+	width: 256,
+	height: 256,
+	correctLevel: QRCode.CorrectLevel.H,
+	useSVG: true
+});
+
+
 // regions selector 
 
 (function () {
@@ -660,7 +670,7 @@ console.log('acc check result', result)
 				accountNode.querySelectorAll('.account-payment').forEach(commandNode => commandNode.onclick = () => {
 
 					let inputAccount = activityAccountPayment.querySelector('input.account')
-					let inputDescription = activityAccountPayment.querySelector('input.description')
+//					let inputDescription = activityAccountPayment.querySelector('input.description')
 					let inputSum = activityAccountPayment.querySelector('input.summ')
 					let outputCommission = activityAccountPayment.querySelector('.commission')
 					let outputTotal = activityAccountPayment.querySelector('.total')
@@ -671,7 +681,7 @@ console.log('acc check result', result)
 					activityAccountPayment.querySelector('.acc-description').innerText = item.acc_description
 					activityAccountPayment.querySelector('.acc-example').innerText = item.acc_example
 					inputAccount.value = accItem.acc
-					inputDescription.value = accItem.desc
+//					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
 					if (!initPaymentTypeId) { initPaymentTypeId = paymentsTypesList[0].id } // default payment type
@@ -822,10 +832,10 @@ console.log('acc check result', result)
 
 						let prevPaymTyp = accItem.paymTyp
 						let prevAcc = accItem.acc
-						let prevDesc = accItem.desc
+//						let prevDesc = accItem.desc
 						let prevSum = accItem.sum
 						accItem.acc = inputAccount.value
-						accItem.desc = inputDescription.value
+//						accItem.desc = inputDescription.value
 						accItem.sum = inputSum.value
 						accItem.paymTyp = paymentTypeId
 
@@ -835,17 +845,6 @@ console.log('acc check result', result)
 							if (!(profileData.history[rowKey] instanceof Array)) {
 								profileData.history[rowKey] = []
 							}
-
-/*
-							profileData.history[rowKey].push({
-								id: payment.id,
-								acc: accItem.acc,
-								sum: accItem.sum,
-								url: payment.url,
-								created: payment.created
-							})
-*/
-
 							profileData.history[rowKey].push({
 								i: payment.id,
 								s: payment.summ,
@@ -857,15 +856,20 @@ console.log('acc check result', result)
 								t: accItem.paymTyp,
 								e: payment.status
 							})
-
 							item.hasHistory = true
 							let result = await profileSave()
 							if (result) {
-								location.replace(payment.url)
+								if (paymentTypeId == 1) { // TODO paymentTypeId for sbp only
+									qrcode.makeCode(payment.url)
+									activitySBPPay.querySelector('.action').setAttribute('href', payment.url)
+									switchActivity(activitySBPPay)
+								} else {
+									location.replace(payment.url)
+								}
 							} else {
 								showMessage('Подготовка платежа', 'Не удалось сохранить историю платежей. Попробуйте позднее.', () => {
 									accItem.acc = prevAcc
-									accItem.desc = prevDesc
+//									accItem.desc = prevDesc
 									accItem.sum = prevSum
 									switchActivity(activityAccountPayment)
 								})
@@ -873,7 +877,7 @@ console.log('acc check result', result)
 						} else {
 							showMessage('Подготовка платежа', 'Не удалось подготовить платеж. Попробуйте позднее.', () => {
 								accItem.acc = prevAcc
-								accItem.desc = prevDesc
+//								accItem.desc = prevDesc
 								accItem.sum = prevSum
 								switchActivity(activityAccountPayment)
 							})

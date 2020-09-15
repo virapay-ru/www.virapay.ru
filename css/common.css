@@ -139,6 +139,14 @@ h1, h2, h3, h4, h5, h6 {
 	color: inherit;
 }
 
+.activity.inner {
+	background: #f5f5f5;
+}
+
+.activity.inner .action-bar > .container {
+	background: linear-gradient(#f5f5f5, rgba(245,245,245,0.76), rgba(245,245,245,0));
+}
+
 
 /* message */
 
@@ -241,6 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	text-align: center;
 	text-transform: uppercase;
+	line-height: 1;
 }
 
 .button.primary {
@@ -805,11 +814,6 @@ input.verification + .verification-result > .verification {
 .activity.accounts {
 	padding-top: 4rem;
 	padding-bottom: 40rem;
-	background: #f5f5f5;
-}
-
-.activity.accounts .action-bar > .container {
-	background: linear-gradient(#f5f5f5, rgba(245,245,245,0.76), rgba(245,245,245,0));
 }
 
 .activity.accounts .container {
@@ -854,6 +858,7 @@ input.verification + .verification-result > .verification {
 	font-weight: 400;
 	line-height: 1.5;
 	margin: 0;
+	padding: 0.25rem 1rem;
 }
 
 .activity.accounts .account .button-container {
@@ -981,11 +986,6 @@ input.verification + .verification-result > .verification {
 .activity.account-edit {
 	padding-top: 4rem;
 	padding-bottom: 40rem;
-	background: #f5f5f5;
-}
-
-.activity.account-edit .action-bar > .container {
-	background: linear-gradient(#f5f5f5, rgba(245,245,245,0.76), rgba(245,245,245,0));
 }
 
 .activity.account-edit .provider-details {
@@ -1030,11 +1030,6 @@ input.verification + .verification-result > .verification {
 .activity.account-payment {
 	padding-top: 4rem;
 	padding-bottom: 40rem;
-	background: #f5f5f5;
-}
-
-.activity.account-payment .action-bar > .container {
-	background: linear-gradient(#f5f5f5, rgba(245,245,245,0.76), rgba(245,245,245,0));
 }
 
 .activity.account-payment .provider-details {
@@ -1382,6 +1377,31 @@ input.verification + .verification-result > .verification {
 
 .activity.scanner .info {
 	text-align: center;
+}
+
+
+/* activity sbp-pay */
+
+.activity.sbp-pay #qrcode {
+	width: 20rem;
+	height: 20rem;
+}
+
+.activity.sbp-pay .action {
+	font-size: 0.9rem;
+	width: 20rem;	
+}
+
+.activity.sbp-pay .container {
+	align-items: center;
+}
+
+.activity.sbp-pay .container > * {
+	max-width: 20rem;
+}
+
+.activity.sbp-pay .logo {
+	height: 3rem;
 }
 
 

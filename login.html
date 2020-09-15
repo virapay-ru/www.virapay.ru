@@ -27,15 +27,7 @@
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jsQR.js" type="text/javascript" charset="utf-8"></script>
-
-	<!-- Google Sign In -->
-<!--    <script src="https://apis.google.com/js/platform.js"></script>-->
-
-	<!-- Facebook API -->
-<!--	<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
-
-	<!-- VK API -->
-<!--	<script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>-->
+	<script src="js/qrcode.min.js" type="text/javascript" charset="utf-8"></script>
 
 <style>
 
@@ -83,6 +75,33 @@
 	<div class="activity at-center loading -is-hidden">
 		<div class="container">
 			<i class="mdi mdi-loading display4 spin"></i>
+		</div>
+	</div>
+
+
+	<div class="activity at-center sbp-pay is-hidden">
+
+		<div class="container">
+
+			<p><img class="logo" src="/images/sbp_logo.png"/></p>
+
+			<h2>Система Быстрых Платежей</h2>
+
+			<p id="qrcode"></p>
+
+			<p><b>Отсканируйте QR-код или перейдите в приложение банка</b></p>
+
+			<p>
+				<a class="button primary action" href="https://virapay.ru/stub.html?id=4098377&uid=263d2f0c-a872-4a29-a108-6c392dd421be">
+		            <span>Оплатить в приложении банка</span>
+					<i class="icon mdi mdi-arrow-right"></i>
+				</a>
+			</p>
+
+			<p>Система быстрых платежей (СБП) – важнейший инфраструктурный проект национального значения,
+			направленный на содействие конкуренции, повышение качества платежных услуг, расширение
+			финансовой доступности, снижение стоимости платежей для населения.</p>
+
 		</div>
 	</div>
 
@@ -180,7 +199,7 @@
 	</div>
 
 
-	<div class="activity accounts is-hidden">
+	<div class="activity inner accounts is-hidden">
 
 		<div class="action-bar">
 			<div class="container">
@@ -210,7 +229,7 @@
 	</div>
 
 
-	<div class="activity account-history is-hidden">
+	<div class="activity inner account-history is-hidden">
 
 		<div class="action-bar">
 			<div class="container">
@@ -326,7 +345,7 @@
 	</div>
 
 
-	<div class="activity account-edit is-hidden">
+	<div class="activity inner account-edit is-hidden">
 
 		<div class="action-bar">
 			<div class="container">
@@ -375,7 +394,7 @@
 	</div>
 
 
-	<div class="activity account-payment is-hidden">
+	<div class="activity inner account-payment is-hidden">
 
 		<div class="action-bar">
 			<div class="container">
@@ -462,19 +481,21 @@
 -->
 
 			</label>
-
+<!--
 			<label class="label">
 				<div class="subject">Описание</div>
 				<div><input class="description" type="text"/></div>
 				<div class="hint">Краткое описание для вашего удобства</div>
 			</label>
-
+-->
 			<div class="button-container">
 				<button class="button primary prepare-payment">
 	    	        <span>Оплатить</span>
 					<i class="icon mdi mdi-arrow-right"></i>
 				</button>
 			</div>
+
+			<p style="text-align: center;">Нажимая кнопку, вы соглашаетесь<br/> с <a href="offer.html">условиями использования</a>.</p>
 
 		</div>
 	</div>
@@ -526,11 +547,17 @@
 	            <span>Войти с ВКонтакте</span>
 			</a>
 
-			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
-			даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
+<!--			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+			даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>-->
+
+			<p>Нажимая кнопку, вы подтверждаете, что
+			ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+			даете согласие на обработку персональных данных.</p>
+
 
 		</div>
 	</div>
+
 
 	<div class="activity main is-hidden">
 

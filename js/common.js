@@ -47,6 +47,7 @@ let activityAccountEdit = activities.reduce((_, a) => a.classList.contains('acco
 let activityAccountPayment = activities.reduce((_, a) => a.classList.contains('account-payment') ? a : _, null)
 let activityAccountHistory = activities.reduce((_, a) => a.classList.contains('account-history') ? a : _, null)
 let activityScanner = activities.reduce((_, a) => a.classList.contains('scanner') ? a : _, null)
+let activitySBPPay = activities.reduce((_, a) => a.classList.contains('sbp-pay') ? a : _, null)
 
 // history
 
