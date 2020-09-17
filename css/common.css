@@ -563,6 +563,7 @@ input.verification + .verification-result > .verification {
     cursor: pointer;
 	margin-right: 1rem;
 	user-select: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .activity.main .categories a .icon {
@@ -1413,6 +1414,9 @@ input.verification + .verification-result > .verification {
 	border: 1px solid #eee;
 	overflow: hidden;
 	transition: all 0.3s ease-out;
+	cursor: pointer;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .regions-selector .trigger {
@@ -1421,6 +1425,9 @@ input.verification + .verification-result > .verification {
 	text-align: center;
 	margin: 0.5rem;
 	color: rgb(77, 144, 254);
+	cursor: pointer;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .regions-selector .list {
@@ -1497,8 +1504,12 @@ input.verification + .verification-result > .verification {
 }
 
 .scroll-horizontal {
-	overflow-x: hidden;
+	overflow-x: scroll;
 	max-width: 100%;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+	display: none;
 }
 
 .spin {

@@ -21,21 +21,28 @@ let qrcode = new QRCode('qrcode', {
 (function () {
 
 	let regionsSelector = document.querySelector('.regions-selector')
-	regionsSelector.querySelector('.trigger').onmousedown = function (evt) {
+	let toggleSelector = function (evt) {
 		evt.preventDefault()
 		evt.stopPropagation()
 		if (!regionsSelector.classList.contains('open')) {
-			scrollByYTo(document.scrollingElement, regionsSelector.offsetTop - parseInt(getComputedStyle(regionsSelector).marginTop), 300, function () {
-				regionsSelector.classList.toggle('open')
-			})
+//			scrollByYTo(document.scrollingElement, regionsSelector.offsetTop - parseInt(getComputedStyle(regionsSelector).marginTop), 300, function () {
+//				regionsSelector.classList.toggle('open')
+//			})
+regionsSelector.classList.toggle('open')
 		} else {
 			regionsSelector.classList.toggle('open')
 		}
 	}
-	document.onmousedown = function (evt) {
-		regionsSelector.classList.remove('open')
-	}
+	let el = regionsSelector.querySelector('.trigger')
+//el.onfocusin = toggleSelector
+	el.onmouseup = toggleSelector
+//	el.ontouchend = toggleSelector
+//	el.ontouchend = toggleSelector
+//	el.addEventListener('touchstart', toggleSelector)
 
+//	document.onmouseup = function (evt) {
+//		regionsSelector.classList.remove('open')
+//	}
 
 })();
 
@@ -149,13 +156,14 @@ async function mainInit() {
 
 		updateRegionsLabel()
 
-		regionsList.querySelectorAll('label').forEach(node => {
-
-			node.onmousedown = function (evt) {
-				evt.preventDefault()
-				evt.stopPropagation()
-			}
-		})
+// TODO fix apple
+//		regionsList.querySelectorAll('label').forEach(node => {
+//
+//			node.onmousedown = function (evt) {
+//				evt.preventDefault()
+//				evt.stopPropagation()
+//			}
+//		})
 
 
 
@@ -264,7 +272,7 @@ async function mainInit() {
 			providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
 			listNode.appendChild(providerNode)
 
-			favNode.onclick = function () {
+			favNode.onmousedown = function () { // TODO fix apple
 				if (favNode.classList.contains('mdi-star-outline')) {
 					favNode.classList.remove('mdi-star-outline')
 					favNode.classList.add('mdi-star')
@@ -301,10 +309,11 @@ async function mainInit() {
 
 				let triggers = document.querySelectorAll('.popup-trigger')
 
-				document.onmousedown = function (evt) {
+				document.onmousedown = function (evt) { // TODO fix apple
 					triggers.forEach(node => node.classList.remove('is-active'))
 				}
 
+// TODO fix apple
 				triggers.forEach((node, i) => {
 					node.onmousedown = (evt) => {
 						evt.stopPropagation()
@@ -316,6 +325,7 @@ async function mainInit() {
 					}
 				})
 
+// TODO fix apple
 				document.querySelectorAll('.popup > a').forEach(a => a.onmousedown = (evt) => {
 					evt.stopPropagation()
 					evt.preventDefault()
@@ -324,7 +334,7 @@ async function mainInit() {
 					})
 					a.onclick()
 				})
-
+  
 			}
 
 			function enableAccountValidation(inputAccount, rowKey, inn, onValidationProgress) {
@@ -642,25 +652,25 @@ console.log('acc check result', result)
 
 					})
 
-/*					if (pendingIds.length > 0) {
-						let intervalId = setInterval(function () {
-							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
-							if (pendingIds.length <= 0) {
-								clearInterval(intervalId)
-								intervalId = null
-							} else {
-								let ids = pendingIds.map(paymItem => paymItem.i)
-								backend.paymentGetStatus(ids).then(result => {
-									console.log('status', ids, '->', result)
-									// TODO auto update payment status pendingIds
-									// TODO break on back-button clicked
-								}).catch(err => {
-									console.log(err)
-								})
-							}
-						}, 10*1000)
-					}
-*/
+//					if (pendingIds.length > 0) {
+//						let intervalId = setInterval(function () {
+//							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
+//							if (pendingIds.length <= 0) {
+//								clearInterval(intervalId)
+//								intervalId = null
+//							} else {
+//								let ids = pendingIds.map(paymItem => paymItem.i)
+//								backend.paymentGetStatus(ids).then(result => {
+//									console.log('status', ids, '->', result)
+//									// TODO auto update payment status pendingIds
+//									// TODO break on back-button clicked
+//								}).catch(err => {
+//									console.log(err)
+//								})
+//							}
+//						}, 10*1000)
+//					}
+
 
 					historyPut('accounts')
 					switchActivity(activityAccountHistory)
@@ -1238,20 +1248,7 @@ function filterProviders() {
 	let comparator = (historyFlag ? compareByHistoryDate : compareBySortIndex)
 
 	let parentNode = activityMain.querySelector('.partners')
-/*
-	providersList
-		.forEach(row => {
-			row.node.classList.remove('show')
-			row.node.classList.add('hide')
-		})
-	providersList
-		.filter(row => !row.isMatch)
-		.forEach(row => {
-			if (row.node.parentElement) {
-				row.node.parentElement.removeChild(row.node)
-			}
-		})
-*/
+
 	providersList
 		.forEach(row => {
 			if (row.timeout) {
@@ -1264,19 +1261,6 @@ function filterProviders() {
 //			row.node.classList.add('hide')
 		})
 
-/*
-	setTimeout(function () {
-		let items = providersList.filter(row => row.isMatch)
-		items.sort(comparator)
-		items.forEach((row, i) => {
-			parentNode.appendChild(row.node)
-//			setTimeout(() => {
-//				row.node.classList.remove('hide')
-				row.node.classList.add('show')
-//			}, i * 150)
-		})
-	}, 0)
-*/
 	setTimeout(function () {
 		let items = providersList.filter(row => row.isMatch)
 		items.sort(comparator)
@@ -1488,9 +1472,20 @@ let navBarHide = () => { }
 (function () {
 
 	activityMain.querySelectorAll('.category').forEach(category => {
-		category.onclick = () => {
-			category.classList.toggle('selected')
-			filterProviders()
+		function trigger(evt) {
+			let scrollElement = category.parentElement.parentElement
+			if (!scrollElement.dataset.draggingToScroll) {
+console.log('category', evt.type, evt)
+				category.classList.toggle('selected')
+				filterProviders()
+			} else {
+console.log('scrolling flag is on...')
+			}
+		}
+		if (isTouchScreen()) {
+			category.onmouseup = trigger
+		} else {
+			category.onclick = trigger
 		}
 	});
 
@@ -1537,6 +1532,18 @@ let navBarHide = () => { }
 				focusTimeout = null
 			}, 750)
 		})
+/*		window.addEventListener('resize', evt => {
+			if (document.activeElement.getAttribute('type') !== 'text') {
+				if (focusTimeout !== null) {
+					clearTimeout(focusTimeout)
+					focusTimeout = null
+				}
+				focusTimeout = setTimeout(function () {
+					document.querySelector('.bottom-panel').classList.remove('hide')
+					focusTimeout = null
+				}, 750)
+			}
+		})*/
 	})();
 
 	activityMain.querySelectorAll('.open-favorites').forEach(btn => {
@@ -1695,10 +1702,13 @@ let navBarHide = () => { }
 		}
 	})
 
+
+// TODO fix apple
 	activityMain.querySelectorAll('.scroll-horizontal').forEach(el => {
 
 		let drag = false
 		let pt0 = null
+		let draggingFlagTimer = null
 
 		function touchStart(evt, pt) {
 			pt0 = pt
@@ -1712,6 +1722,8 @@ let navBarHide = () => { }
 				let dx = pt.x - pt0.x
 				let dy = pt.y - pt0.y
 				if (Math.abs(dx) > Math.abs(dy)) {
+					clearTimeout(draggingFlagTimer)
+					el.dataset.draggingToScroll = true
 					el.scrollLeft -= dx
 					pt0 = pt
 					evt.stopPropagation()
@@ -1721,36 +1733,46 @@ let navBarHide = () => { }
 		}
 
 		function touchEnd(evt, pt) {
+//evt.preventDefault()
+//evt.stopPropagation()
 			drag = false
-//console.log('end', pt, evt.type)
+			draggingFlagTimer = setTimeout(function () {
+				delete el.dataset.draggingToScroll
+			}, 250)
+//console.log('end', pt, evt.type, evt)
+//return false
 		}
 
-		el.addEventListener('mousedown', function (evt) {
-			return touchStart(evt, { x: evt.pageX, y: evt.pageY })
-		})
+		if (!isTouchScreen()) {
 
-		el.addEventListener('touchstart', function (evt) {
-			return touchStart(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
-		})
+			el.addEventListener('mousedown', function (evt) {
+				return touchStart(evt, { x: evt.pageX, y: evt.pageY })
+			}, true)
 
-		el.addEventListener('mousemove', function (evt) {
-			return touchMove(evt, { x: evt.pageX, y: evt.pageY })
-		})
+//			el.addEventListener('touchstart', function (evt) {
+//				return touchStart(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
+//			})
 
-		el.addEventListener('touchmove', function (evt) {
-			return touchMove(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
-		})
+			el.addEventListener('mousemove', function (evt) {
+				return touchMove(evt, { x: evt.pageX, y: evt.pageY })
+			}, true)
 
-		document.addEventListener('mouseup', function (evt) {
-			return touchEnd(evt, { x: evt.pageX, y: evt.pageY })
-		})
+//			el.addEventListener('touchmove', function (evt) {
+//				return touchMove(evt, { x: evt.touches[0].pageX, y: evt.touches[0].pageY })
+//			})
 
-		document.addEventListener('touchend', function (evt) {
-			return touchEnd(evt, { x: evt.changedTouches[0].pageX, y: evt.changedTouches[0].pageY })
-		})
+			document.addEventListener('mouseup', function (evt) {
+				return touchEnd(evt, { x: evt.pageX, y: evt.pageY })
+			}, true)
+
+//			document.addEventListener('touchend', function (evt) {
+//				return touchEnd(evt, { x: evt.changedTouches[0].pageX, y: evt.changedTouches[0].pageY })
+//			})
+
+		}
 	});
 
-	(function () {
+	;(function () {
 
 		let avatar = activityMain.querySelector('.avatar')
 		let timerStep0 = null

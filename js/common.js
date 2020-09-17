@@ -176,3 +176,8 @@ let beep = (function () {
 	
 })();
 
+// touch screen
+
+function isTouchScreen() {
+	return ('ontouchstart' in document.documentElement)
+}
