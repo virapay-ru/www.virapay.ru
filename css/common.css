@@ -127,6 +127,7 @@ h1, h2, h3, h4, h5, h6 {
 	background: #fff;
 	padding: 1rem;
 	border-radius: 10px;
+	box-shadow: 0 0 5rem rgba(0,0,0,0.2);
 }
 
 .activity.navbar .links a {
@@ -137,6 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 	display: block;
 	text-decoration: none;
 	color: inherit;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .activity.inner {
@@ -287,6 +289,7 @@ h1, h2, h3, h4, h5, h6 {
 	border: 1px solid #eee;
 	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
 	box-sizing: border-box;
+	-webkit-appearance: none;
 }
 
 .label input[type=text]:focus {
@@ -324,6 +327,7 @@ h1, h2, h3, h4, h5, h6 {
 	border-radius: 0.25rem;
 	border: 1px solid #eee;
 	box-shadow: 0.05rem 0.15rem 0 rgba(0,0,0,0.2);
+	overflow: hidden;
 }
 
 .list > .li {
@@ -332,7 +336,11 @@ h1, h2, h3, h4, h5, h6 {
 	flex-flow: row;
 	align-items: start;
 	padding: 1rem 0.5rem;
-	border-bottom: 1px solid #eee;	
+	border-bottom: 1px solid #eee;
+}
+
+.list > .li:last-child {
+	border-bottom: 0;
 }
 
 .li input[type=radio] {

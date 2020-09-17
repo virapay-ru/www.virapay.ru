@@ -22,8 +22,8 @@ let qrcode = new QRCode('qrcode', {
 
 	let regionsSelector = document.querySelector('.regions-selector')
 	let toggleSelector = function (evt) {
-		evt.preventDefault()
-		evt.stopPropagation()
+//		evt.preventDefault()
+//		evt.stopPropagation()
 		if (!regionsSelector.classList.contains('open')) {
 //			scrollByYTo(document.scrollingElement, regionsSelector.offsetTop - parseInt(getComputedStyle(regionsSelector).marginTop), 300, function () {
 //				regionsSelector.classList.toggle('open')
@@ -34,7 +34,7 @@ regionsSelector.classList.toggle('open')
 		}
 	}
 	let el = regionsSelector.querySelector('.trigger')
-//el.onfocusin = toggleSelector
+//el.onclick = toggleSelector
 	el.onmouseup = toggleSelector
 //	el.ontouchend = toggleSelector
 //	el.ontouchend = toggleSelector
@@ -317,7 +317,7 @@ async function mainInit() {
 				triggers.forEach((node, i) => {
 					node.onmousedown = (evt) => {
 						evt.stopPropagation()
-						evt.preventDefault()
+						//evt.preventDefault() // TODO test it
 						triggers.forEach((node_, j) => {
 							if (i != j) node_.classList.remove('is-active')
 						})
@@ -328,7 +328,7 @@ async function mainInit() {
 // TODO fix apple
 				document.querySelectorAll('.popup > a').forEach(a => a.onmousedown = (evt) => {
 					evt.stopPropagation()
-					evt.preventDefault()
+					//evt.preventDefault() // TODO test it
 					triggers.forEach(node => {
 						node.classList.remove('is-active')
 					})
@@ -1726,8 +1726,8 @@ console.log('scrolling flag is on...')
 					el.dataset.draggingToScroll = true
 					el.scrollLeft -= dx
 					pt0 = pt
-					evt.stopPropagation()
-					evt.preventDefault()
+//					evt.stopPropagation() // TODO test it
+//					evt.preventDefault()
 				}
 			}
 		}
