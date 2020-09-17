@@ -557,7 +557,7 @@ console.log('acc check result', result)
 						return 'color-neutral'
 					}
 
-					function formatStatus(val) {
+					function formatStatus(val) { // TODO use dict
 						switch (parseInt(val)) {
 						case 1: return "Подготавливается";
 						case 2: return "Ожидается";
@@ -594,7 +594,7 @@ console.log('acc check result', result)
 
 					function formatPaymentTypeHtml(val) { // TODO use paymentsTypesList
 						val = parseInt(val)
-						if (val === 1) {
+						if (val === 3) {
 							return '<i class="mdi mdi-qrcode"></i> Система быстрых платежей'
 						}
 						if (val === 2) {
@@ -693,8 +693,9 @@ console.log('acc check result', result)
 					inputAccount.value = accItem.acc
 //					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
+					let defaultPaymentTypeId = paymentsTypesList[0].id
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
-					if (!initPaymentTypeId) { initPaymentTypeId = paymentsTypesList[0].id } // default payment type
+					if (!initPaymentTypeId) { initPaymentTypeId = defaultPaymentTypeId } // default payment type
 
 					paymentsTypesList.forEach(paymentType => {
 						let paymentTypeNode = activityAccountPayment.querySelector('.payments-types > .list > .li.id-' + paymentType.id)
@@ -833,6 +834,9 @@ console.log('acc check result', result)
 					}
 
 					let paymentTypeControl = activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]')
+					if (!paymentTypeControl) {
+						activityAccountPayment.querySelector('input.payment-type-id[value="' + defaultPaymentTypeId + '"]')
+					}
 					paymentTypeControl.checked = true
 					paymentTypeControl.onchange()
 
@@ -869,7 +873,7 @@ console.log('acc check result', result)
 							item.hasHistory = true
 							let result = await profileSave()
 							if (result) {
-								if (paymentTypeId == 1) { // TODO paymentTypeId for sbp only
+								if (paymentTypeId == 3) { // sbp only
 									qrcode.makeCode(payment.url)
 									activitySBPPay.querySelector('.action').setAttribute('href', payment.url)
 									switchActivity(activitySBPPay)
