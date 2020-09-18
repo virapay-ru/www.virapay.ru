@@ -1656,9 +1656,18 @@ console.log('scrolling flag is on...')
 
 							doContinue = false
 
-							setTimeout(function () {
-								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
-							}, 1000)
+
+							backend.scanCode(code.data).then(results => {
+								console.log('Scanner results', results)
+								showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+							}).catch(err => {
+								console.log(err)
+								showMessage('Сканирование кода', 'Направление платежа не найдено. Попробуйте отсканировать код еще раз. Если на платежном документе несколько кодов, убедитесь, что вы сканируете нужный.', closeScanner)
+							})
+
+//							setTimeout(function () {
+//								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+//							}, 1000)
 						}
 					}
 
