@@ -156,6 +156,11 @@ async function mainInit() {
 
 		updateRegionsLabel()
 
+		activityMain.querySelectorAll('.search-cancel').forEach(node => node.onclick = () => {
+			activityMain.classList.remove('search-results')
+			filterProviders()
+		})
+
 // TODO fix apple
 //		regionsList.querySelectorAll('label').forEach(node => {
 //
@@ -1124,85 +1129,9 @@ console.log('acc check result', result)
 	}, 750)
 }
 
-function filterProviders() {
+function filterProviders(searchResults = null) {
 
-	let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
-	let historyFlag = activityMain.querySelector('.open-history').classList.contains('selected')
-
-	let selectedCategories = []
-	activityMain.querySelectorAll('.category').forEach(category => {
-		if (category.classList.contains('selected')) {
-			selectedCategories.push(JSON.parse(category.dataset.id))
-		}
-	})
-
-	let selectedRegions = []
-	activityMain.querySelectorAll('.regions-selector .region').forEach(region => {
-		if (region.checked) {
-			selectedRegions.push(parseInt(region.value))
-		}
-	})
-
-	let searchQuery = '' + document.querySelector('.search-field input').value
-	let searchWords = searchQuery
-		.toLowerCase()
-		.replace(/[\,\.\?\!\%\*\(\)\[\]\{\}\-\+\_\<\>\:\;\"\'\`\\\/\r\n\t]+/g, ' ')
-		.split(/\s+/)
-		.filter(word => word.length > 0)
-//console.log('searchWords', searchWords)
-
-	providersList.forEach(row => {
-
-		row.isMatch = true
-
-		if (searchWords.length > 0) {
-			let found = true
-			searchWords.forEach(word => {
-				//if (row.search_key.indexOf(word) < 0) {
-				if (!row.search_key.some(key => key.startsWith(word))) {
-					found = false
-				}
-			})
-			if (!found) {
-				row.isMatch = false
-			}
-		}
-
-		if (selectedCategories.length > 0) {
-			let found = false
-			let categories = row.categories
-			selectedCategories.forEach(selectedCategory => {
-				if (categories.indexOf(selectedCategory) >= 0) {
-					found = true
-				}
-			})
-			if (!found) {
-				row.isMatch = false
-			}
-		}
-
-		if (selectedRegions.length > 0) {
-			let found = false
-			let regions = row.regions
-			selectedRegions.forEach(selectedRegion => {
-				if (regions.indexOf(selectedRegion) >= 0) {
-					found = true
-				}
-			})
-			if (!found) {
-				row.isMatch = false
-			}
-		}
-
-		if (favoritesFlag && !row.isFavorite) {
-			row.isMatch = false
-		}
-
-		if (historyFlag && !row.hasHistory) {
-			row.isMatch = false
-		}
-
-	})
+	let comparator
 
 	function compareBySortIndex(a, b) {
 
@@ -1249,7 +1178,107 @@ function filterProviders() {
 		return 0
 	}
 
-	let comparator = (historyFlag ? compareByHistoryDate : compareBySortIndex)
+	if (searchResults !== null) {
+
+		searchResults.forEach(res => {
+			res.rowKey = '' + res.provider_id + '/' + (res.service_id === null ? '0' : res.service_id)
+		})
+console.log('searchResults', searchResults)
+
+		providersList.forEach(row => {
+			if (searchResults.find(res => res.rowKey === row.rowKey)) {
+				row.isMatch = true
+			} else {
+				row.isMatch = false
+			}
+		})
+console.log('filtration done')
+		comparator = compareBySortIndex
+
+	} else {
+
+console.log('default filtration')
+
+		let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
+		let historyFlag = activityMain.querySelector('.open-history').classList.contains('selected')
+
+		let selectedCategories = []
+		activityMain.querySelectorAll('.category').forEach(category => {
+			if (category.classList.contains('selected')) {
+				selectedCategories.push(JSON.parse(category.dataset.id))
+			}
+		})
+
+		let selectedRegions = []
+		activityMain.querySelectorAll('.regions-selector .region').forEach(region => {
+			if (region.checked) {
+				selectedRegions.push(parseInt(region.value))
+			}
+		})
+
+		let searchQuery = '' + document.querySelector('.search-field input').value
+		let searchWords = searchQuery
+			.toLowerCase()
+			.replace(/[\,\.\?\!\%\*\(\)\[\]\{\}\-\+\_\<\>\:\;\"\'\`\\\/\r\n\t]+/g, ' ')
+			.split(/\s+/)
+			.filter(word => word.length > 0)
+	//console.log('searchWords', searchWords)
+
+		providersList.forEach(row => {
+
+			row.isMatch = true
+
+			if (searchWords.length > 0) {
+				let found = true
+				searchWords.forEach(word => {
+					//if (row.search_key.indexOf(word) < 0) {
+					if (!row.search_key.some(key => key.startsWith(word))) {
+						found = false
+					}
+				})
+				if (!found) {
+					row.isMatch = false
+				}
+			}
+
+			if (selectedCategories.length > 0) {
+				let found = false
+				let categories = row.categories
+				selectedCategories.forEach(selectedCategory => {
+					if (categories.indexOf(selectedCategory) >= 0) {
+						found = true
+					}
+				})
+				if (!found) {
+					row.isMatch = false
+				}
+			}
+
+			if (selectedRegions.length > 0) {
+				let found = false
+				let regions = row.regions
+				selectedRegions.forEach(selectedRegion => {
+					if (regions.indexOf(selectedRegion) >= 0) {
+						found = true
+					}
+				})
+				if (!found) {
+					row.isMatch = false
+				}
+			}
+
+			if (favoritesFlag && !row.isFavorite) {
+				row.isMatch = false
+			}
+
+			if (historyFlag && !row.hasHistory) {
+				row.isMatch = false
+			}
+
+		})
+
+		comparator = (historyFlag ? compareByHistoryDate : compareBySortIndex)
+	}
 
 	let parentNode = activityMain.querySelector('.partners')
 
@@ -1580,7 +1609,8 @@ console.log('scrolling flag is on...')
 				}
 
 				function showScannerResults(results) {
-					// TODO
+					activityMain.classList.add('search-results')
+					filterProviders(results)
 				}
 
 				activityScanner.querySelectorAll('.back').forEach(btn => {

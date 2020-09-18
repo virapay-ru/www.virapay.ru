@@ -821,6 +821,14 @@ input.verification + .verification-result > .verification {
 }
 
 
+.activity.main .search-results-header {
+	display: none;
+}
+
+.activity.main .search-cancel {
+	display: none;
+}
+
 
 .activity.main.search-results .banner {
 	display: none;
@@ -841,6 +849,23 @@ input.verification + .verification-result > .verification {
 .activity.main.search-results .bottom-panel {
 	display: none;
 }
+
+.activity.main.search-results .search-results-header {
+	display: block;
+	margin-top: 2rem;
+}
+
+.activity.main.search-results .partners {
+	padding-bottom: 0;
+}
+
+.activity.main.search-results .search-cancel {
+	display: flex;
+	margin-top: 2rem;
+	margin-bottom: 40rem;
+}
+
+
 
 
 /* activity accounts */
