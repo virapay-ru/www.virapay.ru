@@ -402,17 +402,19 @@ input.verification + .verification-result > .verification {
 }
 
 
-/* activity main */
+/* activity loading */
 
 .activity.loading > .container {
 	padding-bottom: 4rem;
 }
 
-.activity > .container > i.display1 {
+.activity > .container > i.display1 { /* TODO */
 	color: gainsboro;
 	line-height: 10rem;
     font-size: 10rem;
 }
+
+/* activity login */
 
 .activity.login > .container {
 	display: flex;
@@ -429,6 +431,8 @@ input.verification + .verification-result > .verification {
     width: 20rem;
     font-size: 0.8rem;
 }
+
+/* activity profile */
 
 .activity.profile {
 	padding-top: 4rem;
@@ -475,6 +479,8 @@ input.verification + .verification-result > .verification {
 	width: 100%;
 	max-width: 30rem;
 }
+
+/* activity main */
 
 .activity.main .hot-icons {
 	width: 100%;
@@ -816,6 +822,25 @@ input.verification + .verification-result > .verification {
 
 
 
+.activity.main.search-results .banner {
+	display: none;
+}
+
+.activity.main.search-results .search-field {
+	display: none;
+}
+
+.activity.main.search-results .categories {
+	display: none;
+}
+
+.activity.main.search-results .regions-selector {
+	display: none;
+}
+
+.activity.main.search-results .bottom-panel {
+	display: none;
+}
 
 
 /* activity accounts */

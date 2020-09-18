@@ -1579,6 +1579,10 @@ console.log('scrolling flag is on...')
 					btn.classList.remove('selected')
 				}
 
+				function showScannerResults(results) {
+					// TODO
+				}
+
 				activityScanner.querySelectorAll('.back').forEach(btn => {
 					btn.onclick = closeScanner
 				})
@@ -1659,10 +1663,16 @@ console.log('scrolling flag is on...')
 
 							backend.scanCode(code.data).then(results => {
 								console.log('Scanner results', results)
-								showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+								if ((results instanceof Array) && results.length > 0) {
+									closeScanner()
+									showScannerResults(results)
+								} else {
+									showMessage('Сканирование кода', 'Направления платежа нет в списке.', closeScanner)
+								}
+								//showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
 							}).catch(err => {
 								console.log(err)
-								showMessage('Сканирование кода', 'Направление платежа не найдено. Попробуйте отсканировать код еще раз. Если на платежном документе несколько кодов, убедитесь, что вы сканируете нужный.', closeScanner)
+								showMessage('Сканирование кода', 'Ошибка. Попробуйте отсканировать код еще раз.', closeScanner)
 							})
 
 //							setTimeout(function () {
