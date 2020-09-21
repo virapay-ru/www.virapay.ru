@@ -1371,11 +1371,29 @@ input.verification + .verification-result > .verification {
 	align-items: start;
 }
 
+.activity.account-history .payment .counter {
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 0.8rem;
+	border-top: 1px solid #eee;
+}
+
+.activity.account-history .payment .counter .name {
+	padding: 0.25rem 0.5rem;
+}
+
+.activity.account-history .payment .counter .value {
+	padding: 0.25rem 0.5rem;
+}
+
+/*
+
 .activity.account-history .payment .details .commands {
 	width: 1.5rem;
 }
 
-/*
 .activity.account-history .payment .details .popup-trigger {
 	width: 2rem;
 	height: 1.5rem;

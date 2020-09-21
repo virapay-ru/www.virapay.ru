@@ -605,6 +605,9 @@ console.log('acc check result', result)
 						if (val === 2) {
 							return '<i class="mdi mdi-credit-card-outline"></i> Картой банка'
 						}
+						if (val === 1) {
+							return '<i class="mdi mdi-file-check-outline"></i> Платежный перевод'
+						}
 						return ''
 					}
 
@@ -637,6 +640,7 @@ console.log('acc check result', result)
 									<div class="description"></div>
 								</div>
 							</div>
+							<div class="counters"></div>
 							<div class="button-container">
 								<a class="button status"></a>
 							</div>
@@ -648,6 +652,23 @@ console.log('acc check result', result)
 						paymentNode.querySelector('.status').innerHTML = formatStatusHtml(paymItem.e)
 						paymentNode.querySelector('.description').innerHTML = formatPaymentTypeHtml(paymItem.t)
 						paymentNode.classList.add(formatStatusColor(paymItem.e))
+
+						if ((paymItem.r instanceof Array) && paymItem.r.length > 0) {
+							let countersNode = paymentNode.querySelector('.counters')
+							paymItem.r.forEach(counter => {
+								let counterNode = document.createElement('div')
+								counterNode.classList.add('counter')
+								let nameNode = document.createElement('div')
+								nameNode.classList.add('name')
+								nameNode.innerText = counter.name
+								let valueNode = document.createElement('div')
+								valueNode.classList.add('value')
+								valueNode.innerText = counter.value
+								counterNode.appendChild(nameNode)
+								counterNode.appendChild(valueNode)
+								countersNode.appendChild(counterNode)
+							})
+						}
 
 						if (!isFinalStatus(paymItem.e)) {
 							pendingIds.push(paymItem)
@@ -692,6 +713,7 @@ console.log('acc check result', result)
 					let actionButton = activityAccountPayment.querySelector('.prepare-payment')
 					let countersSection = activityAccountPayment.querySelector('.counters')
 					let countersList = countersSection.querySelector('.counters-list')
+					let settedCounters = { }
 
 					countersSection.querySelector('.subject').innerText = item.counters_title
 					countersSection.hidden = true
@@ -725,18 +747,94 @@ console.log('acc check result', result)
 							&& inputAccount.classList.contains('valid')
 							&& inputSum.classList.contains('valid')
 
+						countersSection.hidden = true
+						countersList.innerHTML = ''
+
 						if (isValid) {
 							actionButton.removeAttribute('disabled')
 							if (item.counters_type_id > 1) {
-								// TODO counters list
 console.log('COUNTERS', result.counters)
-								countersSection.hidden = false
-							} else {
-								countersSection.hidden = true
+
+								if ((result.counters instanceof Array) && result.counters.length > 0) {
+
+									result.counters.forEach(counter => {
+
+										let counterNode = document.createElement('label')
+
+										counterNode.classList.add('label')
+
+										let hintNode = document.createElement('div')
+
+										hintNode.classList.add('hint')
+										hintNode.innerText = counter.name
+
+										let containerNode = document.createElement('div')
+
+										let inputValue = document.createElement('input')
+
+										inputValue.setAttribute('type', 'text')
+										inputValue.dataset.extData = counter.ext_data
+										inputValue.dataset.name = counter.name
+										inputValue.oninput = function (evt) {
+											settedCounters[counter.ext_data] = inputValue.value
+										}
+
+										if (counter.ext_data in settedCounters) {
+											inputValue.value = settedCounters[counter.ext_data]
+										} else {
+											inputValue.value = '0'
+										}
+
+										inputValue.onkeypress = function (evt) {
+
+											let c = String.fromCharCode(evt.keyCode)
+											if (/^\d$/.test(c)) {
+												return true
+											} else {
+												evt.preventDefault()
+												if (c === ',' || c === '.') {
+													let el = evt.srcElement
+													let val = '' + el.value
+													let start = el.selectionStart
+													let end = el.selectionEnd
+													let lval = val.substring(0, start)
+													let rval = val.substring(end)
+													let replacement = '.'
+													let offset = -1 + replacement.length
+													let shiftOffset = (/\./.test(lval) ? 0 : 1)
+													el.value = lval.replace(/\./g, '') + replacement + rval.replace(/\./g, '')
+													el.selectionStart = start + offset + shiftOffset
+													el.selectionEnd = el.selectionStart
+													el.dispatchEvent(new Event('input'))
+												}
+												return false
+											}
+											
+										}
+
+										inputValue.onfocus = function () {
+											if (Math.abs(parseFloat(inputValue.value)) < 0.01) {
+												inputValue.value = ''
+											}
+										}
+
+										inputValue.onblur = function () {
+											if (inputValue.value == '') {
+												inputValue.value = '0'
+											}
+										}
+
+										containerNode.appendChild(inputValue)
+										counterNode.appendChild(hintNode)
+										counterNode.appendChild(containerNode)
+										countersList.appendChild(counterNode)
+									})
+
+									countersSection.hidden = false
+								}
 							}
 						} else {
 							actionButton.setAttribute('disabled', true)
-							countersSection.hidden = true
 						}
 					}
 
@@ -853,7 +951,7 @@ console.log('COUNTERS', result.counters)
 
 					let paymentTypeControl = activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]')
 					if (!paymentTypeControl) {
-						activityAccountPayment.querySelector('input.payment-type-id[value="' + defaultPaymentTypeId + '"]')
+						paymentTypeControl = activityAccountPayment.querySelector('input.payment-type-id[value="' + defaultPaymentTypeId + '"]')
 					}
 					paymentTypeControl.checked = true
 					paymentTypeControl.onchange()
@@ -864,19 +962,30 @@ console.log('COUNTERS', result.counters)
 
 						let prevPaymTyp = accItem.paymTyp
 						let prevAcc = accItem.acc
-//						let prevDesc = accItem.desc
 						let prevSum = accItem.sum
 						accItem.acc = inputAccount.value
-//						accItem.desc = inputDescription.value
 						accItem.sum = inputSum.value
 						accItem.paymTyp = paymentTypeId
 
+						let counters = []
+						countersList.querySelectorAll('input[type=text]').forEach(inputValue => {
+							let extData = inputValue.dataset.extData
+							if (/^\d+(\.\d+)?$/.test(settedCounters[extData]) && parseFloat(settedCounters[extData]) > 0) { // float and not zero
+								counters.push({
+									'ext_data': extData,
+									'value': inputValue.value,
+									'name': inputValue.dataset.name
+								})
+							}
+						})
+
 						switchActivity(activityLoading)
-						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum)
+						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum, counters)
 						if (payment && payment.id && payment.url) {
 							if (!(profileData.history[rowKey] instanceof Array)) {
 								profileData.history[rowKey] = []
 							}
+							counters.forEach(counter => { delete counter.ext_data })
 							profileData.history[rowKey].push({
 								i: payment.id,
 								s: payment.summ,
@@ -886,7 +995,8 @@ console.log('COUNTERS', result.counters)
 								d: payment.created,
 								a: accItem.acc,
 								t: accItem.paymTyp,
-								e: payment.status
+								e: payment.status,
+								r: counters
 							})
 							item.hasHistory = true
 							let result = await profileSave()
@@ -901,7 +1011,6 @@ console.log('COUNTERS', result.counters)
 							} else {
 								showMessage('Подготовка платежа', 'Не удалось сохранить историю платежей. Попробуйте позднее.', () => {
 									accItem.acc = prevAcc
-//									accItem.desc = prevDesc
 									accItem.sum = prevSum
 									switchActivity(activityAccountPayment)
 								})
@@ -909,7 +1018,6 @@ console.log('COUNTERS', result.counters)
 						} else {
 							showMessage('Подготовка платежа', 'Не удалось подготовить платеж. Попробуйте позднее.', () => {
 								accItem.acc = prevAcc
-//								accItem.desc = prevDesc
 								accItem.sum = prevSum
 								switchActivity(activityAccountPayment)
 							})
