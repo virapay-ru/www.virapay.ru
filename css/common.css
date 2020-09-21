@@ -1190,6 +1190,35 @@ input.verification + .verification-result > .verification {
 	/*font-weight: 600; */
 }
 
+.activity.account-payment .counters {
+    width: 100%;
+    max-width: 26rem;
+}
+
+.activity.account-payment .title {
+	text-align: left;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	font-size: 1.2rem;
+	font-weight: 100;	
+}
+
+.activity.account-payment .counters-list > .label {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-flow: row;
+}
+
+.activity.account-payment .counters-list > .label > .subject {
+	-width: 50%;
+}
+
+.activity.account-payment .counters-list > .label input[type=text] {
+	width: 7rem;
+}
 
 
 /* activity account-history */

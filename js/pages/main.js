@@ -382,7 +382,7 @@ async function mainInit() {
 							} else {
 								inputAccount.classList.add('error')
 							}
-							onValidationProgress()
+							onValidationProgress(result)
 						}
 
 						if (accountsCache[rowKey] && accountsCache[rowKey][acc]) {
@@ -690,6 +690,11 @@ console.log('acc check result', result)
 					let outputCommission = activityAccountPayment.querySelector('.commission')
 					let outputTotal = activityAccountPayment.querySelector('.total')
 					let actionButton = activityAccountPayment.querySelector('.prepare-payment')
+					let countersSection = activityAccountPayment.querySelector('.counters')
+					let countersList = countersSection.querySelector('.counters-list')
+
+					countersSection.querySelector('.subject').innerText = item.counters_title
+					countersSection.hidden = true
 
 					scrollTopAccounts = document.scrollingElement.scrollTop
 
@@ -714,7 +719,7 @@ console.log('acc check result', result)
 						}
 					})
 
-					function onValidationProgress() {
+					function onValidationProgress(result) {
 
 						let isValid = true
 							&& inputAccount.classList.contains('valid')
@@ -722,8 +727,16 @@ console.log('acc check result', result)
 
 						if (isValid) {
 							actionButton.removeAttribute('disabled')
+							if (item.counters_type_id > 1) {
+								// TODO counters list
+console.log('COUNTERS', result.counters)
+								countersSection.hidden = false
+							} else {
+								countersSection.hidden = true
+							}
 						} else {
 							actionButton.setAttribute('disabled', true)
+							countersSection.hidden = true
 						}
 					}
 
