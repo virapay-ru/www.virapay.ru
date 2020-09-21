@@ -4,7 +4,7 @@ let profileData = null
 let providersList = null
 let paymentsTypesList = null
 let profileSave = function () { };
-let profilePaymentInit = function (rowKey, paymentTypeId, account, summ) { };
+let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 
 // qrcode generator
 
@@ -775,6 +775,7 @@ console.log('COUNTERS', result.counters)
 										inputValue.setAttribute('type', 'text')
 										inputValue.dataset.extData = counter.ext_data
 										inputValue.dataset.name = counter.name
+										inputValue.dataset.orderNo = counter.order_no
 										inputValue.oninput = function (evt) {
 											settedCounters[counter.ext_data] = inputValue.value
 										}
@@ -973,6 +974,7 @@ console.log('COUNTERS', result.counters)
 							if (/^\d+(\.\d+)?$/.test(settedCounters[extData]) && parseFloat(settedCounters[extData]) > 0) { // float and not zero
 								counters.push({
 									'ext_data': extData,
+									'order_no': inputValue.dataset.orderNo,
 									'value': inputValue.value,
 									'name': inputValue.dataset.name
 								})
@@ -985,7 +987,10 @@ console.log('COUNTERS', result.counters)
 							if (!(profileData.history[rowKey] instanceof Array)) {
 								profileData.history[rowKey] = []
 							}
-							counters.forEach(counter => { delete counter.ext_data })
+							counters.forEach(counter => {
+								delete counter.ext_data
+								delete counter.order_no
+							})
 							profileData.history[rowKey].push({
 								i: payment.id,
 								s: payment.summ,
@@ -1498,7 +1503,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		doLogout()
 		profileData = null
 		profileSave = function () { }
-		profilePaymentInit = function (rowKey, account, summ) { };
+		profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 	}
 
 	switchActivity(activityLoading)
@@ -1569,14 +1574,15 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				}
 				return null
 			}
-			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ) {
+			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ, counters) {
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
 					let result = await backend.paymentInit(
 						apiName, id, token,
 						name, email, imageUrl,
-						rowKey, paymentTypeId, account, summ
+						rowKey, paymentTypeId, account, summ,
+						counters
 					)
 console.log('PAYMENT', result)
 					return result
