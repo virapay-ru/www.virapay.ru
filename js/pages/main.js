@@ -913,9 +913,53 @@ console.log('acc check result', result)
 				accountsList.appendChild(accountNode)
 
 				accountsListUpdateTriggers()
+
+				if (accItem.autoSelect) {
+					delete accItem.autoSelect
+					accountNode.querySelector('.account-payment').onclick()
+				}
 			}
 
-			function pick() {
+			function pickProvider() {
+
+				let showAccountsList = true
+
+				if (item.searchItem && item.searchItem.account !== undefined && item.searchItem.account !== null) {
+//console.log('by search result', item.searchItem)
+
+					let sum = null
+
+					if (item.searchItem.summ !== undefined && item.searchItem.summ !== null) {
+						sum = parseFloat(item.searchItem.summ).toFixed(2)
+					}
+
+					if (!(profileData.accList[item.rowKey] instanceof Array)) {
+						profileData.accList[item.rowKey] = []
+					}
+
+					let accItem = profileData.accList[item.rowKey].find(accItem => accItem.acc == item.searchItem.account)
+
+					if (accItem) {
+
+						if (sum !== null) {
+							accItem.sum = sum
+						}
+
+					} else {
+
+						accItem = {
+							acc: item.searchItem.account,
+							desc: '',
+							sum: (sum !== null ? sum : '0.00')
+						}
+
+						profileData.accList[item.rowKey].push(accItem)
+					}
+
+					accItem.autoSelect = true
+					showAccountsList = false
+
+				}
 
 				scrollTopMain = document.scrollingElement.scrollTop
 
@@ -1104,17 +1148,15 @@ console.log('acc check result', result)
 
 				})();
 				
-
-
-
-
-				historyPut('main')
-				switchActivity(activityAccounts)
+				if (showAccountsList) { // if account is not picked automatically
+					historyPut('main')
+					switchActivity(activityAccounts)
+				}
 			}
 
-			nameNode.onclick = pick
-			serviceNode.onclick = pick
-			btnNode.onclick = pick
+			nameNode.onclick = pickProvider
+			serviceNode.onclick = pickProvider
+			btnNode.onclick = pickProvider
 
 			item.node = providerNode
 		})
@@ -1130,6 +1172,8 @@ console.log('acc check result', result)
 }
 
 function filterProviders(searchResults = null) {
+
+	let autoSelectedProvider = null
 
 	let comparator
 
@@ -1183,21 +1227,30 @@ function filterProviders(searchResults = null) {
 		searchResults.forEach(res => {
 			res.rowKey = '' + res.provider_id + '/' + (res.service_id === null ? '0' : res.service_id)
 		})
-console.log('searchResults', searchResults)
+//console.log('searchResults', searchResults)
 
+		let numFoundProviders = 0
 		providersList.forEach(row => {
-			if (searchResults.find(res => res.rowKey === row.rowKey)) {
+			let searchItem = searchResults.find(res => res.rowKey === row.rowKey)
+			if (searchItem) {
+				row.searchItem = searchItem
 				row.isMatch = true
+				autoSelectedProvider = row
+				numFoundProviders ++
 			} else {
+				row.searchItem = null
 				row.isMatch = false
 			}
 		})
-console.log('filtration done')
+		if (numFoundProviders !== 1) {
+			autoSelectedProvider = null
+		}
+//console.log('filtration done')
 		comparator = compareBySortIndex
 
 	} else {
 
-console.log('default filtration')
+//console.log('default filtration')
 
 		let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
 		let historyFlag = activityMain.querySelector('.open-history').classList.contains('selected')
@@ -1227,6 +1280,7 @@ console.log('default filtration')
 		providersList.forEach(row => {
 
 			row.isMatch = true
+			row.searchItem = null
 
 			if (searchWords.length > 0) {
 				let found = true
@@ -1306,6 +1360,10 @@ console.log('default filtration')
 			}, i * 150)
 		})
 	}, 300)
+
+	if (autoSelectedProvider !== null) {
+		autoSelectedProvider.node.querySelector('.name').onclick()
+	}
 
 }
 
