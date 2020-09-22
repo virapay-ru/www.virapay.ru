@@ -698,7 +698,7 @@ console.log('acc check result', result)
 							} else {
 								let ids = pendingIds.map(paymItem => paymItem.i)
 								backend.paymentGetStatus(ids).then(result => {
-console.log('statuses', ids, '->', result)
+//console.log('statuses', ids, '->', result)
 									let doUpdate = false
 									for (let id in result) {
 										let status = result[id].status_id
@@ -709,11 +709,11 @@ console.log('statuses', ids, '->', result)
 										getStatusColors().forEach(colorClass => paymentNode.classList.remove(colorClass))
 										paymentNode.classList.add(formatStatusColor(status))
 										if (isFinalStatus(status)) {
-console.log('final', id, status)
+//console.log('final', id, status)
 											delete pendingNodes[id]
 											doUpdate = true
 										} else {
-console.log('continue', id, status)
+//console.log('continue', id, status)
 										}
 									}
 									if (doUpdate) {
@@ -728,7 +728,7 @@ console.log('continue', id, status)
 
 					activityAccountHistory.querySelector('.clear-interval').onclick = function () {
 						clearInterval(intervalId)
-console.log('clear interval')
+//console.log('clear interval')
 					}
 
 
@@ -788,7 +788,7 @@ console.log('clear interval')
 						if (isValid) {
 							actionButton.removeAttribute('disabled')
 							if (item.counters_type_id > 1) {
-console.log('COUNTERS', result.counters)
+//console.log('COUNTERS', result.counters)
 
 								if ((result.counters instanceof Array) && result.counters.length > 0) {
 
@@ -817,8 +817,8 @@ console.log('COUNTERS', result.counters)
 
 										if (counter.ext_data in settedCounters) {
 											inputValue.value = settedCounters[counter.ext_data]
-										} else {
-											inputValue.value = '0'
+//										} else {
+//											inputValue.value = '0'
 										}
 
 										inputValue.onkeypress = function (evt) {
@@ -848,17 +848,17 @@ console.log('COUNTERS', result.counters)
 											
 										}
 
-										inputValue.onfocus = function () {
-											if (Math.abs(parseFloat(inputValue.value)) < 0.01) {
-												inputValue.value = ''
-											}
-										}
-
-										inputValue.onblur = function () {
-											if (inputValue.value == '') {
-												inputValue.value = '0'
-											}
-										}
+//										inputValue.onfocus = function () {
+//											if (Math.abs(parseFloat(inputValue.value)) < 0.01) {
+//												inputValue.value = ''
+//											}
+//										}
+//
+//										inputValue.onblur = function () {
+//											if (inputValue.value == '') {
+//												inputValue.value = '0'
+//											}
+//										}
 
 										containerNode.appendChild(inputValue)
 										counterNode.appendChild(hintNode)
