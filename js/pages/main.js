@@ -206,6 +206,15 @@ async function mainInit() {
 					item.limits[pt.id] = false
 				}
 			})
+			if (!('infos' in item)) {
+				item.infos = { }
+				paymentsTypesList.forEach(pt => item.infos[pt.id] = false)
+			}
+			paymentsTypesList.forEach(pt => {
+				if (!(pt.id in item.infos)) {
+					item.infos[pt.id] = false
+				}
+			})
 			if (!('commission' in item)) {
 				item.commission = { }
 				paymentsTypesList.forEach(pt => item.commission[pt.id] = { rules: 0, description: '0.00%' })
@@ -954,6 +963,7 @@ console.log('acc check result', result)
 
 						let paymentTypeId = activityAccountPayment.querySelector('input[name=payment-type]:checked').value
 						let limitsNode = activityAccountPayment.querySelector('.limits-description')
+						let infoNode = activityAccountPayment.querySelector('.info')
 
 						if (limitsNode) {
 							let limits = item.limits[paymentTypeId]
@@ -974,6 +984,17 @@ console.log('acc check result', result)
 								limitsNode.hidden = false
 							} else {
 								limitsNode.hidden = true
+							}
+						}
+
+						if (infoNode) {
+							let info = item.infos[paymentTypeId]
+console.log('infos', paymentTypeId, info)
+							if (info) {
+								infoNode.innerText = info
+								infoNode.hidden = false
+							} else {
+								infoNode.hidden = true
 							}
 						}
 

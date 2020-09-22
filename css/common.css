@@ -1220,6 +1220,17 @@ input.verification + .verification-result > .verification {
 	width: 7rem;
 }
 
+.activity.account-payment .info {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	font-size: 0.9rem;
+	display: inline-block;
+	background: #ffeca5;
+	color: #000;
+}
+
 
 /* activity account-history */
 
