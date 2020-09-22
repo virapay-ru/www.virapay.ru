@@ -562,9 +562,13 @@ console.log('acc check result', result)
 						return 'color-neutral'
 					}
 
+					function getStatusColors() {
+						return [ 'color-normal', 'color-warning', 'color-neutral' ]
+					}
+
 					function formatStatus(val) { // TODO use dict
 						switch (parseInt(val)) {
-						case 1: return "Подготавливается";
+						case 1: return "Черновик";
 						case 2: return "Ожидается";
 						case 3: return "Поступил";
 						case 4: return "Проведен";
@@ -576,7 +580,7 @@ console.log('acc check result', result)
 
 					function isFinalStatus(val) {
 						val = parseInt(val)
-						return val === 4 && val === 5
+						return val === 4 || val === 5
 					}
 
 					function formatStatusIcon(val) {
@@ -621,6 +625,7 @@ console.log('acc check result', result)
 					listNode.innerHTML = '' // clear list
 
 					let pendingIds = []
+					let pendingNodes = { }
 
 					payments.forEach(paymItem => {
 
@@ -672,30 +677,60 @@ console.log('acc check result', result)
 
 						if (!isFinalStatus(paymItem.e)) {
 							pendingIds.push(paymItem)
+							pendingNodes[paymItem.i] = paymentNode
 						}
 
 						listNode.appendChild(paymentNode)
 
 					})
 
-//					if (pendingIds.length > 0) {
-//						let intervalId = setInterval(function () {
-//							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
-//							if (pendingIds.length <= 0) {
-//								clearInterval(intervalId)
-//								intervalId = null
-//							} else {
-//								let ids = pendingIds.map(paymItem => paymItem.i)
-//								backend.paymentGetStatus(ids).then(result => {
-//									console.log('status', ids, '->', result)
-//									// TODO auto update payment status pendingIds
-//									// TODO break on back-button clicked
-//								}).catch(err => {
-//									console.log(err)
-//								})
-//							}
-//						}, 10*1000)
-//					}
+
+
+
+					let intervalId = null
+
+					if (pendingIds.length > 0) {
+						intervalId = setInterval(function () {
+							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
+							if (pendingIds.length <= 0) {
+								clearInterval(intervalId)
+								intervalId = null
+							} else {
+								let ids = pendingIds.map(paymItem => paymItem.i)
+								backend.paymentGetStatus(ids).then(result => {
+console.log('statuses', ids, '->', result)
+									let doUpdate = false
+									for (let id in result) {
+										let status = result[id].status_id
+										let paymentNode = pendingNodes[id]
+										let paymItem = pendingIds.find(itm => itm.i == id)
+										paymItem.e = status
+										paymentNode.querySelector('.status').innerHTML = formatStatusHtml(status)
+										getStatusColors().forEach(colorClass => paymentNode.classList.remove(colorClass))
+										paymentNode.classList.add(formatStatusColor(status))
+										if (isFinalStatus(status)) {
+console.log('final', id, status)
+											delete pendingNodes[id]
+											doUpdate = true
+										} else {
+console.log('continue', id, status)
+										}
+									}
+									if (doUpdate) {
+										profileSave()
+									}
+								}).catch(err => {
+									console.log(err)
+								})
+							}
+						}, 10*1000)
+					}
+
+					activityAccountHistory.querySelector('.clear-interval').onclick = function () {
+						clearInterval(intervalId)
+console.log('clear interval')
+					}
+
 
 
 					historyPut('accounts')
@@ -1151,6 +1186,7 @@ console.log('COUNTERS', result.counters)
 				})
 
 				activityAccountHistory.querySelectorAll('.back').forEach(node => node.onclick = () => {
+					activityAccountHistory.querySelector('.clear-interval').onclick()
 					switchActivity(activityAccounts)
 					document.scrollingElement.scrollTop = scrollTopAccounts
 				})
