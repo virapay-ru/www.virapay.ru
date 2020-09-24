@@ -37,40 +37,101 @@ function parseParameters(str) {
 // activities
 
 let activities = Array.from(document.querySelectorAll('.activity'))
-let activityLoading = activities.reduce((_, a) => a.classList.contains('loading') ? a : _, null)
-let activityMessage = activities.reduce((_, a) => a.classList.contains('message') ? a : _, null)
-let activityConfirm = activities.reduce((_, a) => a.classList.contains('confirm') ? a : _, null)
-let activityLogin = activities.reduce((_, a) => a.classList.contains('login') ? a : _, null)
-let activityProfile = activities.reduce((_, a) => a.classList.contains('profile') ? a : _, null)
-let activityMain = activities.reduce((_, a) => a.classList.contains('main') ? a : _, null)
-let activityNavBar = activities.reduce((_, a) => a.classList.contains('navbar') ? a : _, null)
-let activityAccounts = activities.reduce((_, a) => a.classList.contains('accounts') ? a : _, null)
-let activityAccountEdit = activities.reduce((_, a) => a.classList.contains('account-edit') ? a : _, null)
-let activityAccountPayment = activities.reduce((_, a) => a.classList.contains('account-payment') ? a : _, null)
-let activityAccountHistory = activities.reduce((_, a) => a.classList.contains('account-history') ? a : _, null)
-let activityScanner = activities.reduce((_, a) => a.classList.contains('scanner') ? a : _, null)
-let activitySBPPay = activities.reduce((_, a) => a.classList.contains('sbp-pay') ? a : _, null)
+let activityLoading = activities.find(a => a.classList.contains('loading'))
+let activityMessage = activities.find(a => a.classList.contains('message'))
+let activityConfirm = activities.find(a => a.classList.contains('confirm'))
+let activityLogin = activities.find(a => a.classList.contains('login'))
+let activityProfile = activities.find(a => a.classList.contains('profile'))
+let activityMain = activities.find(a => a.classList.contains('main'))
+let activityNavBar = activities.find(a => a.classList.contains('navbar'))
+let activityAccounts = activities.find(a => a.classList.contains('accounts'))
+let activityAccountEdit = activities.find(a => a.classList.contains('account-edit'))
+let activityAccountPayment = activities.find(a => a.classList.contains('account-payment'))
+let activityAccountHistory = activities.find(a => a.classList.contains('account-history'))
+let activityScanner = activities.find(a => a.classList.contains('scanner'))
+let activitySBPPay = activities.find(a => a.classList.contains('sbp-pay'))
 
-// history
+function getActivityByName(name) {
+	return activities.find(activity => activity.dataset.name == name)
+}
 
-function historyPut(activityName, data = null) {
-	history.pushState(
-		{
-			activity: activityName,
-			scrollTop: document.scrollingElement.scrollTop,
-			data
-		},
-		document.title,
-		location.pathname
-	)
+function getActivityName(activity) {
+	return activity.dataset.name
+}
+
+function getCurrentActivity() {
+	return activities.find(activity => !activity.classList.contains('is-hidden'))
 }
 
 // activities switcher
 
-function switchActivity(activity) {
-	activities.forEach(a => a.classList.add('is-hidden'))
+function switchActivity(activity, historyUntracked) {
+//	activities.forEach(a => a.classList.add('is-hidden'))
+//	activity.classList.remove('is-hidden')
+//	document.scrollingElement.scrollTop = 0
+
+	if (!historyUntracked) {
+		if (activity.dataset.history === 'untracked') {
+console.log('force untracked activity', getActivityName(activity))
+			historyUntracked = true
+		}
+	}
+
+	let prevActivity = getCurrentActivity()
+	if (prevActivity) {
+		//if (prevActivity.dataset.history !== 'untracked') {
+/*		if (!historyUntracked && prevActivity.dataset.history !== 'untracked') {
+			let state = {
+				activity: getActivityName(prevActivity),
+				scrollTop: document.scrollingElement.scrollTop
+			}
+console.log('replace', history.state, 'with', state)
+			history.replaceState(
+				state,
+				document.title,
+				location.pathname
+			)
+		}*/
+		prevActivity.classList.add('is-hidden')
+	}
+
+	activity.style.visibility = 'hidden'
 	activity.classList.remove('is-hidden')
 	document.scrollingElement.scrollTop = 0
+	setTimeout(function () {
+		activity.style.visibility = 'visible'
+	}, 1000/60)
+
+	document.onscroll = function () { }
+	if (!historyUntracked) {
+		let state = {
+			activity: getActivityName(activity),
+			scrollTop: 0
+		}
+console.log('push', state)
+		history.pushState(
+			state,
+			document.title,
+			location.pathname
+		)
+	}
+	if (activity.dataset.history !== 'untracked') {
+		document.onscroll = function () {
+//console.log('scrollTop', document.scrollingElement.scrollTop)
+			let activityName = getActivityName(activity)
+			let state = history.state
+			let options = (state && state.activity === activityName ? state.options : undefined)
+			history.replaceState(
+				{
+					activity: activityName,
+					scrollTop: document.scrollingElement.scrollTop,
+					options
+				},
+				document.title,
+				location.pathname
+			)
+		}
+	}
 }
 
 // message

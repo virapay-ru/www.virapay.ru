@@ -157,8 +157,9 @@ async function mainInit() {
 		updateRegionsLabel()
 
 		activityMain.querySelectorAll('.search-cancel').forEach(node => node.onclick = () => {
-			activityMain.classList.remove('search-results')
-			filterProviders()
+			//activityMain.classList.remove('search-results')
+			//filterProviders()
+			history.back()
 		})
 
 // TODO fix apple
@@ -521,7 +522,7 @@ console.log('acc check result', result)
 						}
 					}
 
-					historyPut('accounts')
+					//historyPut('accounts')
 					inputAccount.oninput()
 					switchActivity(activityAccountEdit)
 				})
@@ -742,7 +743,7 @@ console.log('acc check result', result)
 
 
 
-					historyPut('accounts')
+					//historyPut('accounts')
 					switchActivity(activityAccountHistory)
 
 				})
@@ -1086,7 +1087,7 @@ console.log('infos', paymentTypeId, info)
 
 					}
 
-					historyPut('accounts')
+					//historyPut('accounts')
 					inputAccount.oninput()
 					inputSum.oninput()
 					switchActivity(activityAccountPayment)
@@ -1146,8 +1147,9 @@ console.log('infos', paymentTypeId, info)
 				scrollTopMain = document.scrollingElement.scrollTop
 
 				activityAccounts.querySelectorAll('.back').forEach(node => node.onclick = () => {
-					switchActivity(activityMain)
-					document.scrollingElement.scrollTop = scrollTopMain
+					//switchActivity(activityMain)
+					//document.scrollingElement.scrollTop = scrollTopMain
+					history.back()
 				})
 
 				activityAccounts.querySelectorAll('.provider-details .name').forEach(node => {
@@ -1172,8 +1174,9 @@ console.log('infos', paymentTypeId, info)
 				})
 
 				activityAccountEdit.querySelectorAll('.back').forEach(node => node.onclick = () => {
-					switchActivity(activityAccounts)
-					document.scrollingElement.scrollTop = scrollTopAccounts
+					//switchActivity(activityAccounts)
+					//document.scrollingElement.scrollTop = scrollTopAccounts
+					history.back()
 				})
 
 				activityAccountEdit.querySelectorAll('.provider-details .name').forEach(node => {
@@ -1208,8 +1211,9 @@ console.log('infos', paymentTypeId, info)
 
 				activityAccountHistory.querySelectorAll('.back').forEach(node => node.onclick = () => {
 					activityAccountHistory.querySelector('.clear-interval').onclick()
-					switchActivity(activityAccounts)
-					document.scrollingElement.scrollTop = scrollTopAccounts
+					//switchActivity(activityAccounts)
+					//document.scrollingElement.scrollTop = scrollTopAccounts
+					history.back()
 				})
 
 				activityAccountHistory.querySelectorAll('.provider-details .name').forEach(node => {
@@ -1223,8 +1227,9 @@ console.log('infos', paymentTypeId, info)
 				})
 
 				activityAccountPayment.querySelectorAll('.back').forEach(node => node.onclick = () => {
-					switchActivity(activityAccounts)
-					document.scrollingElement.scrollTop = scrollTopAccounts
+					//switchActivity(activityAccounts)
+					//document.scrollingElement.scrollTop = scrollTopAccounts
+					history.back()
 				})
 
 				activityAccounts.querySelectorAll('.account-add').forEach(node => {
@@ -1264,7 +1269,7 @@ console.log('infos', paymentTypeId, info)
 							}							
 						}
 
-						historyPut('accounts')
+						//historyPut('accounts')
 						switchActivity(activityAccountEdit)
 					}
 
@@ -1332,7 +1337,7 @@ console.log('infos', paymentTypeId, info)
 				})();
 				
 				if (showAccountsList) { // if account is not picked automatically
-					historyPut('main')
+					//historyPut('main')
 					switchActivity(activityAccounts)
 				}
 			}
@@ -1410,7 +1415,7 @@ function filterProviders(searchResults = null) {
 		searchResults.forEach(res => {
 			res.rowKey = '' + res.provider_id + '/' + (res.service_id === null ? '0' : res.service_id)
 		})
-//console.log('searchResults', searchResults)
+console.log('searchResults', searchResults)
 
 		let numFoundProviders = 0
 		providersList.forEach(row => {
@@ -1418,16 +1423,19 @@ function filterProviders(searchResults = null) {
 			if (searchItem) {
 				row.searchItem = searchItem
 				row.isMatch = true
-				autoSelectedProvider = row
+console.log('match', row)
+				if (numFoundProviders === 0) {
+					autoSelectedProvider = row
+				} else {
+					autoSelectedProvider = null
+				}
 				numFoundProviders ++
 			} else {
 				row.searchItem = null
 				row.isMatch = false
 			}
 		})
-		if (numFoundProviders !== 1) {
-			autoSelectedProvider = null
-		}
+console.log('autoSelectedProvider', autoSelectedProvider)
 //console.log('filtration done')
 		comparator = compareBySortIndex
 
@@ -1517,6 +1525,12 @@ function filterProviders(searchResults = null) {
 		comparator = (historyFlag ? compareByHistoryDate : compareBySortIndex)
 	}
 
+	if (searchResults !== null) {
+		activityMain.classList.add('search-results')
+	} else {
+		activityMain.classList.remove('search-results')
+	}
+
 	let parentNode = activityMain.querySelector('.partners')
 
 	providersList
@@ -1543,6 +1557,23 @@ function filterProviders(searchResults = null) {
 			}, i * 150)
 		})
 	}, 300)
+
+	let activityName = getActivityName(activityMain)
+	if (searchResults !== null && (!history.state || history.state.activity !== activityName || !history.state.options || !history.state.options.searchResults)) {
+		let state = {
+			activity: activityName,
+			scrollTop: 0,
+			options: {
+				searchResults
+			}
+		}
+console.log('push', state)
+		history.pushState(
+			state,
+			document.title,
+			location.pathname
+		)
+	}
 
 	if (autoSelectedProvider !== null) {
 		autoSelectedProvider.node.querySelector('.name').onclick()
@@ -1602,14 +1633,15 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 					logoutCallback();
 				}
 			})
-			activityProfile.querySelectorAll('.back').forEach(node => {
+			activityProfile.querySelectorAll('.back').forEach(node => { // TODO profile
 				if (result.isNew) {
 					node.onclick = function () {
 						logoutCallback()
 					}
 				} else {
 					node.onclick = function () {
-						mainInit()
+						//mainInit()
+						history.back()
 					}
 				}
 			})
@@ -1656,9 +1688,10 @@ console.log('PAYMENT', result)
 					if (result) {
 						let name = activityProfile.querySelector('.fullname').value
 						activityMain.querySelector('.fullname').innerText = name
-						activityProfile.querySelectorAll('.back').forEach(node => {
+						activityProfile.querySelectorAll('.back').forEach(node => { // TODO profile
 							node.onclick = function () {
-								mainInit() //switchActivity(activityMain)
+								//mainInit() //switchActivity(activityMain)
+								history.back()
 							}
 						})
 						mainInit() //switchActivity(activityMain)
@@ -1673,8 +1706,7 @@ console.log('PAYMENT', result)
 			activityMain.querySelector('.fullname').innerText = result.name
 
 			document.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {
-				historyPut('main')
-				switchActivity(activityProfile)
+				navBarHide(() => switchActivity(activityProfile))
 			})
 			activityMain.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
@@ -1689,7 +1721,7 @@ console.log('PAYMENT', result)
 			storagePut(updatingKey, false)
 
 			if (result.isNew) {
-				historyPut('main')
+				//historyPut('main')
 				switchActivity(activityProfile)
 			} else {
 				mainInit()
@@ -1846,12 +1878,12 @@ console.log('scrolling flag is on...')
 
 				function closeScanner() {
 					doContinue = false
-					switchActivity(activityMain)
+					//switchActivity(activityMain)
 					btn.classList.remove('selected')
+					history.back()
 				}
 
 				function showScannerResults(results) {
-					activityMain.classList.add('search-results')
 					filterProviders(results)
 				}
 
@@ -1972,7 +2004,7 @@ console.log('scrolling flag is on...')
 					console.log(err)
 				})
 
-				historyPut('main')
+				//historyPut('main')
 				switchActivity(activityScanner)
 
 			} else {
@@ -2104,7 +2136,7 @@ console.log('scrolling flag is on...')
 			}, 50)
 		}
 
-		navBarHide = () => {
+		navBarHide = (callback) => {
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
 			document.scrollingElement.scrollTop = 0
@@ -2121,6 +2153,9 @@ console.log('scrolling flag is on...')
 					activityNavBar.style.clipPath = 'none'
 					activityNavBar.style.transition = 'unset'
 					activityNavBar.classList.add('is-hidden')
+					if (callback) {
+						callback()
+					}
 				}, 600)
 			}, 50)
 		}
@@ -2138,16 +2173,37 @@ console.log('scrolling flag is on...')
 
 (function () {
 
-	historyPut('main')
+//	historyPut('main')
 
 	window.onpopstate = function (evt) {
 		let state = evt.state
-		console.log('HISTORY.ONPOPSTATE', state)
-		activities.forEach(activity => {
-			if (!activity.classList.contains('is-hidden')) {
-				activity.querySelectorAll('.back').forEach(node => node.onclick())
+console.log('HISTORY.ONPOPSTATE', state)
+		if (state) {
+			let activity = getActivityByName(state.activity)
+			if (activity.dataset.history === 'untracked') {
+				console.log('activity', state.activity, 'must be untracked')
+			} else {
+				if (activity.xonbeforeshow) {
+					activity.xonbeforeshow(state)
+				}
+				switchActivity(activity, true)
+				if (activity.xonaftershow) {
+					activity.xonaftershow(state)
+				}
+				setTimeout(function () {
+					document.scrollingElement.scrollTop = state.scrollTop
+				})
 			}
-		})
+		}
+	}
+
+	activityMain.xonbeforeshow = function (state) {
+		if (state && state.options && state.options.searchResults) {
+console.log('restoring search results', state.options.searchResults)
+			filterProviders(state.options.searchResults)
+		} else {
+			filterProviders()
+		}
 	}
 
 	let sessionKey = `/${location.hostname}/session`
@@ -2167,6 +2223,6 @@ console.log('scrolling flag is on...')
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 122)
+	console.log('VERSION', 122, 3)
 
 })();
