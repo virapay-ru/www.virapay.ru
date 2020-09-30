@@ -1231,6 +1231,10 @@ input.verification + .verification-result > .verification {
 	color: #000;
 }
 
+.activity.account-payment .info.is-hidden {
+	display: none;
+}
+
 
 /* activity account-history */
 

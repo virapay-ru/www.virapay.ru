@@ -992,10 +992,12 @@ console.log('acc check result', result)
 							let info = item.infos[paymentTypeId]
 console.log('infos', paymentTypeId, info)
 							if (info) {
+console.log('infos shown')
 								infoNode.innerText = info
-								infoNode.hidden = false
+								infoNode.classList.remove('is-hidden')
 							} else {
-								infoNode.hidden = true
+console.log('infos hidden')
+								infoNode.classList.add('is-hidden')
 							}
 						}
 
