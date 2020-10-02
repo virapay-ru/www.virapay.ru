@@ -278,7 +278,7 @@ h1, h2, h3, h4, h5, h6 {
 	max-width: 20rem;
 }
 
-.label input[type=text] {
+.label input[type=text], .label textarea {
 	height: 3rem;
 	font-size: 1.3rem;
 	width: 100%;
@@ -292,7 +292,13 @@ h1, h2, h3, h4, h5, h6 {
 	-webkit-appearance: none;
 }
 
-.label input[type=text]:focus {
+.label textarea {
+	height: 10rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.label input[type=text]:focus, .label textarea:focus {
 	border: 1px solid rgb(77, 144, 254);
 	box-shadow: 0.05rem 0.15rem 0 rgba(77, 144, 254, 0.2);
 	outline: 0;
@@ -1233,6 +1239,35 @@ input.verification + .verification-result > .verification {
 
 .activity.account-payment .info.is-hidden {
 	display: none;
+}
+
+/* activity feedback */
+
+.activity.feedback .container {
+	align-items: center;
+	width: 100%;
+	max-width: 26rem;
+}
+
+.activity.feedback {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
+.activity.feedback .label {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	width: 100%;
+	max-width: 26rem;
+}
+
+.activity.feedback .button-container {
+	margin-top: 1rem;
+	width: 100%;
+}
+
+.activity.feedback .button-container button {
+	min-width: 100%;
 }
 
 

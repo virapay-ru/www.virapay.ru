@@ -4,6 +4,7 @@ let profileData = null
 let providersList = null
 let paymentsTypesList = null
 let profileSave = function () { };
+let feedbackMessage = function () { };
 let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 
 // qrcode generator
@@ -1593,6 +1594,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		doLogout()
 		profileData = null
 		profileSave = function () { }
+		feedbackMessage = function () { }
 		profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 	}
 
@@ -1665,6 +1667,21 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				}
 				return null
 			}
+			feedbackMessage = async function (message) {
+				try {
+					let name = activityProfile.querySelector('.fullname').value
+					let email = activityProfile.querySelector('.email').value
+					let result = await backend.feedbackMessage(
+						apiName, id, token,
+						name, email, imageUrl, message
+					)
+					return result
+				} catch (errorSending) {
+					console.log('SENDING MESSAGE FAILED', errorSending)
+					showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позднее.', () => switchActivity(activityFeedback))
+				}
+				return null
+			}
 			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ, counters) {
 				try {
 					let name = activityProfile.querySelector('.fullname').value
@@ -1718,6 +1735,43 @@ console.log('PAYMENT', result)
 						navBarHide()
 					}
 				}
+			})
+
+			;(function () {
+
+				let messageNode = activityFeedback.querySelector('.message')
+				let sendButton = activityFeedback.querySelector('.send')
+
+				messageNode.oninput = function () {
+					if (messageNode.value) {
+						sendButton.removeAttribute('disabled')
+					} else {
+						sendButton.setAttribute('disabled', true)
+					}
+				}
+
+				messageNode.oninput()
+
+				sendButton.onclick = function () {
+					feedbackMessage(messageNode.value).then(result => {
+						if (result) {
+							showMessage('Отправка сообщения', 'Ваше сообщение отправлено. Спасибо!', () => {
+								switchActivity(activityMain)
+								messageNode.value = ''
+								messageNode.oninput()
+							})
+						} else {
+							showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте аозже.', () => {
+								switchActivity(activityFeedback)
+							})
+						}
+					})
+				}
+
+			})();
+
+			document.querySelectorAll('.navbar .feedback').forEach(node => node.onclick = () => {
+				navBarHide(() => switchActivity(activityFeedback))
 			})
 
 			storagePut(updatingKey, false)
