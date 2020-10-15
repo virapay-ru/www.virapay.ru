@@ -7,15 +7,6 @@ let profileSave = function () { };
 let feedbackMessage = function () { };
 let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 
-// qrcode generator
-
-let qrcode = new QRCode('qrcode', {
-	width: 256,
-	height: 256,
-	correctLevel: QRCode.CorrectLevel.H,
-	useSVG: true
-});
-
 
 // regions selector 
 
@@ -57,7 +48,7 @@ async function mainInit() {
 
 	if (mainInited === false) {
 
-		switchActivity(activityLoading)
+		showActivity(activityLoading)
 
 		let storageRegionsKey = `/${location.hostname}/regions`
 		let regionsData = storageGet(storageRegionsKey)
@@ -1041,7 +1032,7 @@ console.log('infos hidden')
 							}
 						})
 
-						switchActivity(activityLoading)
+						showActivity(activityLoading)
 						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum, counters)
 						if (payment && payment.id && payment.url) {
 							if (!(profileData.history[rowKey] instanceof Array)) {
@@ -1067,9 +1058,7 @@ console.log('infos hidden')
 							let result = await profileSave()
 							if (result) {
 								if (paymentTypeId == 3) { // sbp only
-									qrcode.makeCode(payment.url)
-									activitySBPPay.querySelector('.action').setAttribute('href', payment.url)
-									switchActivity(activitySBPPay)
+									pushActivity(activitySBPPay, { url: payment.url })
 								} else {
 									location.replace(payment.url)
 								}
@@ -1090,7 +1079,6 @@ console.log('infos hidden')
 
 					}
 
-					//historyPut('accounts')
 					inputAccount.oninput()
 					inputSum.oninput()
 					switchActivity(activityAccountPayment)
@@ -1340,7 +1328,6 @@ console.log('infos hidden')
 				})();
 				
 				if (showAccountsList) { // if account is not picked automatically
-					//historyPut('main')
 					switchActivity(activityAccounts)
 				}
 			}
@@ -1415,10 +1402,13 @@ function filterProviders(searchResults = null) {
 
 	if (searchResults !== null) {
 
+//alert('dpt(1):' + JSON.stringify(searchResults))
+
 		searchResults.forEach(res => {
 			res.rowKey = '' + res.provider_id + '/' + (res.service_id === null ? '0' : res.service_id)
 		})
 console.log('searchResults', searchResults)
+//alert('dpt(2):' + JSON.stringify(searchResults))
 
 		let numFoundProviders = 0
 		providersList.forEach(row => {
@@ -1438,6 +1428,7 @@ console.log('match', row)
 				row.isMatch = false
 			}
 		})
+//alert('dpt(3):' + JSON.stringify(autoSelectedProvider))
 console.log('autoSelectedProvider', autoSelectedProvider)
 //console.log('filtration done')
 		comparator = compareBySortIndex
@@ -1529,6 +1520,7 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 	}
 
 	if (searchResults !== null) {
+//alert('dpt(4):' + JSON.stringify(searchResults))
 		activityMain.classList.add('search-results')
 	} else {
 		activityMain.classList.remove('search-results')
@@ -1561,8 +1553,10 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 		})
 	}, 300)
 
-	let activityName = getActivityName(activityMain)
-	if (searchResults !== null && (!history.state || history.state.activity !== activityName || !history.state.options || !history.state.options.searchResults)) {
+	//let activityName = getActivityName(activityMain)
+	//if (searchResults !== null && (!history.state || history.state.activity !== activityName || !history.state.options || !history.state.options.searchResults)) {
+	if (searchResults !== null) {
+
 		let state = {
 			activity: activityName,
 			scrollTop: 0,
@@ -1570,7 +1564,7 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 				searchResults
 			}
 		}
-console.log('push', state)
+//console.log('push', state)
 		history.pushState(
 			state,
 			document.title,
@@ -1579,16 +1573,18 @@ console.log('push', state)
 	}
 
 	if (autoSelectedProvider !== null) {
+//alert('dpt(5):' + JSON.stringify(autoSelectedProvider))
 		autoSelectedProvider.node.querySelector('.name').onclick()
 	}
 
+//alert('dpt(6)')
 }
 
 // profile functions
 
-async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogout, doUpdate) {
+async function profileInit(token, doLogout) {
 
-	let updatingKey = `/${location.hostname}/updatingToken`
+//	let updatingKey = `/${location.hostname}/updatingToken`
 
 	let logoutCallback = function () {
 		doLogout()
@@ -1598,13 +1594,13 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 		profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 	}
 
-	switchActivity(activityLoading)
+	showActivity(activityLoading)
 
 	try {
 
-		console.log('LOGIN REQUEST', apiName, id, token)
+		console.log('LOGIN REQUEST', token)
 
-		let result = await backend.login(apiName, id, token, fullName, email, imageUrl)
+		let result = await backend.login(token)
 
 		console.log('LOGIN RESULT', result)
 
@@ -1627,9 +1623,10 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 			}
 			profileData = result.data
 
+			let imageUrl = result.picture
 			activityProfile.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
-			activityProfile.querySelector('.apiname').innerText = apiName
-			activityProfile.querySelector('.id').innerText = id
+			activityProfile.querySelector('.apiname').innerText = result.oauthService.name
+			activityProfile.querySelector('.id').innerText = result.oauthService.userId
 			activityProfile.querySelector('.fullname').value = result.name
 			activityProfile.querySelector('.email').value = result.email
 			activityProfile.querySelectorAll('.logout').forEach(node => {
@@ -1653,13 +1650,7 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
-					let result = await backend.profileUpdate(
-						apiName, id, token,
-						name, email, imageUrl, profileData
-					)
-					if (result) {
-						doUpdate(name, email)
-					}
+					let result = await backend.profileUpdate(token, name, email, imageUrl, profileData)
 					return result
 				} catch (errorProfileSaving) {
 					console.log('SAVING PROFILE FAILED', errorProfileSaving)
@@ -1671,27 +1662,17 @@ async function profileInit(apiName, id, fullName, imageUrl, email, token, doLogo
 				try {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
-					let result = await backend.feedbackMessage(
-						apiName, id, token,
-						name, email, imageUrl, message
-					)
+					let result = await backend.feedbackMessage(token, message)
 					return result
 				} catch (errorSending) {
 					console.log('SENDING MESSAGE FAILED', errorSending)
-					showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позднее.', () => switchActivity(activityFeedback))
+					showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позднее.', () => pushActivity(activityFeedback, { message }))
 				}
 				return null
 			}
 			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ, counters) {
 				try {
-					let name = activityProfile.querySelector('.fullname').value
-					let email = activityProfile.querySelector('.email').value
-					let result = await backend.paymentInit(
-						apiName, id, token,
-						name, email, imageUrl,
-						rowKey, paymentTypeId, account, summ,
-						counters
-					)
+					let result = await backend.paymentInit(token, rowKey, paymentTypeId, account, summ, counters)
 console.log('PAYMENT', result)
 					return result
 				} catch (errorPaymentRegistering) {
@@ -1701,7 +1682,7 @@ console.log('PAYMENT', result)
 			}
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
 				node.onclick = async function () {
-					switchActivity(activityLoading)
+					showActivity(activityLoading)
 
 					let result = profileSave()
 					if (result) {
@@ -1713,7 +1694,7 @@ console.log('PAYMENT', result)
 								history.back()
 							}
 						})
-						mainInit() //switchActivity(activityMain)
+						mainInit() //switchActivity(activityMain) // TODO if user is new then mainInit() else history.back()
 					} else {
 						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
 					}
@@ -1737,47 +1718,11 @@ console.log('PAYMENT', result)
 				}
 			})
 
-			;(function () {
-
-				let messageNode = activityFeedback.querySelector('.message')
-				let sendButton = activityFeedback.querySelector('.send')
-
-				messageNode.oninput = function () {
-					if (messageNode.value) {
-						sendButton.removeAttribute('disabled')
-					} else {
-						sendButton.setAttribute('disabled', true)
-					}
-				}
-
-				messageNode.oninput()
-
-				sendButton.onclick = function () {
-					feedbackMessage(messageNode.value).then(result => {
-						if (result) {
-							showMessage('Отправка сообщения', 'Ваше сообщение отправлено. Спасибо!', () => {
-								switchActivity(activityMain)
-								messageNode.value = ''
-								messageNode.oninput()
-							})
-						} else {
-							showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте аозже.', () => {
-								switchActivity(activityFeedback)
-							})
-						}
-					})
-				}
-
-			})();
-
 			document.querySelectorAll('.navbar .feedback').forEach(node => node.onclick = () => {
-				navBarHide(() => switchActivity(activityFeedback))
+				navBarHide(() => pushActivity(activityFeedback))
 			})
 
-			storagePut(updatingKey, false)
-
 			if (result.isNew) {
-				//historyPut('main')
 				switchActivity(activityProfile)
 			} else {
 				mainInit()
@@ -1785,35 +1730,35 @@ console.log('PAYMENT', result)
 
 		} else {
 
-			let updating = storageGet(updatingKey)
+//			let updating = storageGet(updatingKey)
 
-			if (updating) {
+//			if (updating) {
 
-				storagePut(updatingKey, false)
+//				storagePut(updatingKey, false)
 				showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
 
-			} else {
-
-				storagePut(updatingKey, true)
-				console.log('AUTO UPDATE TOKEN')
-
-				let url = null
-				if (apiName === 'google') {
-					url = document.querySelector('.signin-with-google').href
-				} else if (apiName === 'facebook') {
-					url = document.querySelector('.signin-with-facebook').href
-				} else if (apiName === 'vk') {
-					url = document.querySelector('.signin-with-vk').href
-				} else if (apiName === 'debug') {
-					url = 'http://127.0.0.1:8080/debug/auth'
-				}
-				if (url !== null) {
-					setTimeout(function () {
-						location.replace(url)
-					}, 750)
-				}
-
-			}
+//			} else {
+//
+//				storagePut(updatingKey, true)
+//				console.log('AUTO UPDATE TOKEN')
+//
+//				let url = null
+//				if (apiName === 'google') {
+//					url = document.querySelector('.signin-with-google').href
+//				} else if (apiName === 'facebook') {
+//					url = document.querySelector('.signin-with-facebook').href
+//				} else if (apiName === 'vk') {
+//					url = document.querySelector('.signin-with-vk').href
+//				} else if (apiName === 'debug') {
+//					url = 'http://127.0.0.1:8080/debug/auth'
+//				}
+//				if (url !== null) {
+//					setTimeout(function () {
+//						location.replace(url)
+//					}, 750)
+//				}
+//
+//			}
 
 		}
 
@@ -1926,147 +1871,7 @@ console.log('scrolling flag is on...')
 
 	activityMain.querySelectorAll('.open-scanner').forEach(btn => {
 		btn.onclick = () => {
-
-			if (!btn.classList.contains('selected')) {
-				btn.classList.add('selected')
-
-				let doContinue = true
-
-				function closeScanner() {
-					doContinue = false
-					//switchActivity(activityMain)
-					btn.classList.remove('selected')
-					history.back()
-				}
-
-				function showScannerResults(results) {
-					filterProviders(results)
-				}
-
-				activityScanner.querySelectorAll('.back').forEach(btn => {
-					btn.onclick = closeScanner
-				})
-
-				let info = activityScanner.querySelectorAll('.info')
-				let video = document.createElement('video')
-				let canvas = activityScanner.querySelector('canvas')
-				let canvasOffscreen = document.createElement('canvas')
-				let ctx = canvas.getContext('2d')
-				let ctxOffscreen = canvasOffscreen.getContext('2d')
-				let loadingMessage = activityScanner.querySelector('.loading')
-
-				canvas.hidden = true
-				info.forEach(node => node.hidden = true)
-				loadingMessage.hidden = false
-
-				let inited = false
-
-				function tick() {
-
-					if (video.readyState === video.HAVE_ENOUGH_DATA) {
-
-						if (!inited) {
-							loadingMessage.hidden = true
-							info.forEach(node => node.hidden = false)
-							canvas.hidden = false
-							canvas.width = video.videoWidth
-							canvas.height = video.videoHeight
-							canvasOffscreen.width = video.videoWidth
-							canvasOffscreen.height = video.videoHeight
-							let w = canvas.offsetWidth
-							let h = canvas.offsetHeight
-							canvas.width = w
-							canvas.height = h
-							inited = true
-						}
-
-						let rectWidth = Math.min(canvasOffscreen.width, 256)
-						let rectHeight = Math.min(canvasOffscreen.height, 256)
-						let x = Math.floor((canvasOffscreen.width - rectWidth) / 2)
-						let y = Math.floor((canvasOffscreen.height - rectHeight) / 2)
-
-						ctxOffscreen.drawImage(video, 0, 0, canvasOffscreen.width, canvasOffscreen.height)
-						ctxOffscreen.fillStyle = 'rgba(0,0,0,0.5)'
-						ctxOffscreen.fillRect(0, 0, canvasOffscreen.width, y)
-						ctxOffscreen.fillRect(0, y + rectHeight, canvasOffscreen.width, y + 1)
-						ctxOffscreen.fillRect(0, y, x, rectHeight)
-						ctxOffscreen.fillRect(x + rectWidth, y, x, rectHeight)
-
-						//let imageData = ctxOffscreen.getImageData(0, 0, canvasOffscreen.width, canvasOffscreen.height)
-						let imageData = ctxOffscreen.getImageData(x, y, rectWidth, rectHeight)
-						let code = jsQR(imageData.data, imageData.width, imageData.height, {
-							inversionAttempts: "dontInvert",
-						})
-
-						ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
-						
-//let code = null;
-						if (code) {
-
-							ctxOffscreen.lineWidth = 4
-							ctxOffscreen.strokeStyle = '#FF3B58'
-							ctxOffscreen.beginPath()
-							ctxOffscreen.moveTo(x + code.location.topLeftCorner.x, y + code.location.topLeftCorner.y)
-							ctxOffscreen.lineTo(x + code.location.topRightCorner.x, y + code.location.topRightCorner.y)
-							ctxOffscreen.lineTo(x + code.location.bottomRightCorner.x, y + code.location.bottomRightCorner.y)
-							ctxOffscreen.lineTo(x + code.location.bottomLeftCorner.x, y + code.location.bottomLeftCorner.y)
-							ctxOffscreen.lineTo(x + code.location.topLeftCorner.x, y + code.location.topLeftCorner.y)
-							ctxOffscreen.stroke()
-
-							ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
-							beep()
-
-							console.log('QR code data', code.data)
-
-							doContinue = false
-
-
-							backend.scanCode(code.data).then(results => {
-								console.log('Scanner results', results)
-								if ((results instanceof Array) && results.length > 0) {
-									closeScanner()
-									showScannerResults(results)
-								} else {
-									showMessage('Сканирование кода', 'Направления платежа нет в списке.', closeScanner)
-								}
-								//showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
-							}).catch(err => {
-								console.log(err)
-								showMessage('Сканирование кода', 'Ошибка. Попробуйте отсканировать код еще раз.', closeScanner)
-							})
-
-//							setTimeout(function () {
-//								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
-//							}, 1000)
-						}
-					}
-
-					if (doContinue) {
-						requestAnimationFrame(tick)
-					} else {
-						video.srcObject.getTracks().forEach(track => track.stop())
-					}
-				}
-
-				navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function(stream) {
-					video.srcObject = stream
-					video.setAttribute('playsinline', true) // required to tell iOS safari we don't want fullscreen
-					video.play()
-					ctx.fillStyle = '#000'
-					ctx.fillRect(0, 0, canvas.width, canvas.height)
-					requestAnimationFrame(tick)
-				}).catch(err => {
-					showMessage('Сканирование кода', 'Не удалось получить доступ к камере.', closeScanner)
-					console.log(err)
-				})
-
-				//historyPut('main')
-				switchActivity(activityScanner)
-
-			} else {
-				btn.classList.remove('selected')
-			}
-			filterProviders()
+			pushActivity(activityScanner)
 		}
 	})
 
@@ -2224,61 +2029,253 @@ console.log('scrolling flag is on...')
 
 })();
 
+// activity main
+
+activityMain.xonbeforeshow = function (options) {
+
+	if (mainInited) {
+		if (options && options.searchResults) {
+			filterProviders(options.searchResults)
+		} else {
+			filterProviders()
+		}
+	}
+}
+
+// activity sbp-pay
+
+activitySBPPay.xonbeforeshow = (function () {
+
+	// qrcode generator
+
+	let qrcode = new QRCode('qrcode', {
+		width: 256,
+		height: 256,
+		correctLevel: QRCode.CorrectLevel.H,
+		useSVG: true
+	});
+
+	return function (options) {
+		qrcode.makeCode(options.url)
+		activitySBPPay.querySelector('.action').setAttribute('href', options.url)
+	}
+
+})();
+
+
+// activity feedback
+
+(function () {
+
+	let messageNode = activityFeedback.querySelector('.message')
+	let sendButton = activityFeedback.querySelector('.send')
+
+	messageNode.oninput = function () {
+		if (messageNode.value) {
+			sendButton.removeAttribute('disabled')
+		} else {
+			sendButton.setAttribute('disabled', true)
+		}
+	}
+
+	sendButton.onclick = function () {
+		feedbackMessage(messageNode.value).then(result => {
+			if (result) {
+				showMessage('Отправка сообщения', 'Ваше сообщение отправлено. Спасибо!', () => {
+					pushActivity(activityMain)
+					messageNode.value = ''
+					messageNode.oninput()
+				})
+			} else {
+				showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте аозже.', () => {
+					pushActivity(activityFeedback, { message: messageNode.value })
+				})
+			}
+		})
+	}
+
+	activityFeedback.xonbeforeshow = function (options) {
+		if (options) {
+			messageNode.value = options.message
+		} else {
+			messageNode.value = ''
+		}
+		messageNode.oninput()
+	}
+
+})();
+
+
+// activity scanner
+
+(function () {
+
+	let doContinue = true
+
+	let scannerTrigger = activityMain.querySelector('.open-scanner')
+
+	let info = activityScanner.querySelectorAll('.info')
+	let video = document.createElement('video')
+	let canvas = activityScanner.querySelector('canvas')
+	let canvasOffscreen = document.createElement('canvas')
+	let ctx = canvas.getContext('2d')
+	let ctxOffscreen = canvasOffscreen.getContext('2d')
+	let loadingMessage = activityScanner.querySelector('.loading')
+
+	activityScanner.xonbeforehide = function () {
+
+		doContinue = false
+	}
+
+	activityScanner.xonafterhide = function () {
+
+		scannerTrigger.classList.remove('selected')
+	}
+
+	activityScanner.xonaftershow = function () { // TODO CLEAN DIRTY CODE!!!
+
+		scannerTrigger.classList.add('selected')
+
+		doContinue = true
+
+		activityScanner.querySelectorAll('.back').forEach(btn => {
+			btn.onclick = function () {
+				history.back()
+			}
+		})
+
+		canvas.hidden = true
+		info.forEach(node => node.hidden = true)
+		loadingMessage.hidden = false
+
+		let inited = false
+
+		function tick() {
+
+			if (video.readyState === video.HAVE_ENOUGH_DATA) {
+
+				if (!inited) {
+					loadingMessage.hidden = true
+					info.forEach(node => node.hidden = false)
+					canvas.hidden = false
+					canvas.width = video.videoWidth
+					canvas.height = video.videoHeight
+					canvasOffscreen.width = video.videoWidth
+					canvasOffscreen.height = video.videoHeight
+					let w = canvas.offsetWidth
+					let h = canvas.offsetHeight
+					canvas.width = w
+					canvas.height = h
+					inited = true
+				}
+
+				let rectWidth = Math.min(canvasOffscreen.width, 256)
+				let rectHeight = Math.min(canvasOffscreen.height, 256)
+				let x = Math.floor((canvasOffscreen.width - rectWidth) / 2)
+				let y = Math.floor((canvasOffscreen.height - rectHeight) / 2)
+
+				ctxOffscreen.drawImage(video, 0, 0, canvasOffscreen.width, canvasOffscreen.height)
+				ctxOffscreen.fillStyle = 'rgba(0,0,0,0.5)'
+				ctxOffscreen.fillRect(0, 0, canvasOffscreen.width, y)
+				ctxOffscreen.fillRect(0, y + rectHeight, canvasOffscreen.width, y + 1)
+				ctxOffscreen.fillRect(0, y, x, rectHeight)
+				ctxOffscreen.fillRect(x + rectWidth, y, x, rectHeight)
+
+				let imageData = ctxOffscreen.getImageData(x, y, rectWidth, rectHeight)
+				let code = jsQR(imageData.data, imageData.width, imageData.height, {
+					inversionAttempts: "dontInvert",
+				})
+
+				ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
+				
+				if (code) {
+
+					ctxOffscreen.lineWidth = 4
+					ctxOffscreen.strokeStyle = '#FF3B58'
+					ctxOffscreen.beginPath()
+					ctxOffscreen.moveTo(x + code.location.topLeftCorner.x, y + code.location.topLeftCorner.y)
+					ctxOffscreen.lineTo(x + code.location.topRightCorner.x, y + code.location.topRightCorner.y)
+					ctxOffscreen.lineTo(x + code.location.bottomRightCorner.x, y + code.location.bottomRightCorner.y)
+					ctxOffscreen.lineTo(x + code.location.bottomLeftCorner.x, y + code.location.bottomLeftCorner.y)
+					ctxOffscreen.lineTo(x + code.location.topLeftCorner.x, y + code.location.topLeftCorner.y)
+					ctxOffscreen.stroke()
+
+					ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
+					beep()
+
+					console.log('QR code data', code.data)
+
+					doContinue = false
+
+					backend.scanCode(code.data).then(results => {
+						console.log('Scanner results', results)
+						if ((results instanceof Array) && results.length > 0) {
+//alert(JSON.stringify(results))
+							pushActivity(activityMain, { searchResults: results })
+						} else {
+							showMessage('Сканирование кода', 'Направления платежа нет в списке.', function () { history.back() })
+						}
+						//showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+					}).catch(err => {
+						console.log(err)
+						showMessage('Сканирование кода', 'Ошибка. Попробуйте отсканировать код еще раз.', function () { history.back() })
+					})
+
+//							setTimeout(function () {
+//								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+//							}, 1000)
+				}
+			}
+
+			if (doContinue) {
+				requestAnimationFrame(tick)
+			} else {
+console.log('stopping media stream of camera')
+				video.srcObject.getTracks().forEach(track => track.stop())
+			}
+		} // tick
+
+		try {
+			navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function(stream) {
+				video.srcObject = stream
+				video.setAttribute('playsinline', true) // required to tell iOS safari we don't want fullscreen
+				video.play()
+				ctx.fillStyle = '#000'
+				ctx.fillRect(0, 0, canvas.width, canvas.height)
+				if (doContinue) {
+					requestAnimationFrame(tick)
+				}
+			}).catch(err => {
+				showMessage('Сканирование кода', 'Не удалось получить доступ к камере.', function () { history.back() })
+				console.log(err)
+			})
+		} catch (er) {
+			showMessage('Сканирование кода', 'Камера недоступна.', function () { history.back() })
+			console.log(er)
+		}
+
+		//filterProviders() // TODO why this called here?
+	}
+
+})();
 
 // entry point
 
 (function () {
 
-//	historyPut('main')
-
-	window.onpopstate = function (evt) {
-		let state = evt.state
-console.log('HISTORY.ONPOPSTATE', state)
-		if (state) {
-			let activity = getActivityByName(state.activity)
-			if (activity.dataset.history === 'untracked') {
-				console.log('activity', state.activity, 'must be untracked')
-			} else {
-				if (activity.xonbeforeshow) {
-					activity.xonbeforeshow(state)
-				}
-				switchActivity(activity, true)
-				if (activity.xonaftershow) {
-					activity.xonaftershow(state)
-				}
-				setTimeout(function () {
-					document.scrollingElement.scrollTop = state.scrollTop
-				})
-			}
-		}
-	}
-
-	activityMain.xonbeforeshow = function (state) {
-		if (state && state.options && state.options.searchResults) {
-console.log('restoring search results', state.options.searchResults)
-			filterProviders(state.options.searchResults)
-		} else {
-			filterProviders()
-		}
-	}
-
 	let sessionKey = `/${location.hostname}/session`
-	let user = storageGet(sessionKey)
-	if (user) {
-		profileInit(user.apiName, user.id, user.name, user.picture, user.email, user.token, () => {
+	let token = storageGet(sessionKey)
+	if (token) {
+		profileInit(token, () => {
 			storagePut(sessionKey, null)
 			switchActivity(activityLogin)
 			profileData = null
-		}, (name, email) => {
-			user.name = name
-			user.email = email
-			user.isNew = false
-			storagePut(sessionKey, user)
 		})
 	} else {
 		switchActivity(activityLogin)
 	}
 
-	console.log('VERSION', 122, 3)
+	console.log('VERSION', 122, 5)
 
 })();
+

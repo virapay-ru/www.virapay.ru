@@ -3,10 +3,10 @@
 let backend = new JSONRPC2.RemoteProxyObject(
 	// using JSON RPC over HTTP
 	new JSONRPC2.Transports.HTTP(
-//		'https://virapay.herokuapp.com/rpc/json',
-		'https://connect.virapay.ru/rpc/json',
+		'https://virapay.herokuapp.com/rpc/json',
+//		'https://connect.virapay.ru/rpc/json',
 //		'http://127.0.0.1:8080/rpc/json',
-//		'http://192.168.1.62:8080/rpc/json',
+//		'http://192.168.1.20:8080/rpc/json',
 		 {
 			mode: 'cors'
 		 }
@@ -57,15 +57,99 @@ function getActivityByName(name) {
 }
 
 function getActivityName(activity) {
-	return activity.dataset.name
+	return activity ? activity.dataset.name : null
 }
 
 function getCurrentActivity() {
 	return activities.find(activity => !activity.classList.contains('is-hidden'))
 }
 
+function hideActivity(activity) {
+	if (!activity) {
+		return
+	}
+	if (activity.xonbeforehide) {
+		activity.xonbeforehide()
+	}
+	activity.classList.add('is-hidden')
+	if (activity.xonafterhide) {
+		activity.xonafterhide()
+	}
+}
+
+function showActivity(activity, options = undefined, isRestoring = false) {
+	if (!activity) {
+		return
+	}
+	if (activity.xonbeforeshow) {
+		activity.xonbeforeshow(options)
+	}
+	activity.style.visibility = 'hidden'
+	activity.classList.remove('is-hidden')
+	document.scrollingElement.scrollTop = 0
+	setTimeout(function () {
+		activity.style.visibility = 'visible'
+		if (activity.xonaftershow) {
+			activity.xonaftershow(options)
+		}
+	}, 1000/60)	
+}
+
 // activities switcher
 
+function pushActivity(activity, options) {
+	hideActivity(getCurrentActivity())
+	showActivity(activity, options)
+	let state = {
+		activity: getActivityName(activity),
+		scrollTop: 0,
+		options
+	}
+//console.log('push', state)
+	history.pushState(
+		state,
+		document.title,
+		location.pathname
+	)
+}
+
+function popActivity(activity, state) {
+	hideActivity(getCurrentActivity())
+	showActivity(activity, (state ? state.options : undefined), true)
+}
+
+window.switchActivity = pushActivity // TODO deprecated
+
+;(function () {
+
+	document.onscroll = function () {
+		let state = history.state
+		let activityName = getActivityName(getCurrentActivity())
+		if (activityName && state && state.activity === activityName) {
+			let options = state.options
+			history.replaceState(
+				{
+					activity: activityName,
+					scrollTop: document.scrollingElement.scrollTop,
+					options
+				},
+				document.title,
+				location.pathname
+			)
+		}
+	}
+
+	window.onpopstate = function (evt) {
+		let state = evt.state
+		if (state && state.activity) {
+			let activity = getActivityByName(state.activity)
+			popActivity(activity, state)
+		}
+	}
+
+})();
+
+/*
 function switchActivity(activity, historyUntracked) {
 //	activities.forEach(a => a.classList.add('is-hidden'))
 //	activity.classList.remove('is-hidden')
@@ -80,27 +164,26 @@ console.log('force untracked activity', getActivityName(activity))
 
 	let prevActivity = getCurrentActivity()
 	if (prevActivity) {
-		//if (prevActivity.dataset.history !== 'untracked') {
-/*		if (!historyUntracked && prevActivity.dataset.history !== 'untracked') {
-			let state = {
-				activity: getActivityName(prevActivity),
-				scrollTop: document.scrollingElement.scrollTop
-			}
-console.log('replace', history.state, 'with', state)
-			history.replaceState(
-				state,
-				document.title,
-				location.pathname
-			)
-		}*/
+		if (prevActivity.xonbeforehide) {
+			prevActivity.xonbeforehide()
+		}
 		prevActivity.classList.add('is-hidden')
+		if (prevActivity.xonafterhide) {
+			prevActivity.xonafterhide()
+		}
 	}
 
+	if (activity.xonbeforeshow) {
+		activity.xonbeforeshow()
+	}
 	activity.style.visibility = 'hidden'
 	activity.classList.remove('is-hidden')
 	document.scrollingElement.scrollTop = 0
 	setTimeout(function () {
 		activity.style.visibility = 'visible'
+		if (activity.xonaftershow) {
+			activity.xonaftershow()
+		}
 	}, 1000/60)
 
 	document.onscroll = function () { }
@@ -134,37 +217,77 @@ console.log('push', state)
 		}
 	}
 }
+*/
 
 // message
 
-function showMessage(title, text, actionCallback) {
-	activityMessage.querySelector('.title').innerText = title
-	activityMessage.querySelector('.text').innerText = text
-	activityMessage.querySelectorAll('.action').forEach(node => {
-		node.onclick = function () {
-			actionCallback();
+const showMessage = (function () {
+
+	if (!activityMessage) {
+		return function showMessage() {
+			throw new Error('activityMessage is not defined')
 		}
-	})
-	switchActivity(activityMessage)
-}
+	}
+
+	let actionCallbacks = []
+
+	activityMessage.xonbeforeshow = function (options) {
+		if (options) {
+			activityMessage.querySelector('.title').innerText = options.title
+			activityMessage.querySelector('.text').innerText = options.text
+			activityMessage.querySelectorAll('.action').forEach(node => {
+				node.onclick = function () {
+					actionCallbacks[options.callbackIndex]()
+				}
+			})
+
+		}
+	}
+
+	return function showMessage(title, text, actionCallback) {
+		let callbackIndex = actionCallbacks.length
+		actionCallbacks.push(actionCallback)
+		pushActivity(activityMessage, { title, text, callbackIndex })
+	}
+
+})();
 
 // confirm
 
-function getConfirm(title, text, yesCallback, noCallback) {
-	activityConfirm.querySelector('.title').innerText = title
-	activityConfirm.querySelector('.text').innerText = text
-	activityConfirm.querySelectorAll('.action-yes').forEach(node => {
-		node.onclick = function () {
-			yesCallback();
+const getConfirm = (function () {
+
+	if (!activityConfirm) {
+		return function showMessage() {
+			throw new Error('activityConfirm is not defined')
 		}
-	})
-	activityConfirm.querySelectorAll('.action-no').forEach(node => {
-		node.onclick = function () {
-			noCallback();
+	}
+
+	let actionCallbacks = []
+
+	activityConfirm.xonbeforeshow = function (options) {
+		if (options) {
+			activityConfirm.querySelector('.title').innerText = options.title
+			activityConfirm.querySelector('.text').innerText = options.text
+			activityConfirm.querySelectorAll('.action-yes').forEach(node => {
+				node.onclick = function () {
+					actionCallbacks[options.callbackIndex].yes();
+				}
+			})
+			activityConfirm.querySelectorAll('.action-no').forEach(node => {
+				node.onclick = function () {
+					actionCallbacks[options.callbackIndex].no();
+				}
+			})
 		}
-	})
-	switchActivity(activityConfirm)
-}
+	}
+
+	return function getConfirm(title, text, yesCallback, noCallback) {
+		let callbackIndex = actionCallbacks.length
+		actionCallbacks.push({ yes: yesCallback, no: noCallback })
+		pushActivity(activityConfirm, { title, text, callbackIndex })
+	}
+
+})();
 
 // scrolling
 

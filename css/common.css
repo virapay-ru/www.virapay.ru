@@ -152,14 +152,63 @@ h1, h2, h3, h4, h5, h6 {
 
 /* message */
 
+.activity.message {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
 .activity.message button {
 	margin-top: 1rem;
+}
+
+.activity.message .container {
+	max-width: 26rem;
+	width: 100%;
+	align-items: center;
+}
+
+.activity.message .title {
+    max-width: 20rem;
+	width: 100%;
+}
+
+.activity.message .info {
+	width: 100%;
+    max-width: 20rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
 }
 
 
 /* confirm */
 
+.activity.confirm {
+	padding-top: 4rem;
+	padding-bottom: 40rem;
+}
+
+.activity.confirm .container {
+	max-width: 26rem;
+	width: 100%;
+	align-items: center;
+}
+
+.activity.confirm .title {
+    max-width: 20rem;
+	width: 100%;
+}
+
+.activity.confirm .info {
+	width: 100%;
+    max-width: 20rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+
 .activity.confirm .buttons {
+	width: 100%;
+    max-width: 20rem;
 	display: flex;
 	flex-flow: row;
 }
@@ -474,10 +523,6 @@ input.verification + .verification-result > .verification {
 
 .activity.profile .button.logout {
 	margin-top: 2rem;
-}
-
-.activity.message button {
-	margin-top: 1rem;
 }
 
 .activity.main > .container {

@@ -20,7 +20,7 @@
 	<link href="css/typography.css" rel="stylesheet"/>
 
 	<!-- Common -->
-	<link href="css/common.css" rel="stylesheet"/>
+	<link href="css/common.css?v=0.1" rel="stylesheet"/>
 
 	<!-- JSONRPC2 -->
 	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
@@ -37,10 +37,10 @@
 		</div>
 	</div>
 
-	<div class="activity at-center message is-hidden">
+	<div class="activity -at-center message is-hidden" data-name="message" data-history="untracked">
 		<div class="container">
 			<h2 class="title"></h2>
-			<p>
+			<p class="info">
 				<i class="icon mdi mdi-alert-outline"></i>
 				<span class="text"></span>
 			</p>
@@ -52,7 +52,7 @@
 	</div>
 
 	<!-- Common -->
-	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js?v=0.1" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Entry point -->
 	<script>
@@ -67,9 +67,8 @@
 
 			let p = parseParameters(location.search)
 			if (p.code) {
-				backend.auth(apiName, p.code).then(user => {
-					user.apiName = apiName
-					storagePut(`/${location.hostname}/session`, user)
+				backend.oauth2(apiName, p.code).then(token => {
+					storagePut(`/${location.hostname}/session`, token)
 					homepage()
 				}).catch(error => {
 					showMessage('Вход', 'Не удалось получить токен. Попробуйте позднее.', homepage)
