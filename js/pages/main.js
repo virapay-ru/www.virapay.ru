@@ -48,6 +48,7 @@ async function mainInit() {
 
 	if (mainInited === false) {
 
+		hideActivity(getCurrentActivity())
 		showActivity(activityLoading)
 
 		let storageRegionsKey = `/${location.hostname}/regions`
@@ -1032,7 +1033,9 @@ console.log('infos hidden')
 							}
 						})
 
+						hideActivity(getCurrentActivity())
 						showActivity(activityLoading)
+
 						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum, counters)
 						if (payment && payment.id && payment.url) {
 							if (!(profileData.history[rowKey] instanceof Array)) {
@@ -1342,8 +1345,8 @@ console.log('infos hidden')
 		mainInited = true
 	}
 
-	filterProviders()
-	switchActivity(activityMain)
+	//filterProviders()
+	pushActivity(activityMain)
 	setTimeout(function () {
 		document.querySelector('.bottom-panel').classList.remove('hide')
 	}, 750)
@@ -1553,7 +1556,8 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 		})
 	}, 300)
 
-	//let activityName = getActivityName(activityMain)
+/*
+	let activityName = getActivityName(activityMain)
 	//if (searchResults !== null && (!history.state || history.state.activity !== activityName || !history.state.options || !history.state.options.searchResults)) {
 	if (searchResults !== null) {
 
@@ -1571,13 +1575,21 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 			location.pathname
 		)
 	}
+*/
 
-	if (autoSelectedProvider !== null) {
+//alert('dpt(6):' + JSON.stringify(history.state) + ' ACTIVITY ' + getActivityName(getCurrentActivity()))
+
+	if (autoSelectedProvider !== null && activityMain.doAutoSelect) {
+		activityMain.doAutoSelect = false
 //alert('dpt(5):' + JSON.stringify(autoSelectedProvider))
-		autoSelectedProvider.node.querySelector('.name').onclick()
+		activityMain.xonaftershow = function () {
+			delete activityMain.xonaftershow
+//alert('dpt(8): ACTIVITY ' + getActivityName(getCurrentActivity()))
+			autoSelectedProvider.node.querySelector('.name').onclick()
+		}
 	}
 
-//alert('dpt(6)')
+//alert('dpt(7):' + JSON.stringify(history.state) + ' ACTIVITY ' + getActivityName(getCurrentActivity()))
 }
 
 // profile functions
@@ -1594,6 +1606,7 @@ async function profileInit(token, doLogout) {
 		profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
 	}
 
+	hideActivity(getCurrentActivity())
 	showActivity(activityLoading)
 
 	try {
@@ -1654,7 +1667,7 @@ async function profileInit(token, doLogout) {
 					return result
 				} catch (errorProfileSaving) {
 					console.log('SAVING PROFILE FAILED', errorProfileSaving)
-					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => pushActivity(activityProfile))
 				}
 				return null
 			}
@@ -1682,6 +1695,8 @@ console.log('PAYMENT', result)
 			}
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
 				node.onclick = async function () {
+
+					hideActivity(getCurrentActivity())
 					showActivity(activityLoading)
 
 					let result = profileSave()
@@ -1690,15 +1705,13 @@ console.log('PAYMENT', result)
 						activityMain.querySelector('.fullname').innerText = name
 						activityProfile.querySelectorAll('.back').forEach(node => { // TODO profile
 							node.onclick = function () {
-								//mainInit() //switchActivity(activityMain)
 								history.back()
 							}
 						})
-						mainInit() //switchActivity(activityMain) // TODO if user is new then mainInit() else history.back()
+						mainInit()
 					} else {
-						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => switchActivity(activityProfile))
+						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => pushActivity(activityProfile))
 					}
-
 
 				}
 			})
@@ -1706,7 +1719,7 @@ console.log('PAYMENT', result)
 			activityMain.querySelector('.fullname').innerText = result.name
 
 			document.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {
-				navBarHide(() => switchActivity(activityProfile))
+				navBarHide(() => pushActivity(activityProfile))
 			})
 			activityMain.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
@@ -1723,43 +1736,14 @@ console.log('PAYMENT', result)
 			})
 
 			if (result.isNew) {
-				switchActivity(activityProfile)
+				pushActivity(activityProfile)
 			} else {
 				mainInit()
 			}
 
 		} else {
 
-//			let updating = storageGet(updatingKey)
-
-//			if (updating) {
-
-//				storagePut(updatingKey, false)
-				showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
-
-//			} else {
-//
-//				storagePut(updatingKey, true)
-//				console.log('AUTO UPDATE TOKEN')
-//
-//				let url = null
-//				if (apiName === 'google') {
-//					url = document.querySelector('.signin-with-google').href
-//				} else if (apiName === 'facebook') {
-//					url = document.querySelector('.signin-with-facebook').href
-//				} else if (apiName === 'vk') {
-//					url = document.querySelector('.signin-with-vk').href
-//				} else if (apiName === 'debug') {
-//					url = 'http://127.0.0.1:8080/debug/auth'
-//				}
-//				if (url !== null) {
-//					setTimeout(function () {
-//						location.replace(url)
-//					}, 750)
-//				}
-//
-//			}
-
+			showMessage('Вход', 'Не удалось подтвердить токен пользователя. Попробуйте позднее.', logoutCallback)
 		}
 
 	} catch (errorLogin) {
@@ -2031,22 +2015,24 @@ console.log('scrolling flag is on...')
 
 // activity main
 
-activityMain.xonbeforeshow = function (options) {
+(function () {
 
-	if (mainInited) {
-		if (options && options.searchResults) {
-			filterProviders(options.searchResults)
-		} else {
-			filterProviders()
+	activityMain.xonbeforeshow = function (options) {
+
+		if (mainInited) {
+			if (options && options.searchResults) {
+				filterProviders(options.searchResults)
+			} else {
+				filterProviders()
+			}
 		}
 	}
-}
+
+})();
 
 // activity sbp-pay
 
-activitySBPPay.xonbeforeshow = (function () {
-
-	// qrcode generator
+(function () {
 
 	let qrcode = new QRCode('qrcode', {
 		width: 256,
@@ -2055,7 +2041,7 @@ activitySBPPay.xonbeforeshow = (function () {
 		useSVG: true
 	});
 
-	return function (options) {
+	activitySBPPay.xonbeforeshow = function (options) {
 		qrcode.makeCode(options.url)
 		activitySBPPay.querySelector('.action').setAttribute('href', options.url)
 	}
@@ -2211,6 +2197,9 @@ activitySBPPay.xonbeforeshow = (function () {
 						console.log('Scanner results', results)
 						if ((results instanceof Array) && results.length > 0) {
 //alert(JSON.stringify(results))
+							if (results.length === 1) {
+								activityMain.doAutoSelect = true
+							}
 							pushActivity(activityMain, { searchResults: results })
 						} else {
 							showMessage('Сканирование кода', 'Направления платежа нет в списке.', function () { history.back() })
@@ -2218,6 +2207,7 @@ activitySBPPay.xonbeforeshow = (function () {
 						//showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
 					}).catch(err => {
 						console.log(err)
+//alert(err)
 						showMessage('Сканирование кода', 'Ошибка. Попробуйте отсканировать код еще раз.', function () { history.back() })
 					})
 
@@ -2268,14 +2258,15 @@ console.log('stopping media stream of camera')
 	if (token) {
 		profileInit(token, () => {
 			storagePut(sessionKey, null)
-			switchActivity(activityLogin)
+			hideActivity(getCurrentActivity())
 			profileData = null
+			location.reload()
 		})
 	} else {
-		switchActivity(activityLogin)
+		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 122, 5)
+	console.log('VERSION', 122, 6)
 
 })();
 
