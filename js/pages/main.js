@@ -539,8 +539,9 @@ console.log('acc check result', result)
 						switchActivity(activityAccounts)
 						document.scrollingElement.scrollTop = scrollTop
 					}, () => {
-						switchActivity(activityAccounts)
-						document.scrollingElement.scrollTop = scrollTop
+						//switchActivity(activityAccounts)
+						//document.scrollingElement.scrollTop = scrollTop
+						history.back()
 					})
 				})
 
