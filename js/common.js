@@ -244,6 +244,10 @@ const showMessage = (function () {
 		}
 	}
 
+	activityMessage.querySelectorAll('.back').forEach(node => node.onclick = () => {
+		history.back()
+	})
+
 	return function showMessage(title, text, actionCallback) {
 		let callbackIndex = actionCallbacks.length
 		actionCallbacks.push(actionCallback)
@@ -280,6 +284,10 @@ const getConfirm = (function () {
 			})
 		}
 	}
+
+	activityConfirm.querySelectorAll('.back').forEach(node => node.onclick = () => {
+		history.back()
+	})
 
 	return function getConfirm(title, text, yesCallback, noCallback) {
 		let callbackIndex = actionCallbacks.length
