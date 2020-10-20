@@ -90,12 +90,13 @@ async function mainInit() {
 			profileSave()
 		}
 
-		function updateHistoryFlag(provider) {
+		function updateHistoryFlag(provider, doFilterProviders = true) {
 			let prevFlag = provider.hasHistory
 			let isMatch = false
 			let accounts = profileData.accList[provider.rowKey]
 			if (accounts instanceof Array) {
 				accounts = accounts.map(accItem => accItem.acc)
+//if (provider.rowKey === '2813/456') console.log('accList accounts', accounts)
 				let history = profileData.history[provider.rowKey]
 				if (history instanceof Array) {
 					if (history.find(paymItem => accounts.indexOf(paymItem.a) >= 0)) {
@@ -104,10 +105,11 @@ async function mainInit() {
 				}
 			}
 			provider.hasHistory = isMatch
-			if (prevFlag !== provider.hasHistory) {
+			if (prevFlag !== provider.hasHistory && doFilterProviders) {
 				filterProviders()
 			}
 		}
+//window.updateHistoryFlag = updateHistoryFlag
 
 		let allRegionsTrigger = regionsList.querySelector('.all')
 		allRegionsTrigger.onchange = function () {
@@ -624,8 +626,17 @@ console.log('acc check result', result)
 
 					let listNode = activityAccountHistory.querySelector('.history-list')
 
-					let payments = profileData.history[rowKey].filter(row => row.a == accItem.acc)
+					let payments = profileData.history[rowKey] instanceof Array
+						? profileData.history[rowKey].filter(row => row.a == accItem.acc)
+						: []
 					console.log('payments', payments)
+
+					let emptyMessage = activityAccountHistory.querySelector('.empty-message')
+					if (payments.length > 0) {
+						emptyMessage.classList.add('is-hidden')
+					} else {
+						emptyMessage.classList.remove('is-hidden')
+					}
 
 					listNode.innerHTML = '' // clear list
 
@@ -1100,7 +1111,7 @@ console.log('infos hidden')
 			}
 
 			function pickProvider() {
-
+console.log('prov', item)
 				let showAccountsList = true
 
 				if (item.searchItem && item.searchItem.account !== undefined && item.searchItem.account !== null) {
@@ -1342,6 +1353,8 @@ console.log('infos hidden')
 			btnNode.onclick = pickProvider
 
 			item.node = providerNode
+
+			updateHistoryFlag(item, false)
 		})
 
 		mainInited = true

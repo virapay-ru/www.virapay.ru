@@ -1323,6 +1323,16 @@ input.verification + .verification-result > .verification {
 	padding-bottom: 40rem;
 }
 
+.activity.account-history .empty-message {
+	text-align: left;
+    width: 100%;
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    font-weight: 300;
+    border-top: 1px solid #ccc;
+    padding: 1rem;
+}
+
 .activity.account-history .container {
 	max-width: 26rem;
 	width: 100%;
