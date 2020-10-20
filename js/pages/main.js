@@ -536,8 +536,9 @@ console.log('acc check result', result)
 								delete accItem.removed
 							})
 						}
-						switchActivity(activityAccounts)
-						document.scrollingElement.scrollTop = scrollTop
+						//switchActivity(activityAccounts)
+						//document.scrollingElement.scrollTop = scrollTop
+						history.back()
 					}, () => {
 						//switchActivity(activityAccounts)
 						//document.scrollingElement.scrollTop = scrollTop
