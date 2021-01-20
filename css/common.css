@@ -295,6 +295,11 @@ h1, h2, h3, h4, h5, h6 {
 	margin-right: 0.5rem;
 }
 
+.button > .icon.iconify {
+	height: auto;
+	font-size: 1.5rem;
+}
+
 .button > span {
 	display: block;
 	width: 100%;
