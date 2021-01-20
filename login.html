@@ -14,7 +14,8 @@
 	<!-- Webfonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet" crossorigin="anonymous">
-	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
+<!--	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>-->
+	<link href="fonts/materialdesignicons/css/materialdesignicons.min.css" rel="stylesheet"/>
 
 	<!-- UI framework -->
 	<link href="css/typography.css" rel="stylesheet"/>
@@ -74,7 +75,7 @@
 
 	<div class="activity at-center loading -is-hidden" data-name="loading">
 		<div class="container">
-			<i class="mdi mdi-loading display4 spin"></i>
+			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
 		</div>
 	</div>
 
@@ -94,7 +95,7 @@
 			<p>
 				<a class="button primary action" href="https://virapay.ru/stub.html?id=4098377&uid=263d2f0c-a872-4a29-a108-6c392dd421be">
 		            <span>Оплатить в приложении банка</span>
-					<i class="icon mdi mdi-arrow-right"></i>
+					<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 				</a>
 			</p>
 
@@ -110,12 +111,12 @@
 		<div class="container">
 			<h2 class="title"></h2>
 			<p class="info">
-				<i class="icon mdi mdi-alert-outline"></i>
+				<i class="icon iconify mdi mdi-alert-outline" data-icon="mdi-alert-outline"></i>
 				<span class="text"></span>
 			</p>
 			<button class="button primary action">
 	            <span>Продолжить</span>
-				<i class="icon mdi mdi-arrow-right"></i>
+				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 			</button>
 		</div>
 	</div>
@@ -125,12 +126,12 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
 		<div class="container">
-			<i class="mdi mdi-loading display4 spin loading"></i>
+			<i class="iconify mdi mdi-loading display4 spin loading" data-icon="mdi-loading"></i>
 			<p class="info" hidden><b>Наведите камеру на QR-код</b></p>
 			<canvas id="canvas" hidden></canvas>
 			<p class="info" hidden>При успешном распознавании кода раздастся звуковой сигнал</p>
@@ -143,23 +144,23 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
 		<div class="container">
 			<h2 class="title"></h2>
 			<p class="info">
-				<i class="icon mdi mdi-alert-outline"></i>
+				<i class="icon iconify mdi mdi-alert-outline" data-icon="mdi-alert-outline"></i>
 				<span class="text"></span>
 			</p>
 			<div class="buttons">
 				<button class="button light action-yes">
-					<i class="icon mdi mdi-check"></i>
+					<i class="icon iconify mdi mdi-check" data-icon="mdi-check"></i>
 		            <span>Да</span>
 				</button>
 				<button class="button primary action-no">
-					<i class="icon mdi mdi-close"></i>
+					<i class="icon iconify mdi mdi-close" data-icon="mdi-close"></i>
 		            <span>Нет</span>
 				</button>
 			</div>
@@ -172,7 +173,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -190,7 +191,7 @@
 			<div class="button-container">
 				<button class="button primary send">
 	    	        <span>Отправить</span>
-					<i class="icon mdi mdi-send"></i>
+					<i class="icon iconify mdi mdi-send" data-icon="mdi-send"></i>
 				</button>
 			</div>
 
@@ -202,7 +203,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -226,7 +227,7 @@
 
 			<button class="button primary profile-save">
 	            <span>Продолжить</span>
-				<i class="icon mdi mdi-arrow-right"></i>
+				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 			</button>
 
 			<p class="info">Вы можете выйти в любое время. Если возникла такая необходимость, нажмите кнопку <q>Выход</q>.</p>
@@ -241,7 +242,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -258,7 +259,7 @@
 
 			<div class="button-container">
 				<button class="button primary account-add">
-					<i class="icon mdi mdi-plus"></i>
+					<i class="icon iconify mdi mdi-plus" data-icon="mdi-plus"></i>
 	    	        <span>Добавить <span class="acc-name">Лицевой счет</span></span>
 				</button>
 			</div>
@@ -271,7 +272,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -301,7 +302,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -318,9 +319,9 @@
 				<div>
 					<input class="account" type="text"/>
 					<div class="verification-result">
-						<i class="mdi mdi-check valid"></i>
-						<i class="mdi mdi-close error"></i>
-						<i class="mdi mdi-loading verification spin"></i>
+						<i class="iconify mdi mdi-check valid" data-icon="mdi-check"></i>
+						<i class="iconify mdi mdi-close error" data-icon="mdi-check"></i>
+						<i class="iconify mdi mdi-loading verification spin" data-icon="mdi-loading"></i>
 					</div>
 				</div>
 				<div class="hint">
@@ -338,7 +339,7 @@
 			<div class="button-container">
 				<button class="button primary account-save">
 	    	        <span>Сохранить</span>
-					<i class="icon mdi mdi-arrow-right"></i>
+					<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 				</button>
 			</div>
 
@@ -350,7 +351,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -367,9 +368,9 @@
 				<div>
 					<input class="account" type="text"/>
 					<div class="verification-result">
-						<i class="mdi mdi-check valid"></i>
-						<i class="mdi mdi-close error"></i>
-						<i class="mdi mdi-loading verification spin"></i>
+						<i class="iconify mdi mdi-check valid" data-icon="mdi-check"></i>
+						<i class="iconify mdi mdi-close error" data-icon="mdi-close"></i>
+						<i class="iconify mdi mdi-loading verification spin" data-icon="mdi-loading"></i>
 					</div>
 				</div>
 				<div class="hint">
@@ -384,7 +385,7 @@
 					<label class="li id-3">
 						<input type="radio" name="payment-type" value="3" class="payment-type-id"/>
 						<div>
-							<div><!--<i class="mdi mdi-qrcode"></i> -->Система быстрых платежей</div>
+							<div><!--<i class="iconify mdi mdi-qrcode" data-icon="mdi-qrcode"></i> -->Система быстрых платежей</div>
 							<div class="hint">Используйте СБП для минимизации затрат при переводе средств</div>
 							<div class="commission-description"></div>
 						</div>
@@ -392,7 +393,7 @@
 					<label class="li id-2">
 						<input type="radio" name="payment-type" value="2" class="payment-type-id"/>
 						<div>
-							<div><!--<i class="mdi mdi-credit-card-outline"></i> -->Картой банка</div>
+							<div><!--<i class="iconify mdi mdi-credit-card-outline" data-icon="mdi-credit-card-outline"></i> -->Картой банка</div>
 							<div class="hint">МИР, MasterCard, VISA</div>
 							<div class="commission-description"></div>
 						</div>
@@ -405,9 +406,9 @@
 				<div>
 					<input class="summ" value="500.00" type="text"/>
 					<div class="verification-result">
-						<i class="mdi mdi-check valid"></i>
-						<i class="mdi mdi-close error"></i>
-						<i class="mdi mdi-loading verification spin"></i>
+						<i class="iconify mdi mdi-check valid" data-icon="mdi-check"></i>
+						<i class="iconify mdi mdi-close error" data-icon="mdi-close"></i>
+						<i class="iconify mdi mdi-loading verification spin" data-icon="mdi-loading"></i>
 					</div>
 				</div>
 				<div class="hint">Сумма к перечислению</div>
@@ -422,8 +423,8 @@
 
 			<label class="label">
 
-				<div class="commission-line">Сервисный сбор: <span class="commission">0.00</span> <i class="mdi mdi-currency-rub"></i></div>
-				<div class="total-line">Итого: <span class="total">0.00</span> <i class="mdi mdi-currency-rub"></i></div>
+				<div class="commission-line">Сервисный сбор: <span class="commission">0.00</span> <i class="iconify mdi mdi-currency-rub" data-icon="mdi-currency-rub"></i></div>
+				<div class="total-line">Итого: <span class="total">0.00</span> <i class="iconify mdi mdi-currency-rub" data-icon="mdi-currency-rub"></i></div>
 
 			</label>
 
@@ -432,7 +433,7 @@
 			<div class="button-container">
 				<button class="button primary prepare-payment">
 	    	        <span>Далее</span>
-					<i class="icon mdi mdi-arrow-right"></i>
+					<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 				</button>
 			</div>
 
@@ -446,7 +447,7 @@
 
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon mdi mdi-chevron-left back"></a>
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
 			</div>
 		</div>
 
@@ -478,13 +479,13 @@
 
 			<a class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
 	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
-				<i class="icon mdi mdi-facebook"></i>
+				<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
 	            <span>Войти с Facebook</span>
 			</a>
 
 			<a class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/vk.html">
 	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
-				<i class="icon mdi mdi-vk"></i>
+				<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
 	            <span>Войти с ВКонтакте</span>
 			</a>
 
@@ -523,22 +524,22 @@
 			<div class="bottom-panel">
 				<div class="hot-icons">
 					<a class="open-favorites">
-						<i class="icon mdi mdi-star-outline"></i>
+						<i class="icon iconify mdi mdi-star-outline" data-icon="mdi-star-outline"></i>
 						<span>Избранное</span>
 					</a>
 					<a class="open-scanner">
-						<i class="icon mdi mdi-qrcode-scan"></i>
+						<i class="icon iconify mdi mdi-qrcode-scan" data-icon="mdi-qrcode-scan"></i>
 						<span>Сканнер</span>
 					</a>
 					<a class="open-history">
-						<i class="icon mdi mdi-history"></i>
+						<i class="icon iconify mdi mdi-history" data-icon="mdi-history"></i>
 						<span>История</span>
 					</a>
 				</div>
 			</div>
 
 			<div class="search-field">
-				<i class="icon mdi mdi-magnify"></i>
+				<i class="icon iconify mdi mdi-magnify" data-icon="mdi-magnify"></i>
 				<label class="label">
 					<div><input class="search" placeholder="Поиск по ИНН, Названию..." type="text"/></div>
 				</label>
@@ -547,27 +548,27 @@
 		<div class="scroll-horizontal invisible-scrollbar">
 			<div class="categories">
 				<a class="category" data-id="4">
-					<i class="icon mdi mdi-office-building"></i>
+					<i class="icon iconify mdi mdi-office-building" data-icon="mdi-office-building"></i>
 					<span>Коммунальные услуги</span>
 				</a>
 				<a class="category" data-id="1">
-					<i class="icon mdi mdi-web"></i>
+					<i class="icon iconify mdi mdi-web" data-icon="mdi-web"></i>
 					<span>Интернет</span>
 				</a>
 				<a class="category" data-id="3">
-					<i class="icon mdi mdi-television-classic"></i>
+					<i class="icon iconify mdi mdi-television-classic" data-icon="mdi-television-classic"></i>
 					<span>Телевидение</span>
 				</a>
 				<a class="category" data-id="7">
-					<i class="icon mdi mdi-phone-in-talk"></i>
+					<i class="icon iconify mdi mdi-phone-in-talk" data-icon="mdi-phone-in-talk"></i>
 					<span>Телефон</span>
 				</a>
 				<a class="category" data-id="5">
-					<i class="icon mdi mdi-gamepad-variant-outline"></i>
+					<i class="icon iconify mdi mdi-gamepad-variant-outline" data-icon="mdi-gamepad-variant-outline"></i>
 					<span>Игры</span>
 				</a>
 				<a class="category" data-id="8">
-					<i class="icon mdi mdi-dots-horizontal"></i>
+					<i class="icon iconify mdi mdi-dots-horizontal" data-icon="mdi-dots-horizontal"></i>
 					<span>Прочее</span>
 				</a>
 			</div>
@@ -575,7 +576,7 @@
 
 		<div class="regions-selector">
 			<div class="trigger">
-				<i class="mdi mdi-map-marker"></i>
+				<i class="iconify mdi mdi-map-marker" data-icon="mdi-map-marker"></i>
 				<span class="label">Все регионы</span>
 			</div>
 			<div class="list">
@@ -586,7 +587,7 @@
 		</div>
 
 		<button class="button primary search-cancel">
-			<i class="icon mdi mdi-arrow-left"></i>
+			<i class="icon iconify mdi mdi-arrow-left" data-icon="mdi-arrow-left"></i>
 	        <span>Назад</span>
 		</button>
 
@@ -594,6 +595,9 @@
 	</div>
 
 	<input type="text" id="focus-trigger" class="hide"/>
+
+	<!-- Iconify -->
+<!--	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>-->
 
 	<!-- Common -->
 	<script src="js/common.js?v=0.2" type="text/javascript" charset="utf-8"></script>

@@ -14,7 +14,7 @@
 	<!-- Webfonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" crossorigin="anonymous">
-	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>
+<!--	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>-->
 
 	<!-- UI framework -->
 	<link href="css/typography.css" rel="stylesheet"/>
@@ -33,7 +33,7 @@
 
 	<div class="activity at-center loading -is-hidden">
 		<div class="container">
-			<i class="mdi mdi-loading display4 spin"></i>
+			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
 		</div>
 	</div>
 
@@ -41,15 +41,18 @@
 		<div class="container">
 			<h2 class="title"></h2>
 			<p class="info">
-				<i class="icon mdi mdi-alert-outline"></i>
+				<i class="icon iconify mdi mdi-alert-outline" data-icon="mdi-alert-outline"></i>
 				<span class="text"></span>
 			</p>
 			<button class="button primary action">
 	            <span>Продолжить</span>
-				<i class="icon mdi mdi-arrow-right"></i>
+				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 			</button>
 		</div>
 	</div>
+
+	<!-- Iconify -->
+	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
 
 	<!-- Common -->
 	<script src="js/common.js?v=0.1" type="text/javascript" charset="utf-8"></script>
