@@ -1,0 +1,123 @@
+﻿<!doctype html>
+<html>
+<head>
+
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay" />
+	<meta name="keywords" content="virapay, vira, pay" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+	<!-- Webfonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet" crossorigin="anonymous">
+<!--	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>-->
+	<link href="fonts/materialdesignicons/css/materialdesignicons.min.css" rel="stylesheet"/>
+
+	<!-- UI framework -->
+	<link href="css/typography.css" rel="stylesheet"/>
+
+	<!-- Common -->
+	<link href="css/common.css?v=0.2" rel="stylesheet"/>
+
+	<!-- Core code -->
+	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
+
+<style>
+
+/* media */
+
+@media (max-width: 767px) {
+}
+
+@media (min-width: 768px) {
+}
+
+
+</style>
+
+</head>
+<body>
+
+
+	<div class="activity at-center loading -is-hidden" data-name="loading">
+		<div class="container">
+			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
+		</div>
+	</div>
+
+
+	<div class="activity -at-center message is-hidden" data-name="message">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p class="info">
+				<i class="icon iconify mdi mdi-alert-outline" data-icon="mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+
+
+
+	<div class="activity feedback is-hidden" data-name="feedback">
+
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon iconify mdi mdi-chevron-left back" data-icon="mdi-chevron-left"></a>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<h2 class="title">Обратная связь</h2>
+
+			<label class="label">
+				<div class="acc-name subject">Сообщение</div>
+				<div>
+					<textarea class="message"></textarea>
+				</div>
+			</label>
+
+			<div class="button-container">
+				<button class="button primary send">
+	    	        <span>Отправить</span>
+					<i class="icon iconify mdi mdi-send" data-icon="mdi-send"></i>
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="activity main -search-results is-hidden" data-name="main">
+
+		<div class="container">
+
+		<div class="partners">
+		</div>
+
+	</div>
+
+	<input type="text" id="focus-trigger" class="hide"/>
+
+	<!-- Iconify -->
+<!--	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>-->
+
+	<!-- Common -->
+	<script src="js/common.js?v=0.2" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Main -->
+	<script src="js/pages/list.js?v=0.1" type="text/javascript" charset="utf-8"></script>
+
+</body>
+
+</html>
