@@ -43,7 +43,7 @@ async function mainInit() {
 			item.sortIndex = sortIndex
 
 			// process item
-console.log(item)
+//console.log(item)
 
 			let providerNode = document.createElement('div')
 			providerNode.classList.add('provider')
@@ -67,6 +67,8 @@ console.log(item)
 			detailsNode.appendChild(nameNode)
 			detailsNode.appendChild(innNode)
 			detailsNode.appendChild(serviceNode)
+
+			providerNode.appendChild(detailsNode)
 			listNode.appendChild(providerNode)
 
 			item.node = providerNode
@@ -129,6 +131,8 @@ console.log(item)
 (function () {
 
 	console.log('VERSION', 1, 0)
+
+	mainInit()
 
 })();
 
