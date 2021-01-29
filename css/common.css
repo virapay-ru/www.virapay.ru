@@ -1714,8 +1714,9 @@ input.verification + .verification-result > .verification {
 
 /* utilities */
 
+[hidden],
 .is-hidden {
-	display: none;
+	display: none !important;
 }
 
 .scroll-horizontal {

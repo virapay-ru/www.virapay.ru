@@ -755,7 +755,7 @@ console.log('acc check result', result)
 				})
 
 				accountNode.querySelectorAll('.account-payment').forEach(commandNode => commandNode.onclick = () => {
-
+console.log('commandNode', commandNode)
 					let inputAccount = activityAccountPayment.querySelector('input.account')
 //					let inputDescription = activityAccountPayment.querySelector('input.description')
 					let inputSum = activityAccountPayment.querySelector('input.summ')
@@ -777,20 +777,35 @@ console.log('acc check result', result)
 //					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
 					let defaultPaymentTypeId = paymentsTypesList[0].id
+console.log('DEFAULT_PAYMENT_TYPE', defaultPaymentTypeId)
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
 					if (!initPaymentTypeId) { initPaymentTypeId = defaultPaymentTypeId } // default payment type
 
+					let firstPaymentTypeId = null
 					paymentsTypesList.forEach(paymentType => {
 						let paymentTypeNode = activityAccountPayment.querySelector('.payments-types > .list > .li.id-' + paymentType.id)
+console.log('PAYMENT_TYPE', paymentType.id, paymentType, paymentTypeNode)
 						let commissionNode = paymentTypeNode.querySelector('.commission-description')
 						paymentTypeNode.hidden = true
 						if (item.payments_types.indexOf(paymentType.id) >= 0) {
+console.log('PAYMENT_TYPE', paymentType.id, 'FOUND', item, item.payments_types, paymentType)
+							if (firstPaymentTypeId === null) {
+								firstPaymentTypeId = parseInt(paymentType.id)
+							}
 							if (commissionNode) {
 								commissionNode.innerText = item.commission[paymentType.id].description
 							}
 							paymentTypeNode.hidden = false
+						} else {
+console.log('PAYMENT_TYPE', paymentType.id, 'NOT FOUND', item, item.payments_types, paymentType)
+							if (paymentType.id == initPaymentTypeId) {
+								initPaymentTypeId = null
+							}
 						}
 					})
+					if (initPaymentTypeId === null) {
+						initPaymentTypeId = firstPaymentTypeId
+					}
 
 					function onValidationProgress(result) {
 
