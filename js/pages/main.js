@@ -777,18 +777,15 @@ console.log('commandNode', commandNode)
 //					inputDescription.value = accItem.desc
 					inputSum.value = accItem.sum
 					let defaultPaymentTypeId = paymentsTypesList[0].id
-console.log('DEFAULT_PAYMENT_TYPE', defaultPaymentTypeId)
 					let initPaymentTypeId = parseInt(accItem.paymTyp)
 					if (!initPaymentTypeId) { initPaymentTypeId = defaultPaymentTypeId } // default payment type
 
 					let firstPaymentTypeId = null
 					paymentsTypesList.forEach(paymentType => {
 						let paymentTypeNode = activityAccountPayment.querySelector('.payments-types > .list > .li.id-' + paymentType.id)
-console.log('PAYMENT_TYPE', paymentType.id, paymentType, paymentTypeNode)
 						let commissionNode = paymentTypeNode.querySelector('.commission-description')
 						paymentTypeNode.hidden = true
 						if (item.payments_types.indexOf(paymentType.id) >= 0) {
-console.log('PAYMENT_TYPE', paymentType.id, 'FOUND', item, item.payments_types, paymentType)
 							if (firstPaymentTypeId === null) {
 								firstPaymentTypeId = parseInt(paymentType.id)
 							}
@@ -797,7 +794,6 @@ console.log('PAYMENT_TYPE', paymentType.id, 'FOUND', item, item.payments_types, 
 							}
 							paymentTypeNode.hidden = false
 						} else {
-console.log('PAYMENT_TYPE', paymentType.id, 'NOT FOUND', item, item.payments_types, paymentType)
 							if (paymentType.id == initPaymentTypeId) {
 								initPaymentTypeId = null
 							}
@@ -967,12 +963,13 @@ console.log('PAYMENT_TYPE', paymentType.id, 'NOT FOUND', item, item.payments_typ
 							let percent = rules
 							commission = ((sum * percent) / 100.0).toFixed(2)
 						} else {
-							rules.forEach(rule => {
-								let [ sumEnd, fixedSum, percent ] = rule
+							for (let ruleNum = 0; ruleNum < rules.length; ruleNum ++) {
+								let [ sumEnd, fixedSum, percent ] = rules[ruleNum]
 								if ((sumEnd !== null && sum < sumEnd) || (sumEnd === null)) {
 									commission = (fixedSum + (sum * percent) / 100.0).toFixed(2)
+									break
 								}
-							})
+							}
 						}
 
 						let total = (parseFloat(sum) + parseFloat(commission)).toFixed(2)

@@ -65,6 +65,46 @@
 }
 */
 
+
+.text-center {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.text-center a.ln {
+	display: inline-flex;
+	margin-bottom: 0.5rem;
+}
+
+.text-center .button {
+	margin-bottom: 2rem;
+}
+
+.button.telegram {
+	color: #fff;
+	background: #5682a3;
+}
+
+.tinkoff-logo {
+	max-width: 150px;
+}
+
+.ps-logos {
+	height: 1rem;
+    margin-top: 0.5rem;
+    filter: grayscale(1);
+}
+
+.tinkoff-section, .telegram-section {
+	border-top: 1px solid #e8e8e8;
+    padding-top: 2rem;
+}
+
+.tinkoff-section > p, .telegram-section > p {
+	margin-top: 0;
+}
+
+
 </style>
 
 </head>
@@ -493,10 +533,40 @@
 	            <span>Войти с ВКонтакте</span>
 			</a>
 
-			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+			<p class="text-center">Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
 			даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
 
-			<p>Ознакомьтесь со <a href="list.html">списоком партнеров</a>.</p>
+			<p class="text-center">Ознакомьтесь со <a href="list.html">списоком партнеров</a>.</p>
+
+			<div class="text-center telegram-section">
+				<a class="button telegram" href="https://t.me/virapaybot">
+					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
+					<span>@ViraPayBot в Telegram</span>
+				</a>
+				<p class="text-center">Подключайтесь к боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
+			</div>
+
+			<div class="text-center tinkoff-section">
+				<p>Эквайринг предоставляется банком</p>
+				<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="images/tinkoff_logo.svg"/></a><br/>
+				<img class="ps-logos" src="images/visa_master_mir.png"/>
+			</div>
+
+			<p class="text-center">
+<!--
+				<a class="button telegram" href="https://t.me/virapaybot">
+					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
+					<span>ViraPay в Telegram</span>
+				</a>
+-->
+<!--				<a class="ln" href="policy.html">Политика конфиденциальности</a><br/>
+				<a class="ln" href="offer.html">Условия использования</a><br/>-->
+				&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
+				Все права защищены.<br/>
+				<a class="ln" href="contacts.html">Контактная информация</a><br/>
+			</p>
+
+
 
 		</div>
 	</div>
@@ -609,7 +679,7 @@
 	<script src="js/common.js?v=0.2" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Main -->
-	<script src="js/pages/main.js?v=0.3" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pages/main.js?v=0.4" type="text/javascript" charset="utf-8"></script>
 
 </body>
 

@@ -277,7 +277,7 @@ h1, h2, h3, h4, h5, h6 {
 	height: 3rem;
 	font-size: 1.1rem;
 	width: 100%;
-	max-width: 20rem;
+	max-width: 21rem;
 	box-sizing: border-box;
 	margin-bottom: 1rem;
 	border: 0;
@@ -488,7 +488,7 @@ input.verification + .verification-result > .verification {
 }
 
 .activity.login p {
-    width: 20rem;
+    width: 21rem;
     font-size: 0.8rem;
 }
 
