@@ -25,7 +25,7 @@
 	<link href="css/typography.css" rel="stylesheet"/>
 
 	<!-- Common -->
-	<link href="css/common.css?v=0.2" rel="stylesheet"/>
+	<link href="css/common.css?v=0.3" rel="stylesheet"/>
 
 	<!-- Core code -->
 	<!--<script src="js/debug/output.js" type="text/javascript" charset="utf-8"></script>-->
@@ -592,10 +592,17 @@
 
 			<h2 class="search-results-header">Результаты поиска</h2>
 
-			<a class="banner">
+			<a class="banner force-hidden">
 				<h3>Место для вашей рекламы</h3>
 				<p>Не упустите ваш шанс!</p>
 			</a>
+
+			<div class="search-field">
+				<i class="icon iconify mdi mdi-magnify" data-icon="mdi-magnify"></i>
+				<label class="label">
+					<div><input class="search" placeholder="Поиск по ИНН, Названию..." type="text"/></div>
+				</label>
+			</div>
 
 			<div class="bottom-panel">
 				<div class="hot-icons">
@@ -614,14 +621,7 @@
 				</div>
 			</div>
 
-			<div class="search-field">
-				<i class="icon iconify mdi mdi-magnify" data-icon="mdi-magnify"></i>
-				<label class="label">
-					<div><input class="search" placeholder="Поиск по ИНН, Названию..." type="text"/></div>
-				</label>
-			</div>
-
-		<div class="scroll-horizontal invisible-scrollbar">
+		<div class="scroll-horizontal invisible-scrollbar force-hidden">
 			<div class="categories">
 				<a class="category" data-id="4">
 					<i class="icon iconify mdi mdi-office-building" data-icon="mdi-office-building"></i>
@@ -650,7 +650,7 @@
 			</div>
 		</div>
 
-		<div class="regions-selector">
+		<div class="regions-selector force-hidden">
 			<div class="trigger">
 				<i class="iconify mdi mdi-map-marker" data-icon="mdi-map-marker"></i>
 				<span class="label">Все регионы</span>
@@ -679,7 +679,7 @@
 	<script src="js/common.js?v=0.2" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Main -->
-	<script src="js/pages/main.js?v=0.4" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pages/main.js?v=0.5" type="text/javascript" charset="utf-8"></script>
 
 </body>
 

@@ -78,10 +78,10 @@
 					storagePut(`/${location.hostname}/session`, token)
 					homepage()
 				}).catch(error => {
-					showMessage('Вход', 'Не удалось получить токен. Попробуйте позднее.', homepage)
+					showMessage('Вход для Разработчиков', 'Не удалось получить токен. Попробуйте позднее.', homepage)
 				})
 			} else {
-				showMessage('Вход', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
+				showMessage('Вход для Разработчиков', 'Не удалось выполнить вход. Попробуйте позднее.', homepage)
 			}
 
 		})();

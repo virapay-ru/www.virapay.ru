@@ -47,6 +47,10 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
 }
 
+.force-hidden {
+	display: none !important;
+}
+
 
 /* logo */
 
@@ -162,22 +166,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .activity.message .container {
-	max-width: 26rem;
+	max-width: 30rem;
 	width: 100%;
 	align-items: center;
+	border: 1px solid #ddd;
+	border-radius: 0.5rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 }
 
 .activity.message .title {
-    max-width: 20rem;
+    max-width: 30rem;
 	width: 100%;
+	text-align: center;
 }
 
 .activity.message .info {
 	width: 100%;
-    max-width: 20rem;
+    max-width: 30rem;
     border-top: 1px solid #eee;
     padding-top: 2rem;
+	text-align: center;
 }
+
+@media (max-width: 475px) {
+
+	.activity.message .container {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
+
 
 
 /* confirm */
@@ -234,7 +253,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* action bar */
 
-.action-bar {
+.activity .action-bar {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -247,17 +266,17 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 }
 
-.action-bar > .container {
+.activity .action-bar > .container {
 	display: flex;
 	flex-flow: row;
 	align-items: center;
 	background: linear-gradient(#fff, rgba(255,255,255,0.76), rgba(255,255,255,0));
 	height: 4rem;
 	width: 100%;
-	max-width: 40rem;
+	max-width: 50rem !important;
 }
 
-.action-bar a {
+.activity .action-bar a {
 	cursor: pointer;
 	padding: 0.5rem;
 	-webkit-tap-highlight-color: transparent;
@@ -533,7 +552,7 @@ input.verification + .verification-result > .verification {
 .activity.main > .container {
 	align-items: center;
 	width: 100%;
-	max-width: 30rem;
+	max-width: 50rem;
 }
 
 /* activity main */
@@ -1765,4 +1784,30 @@ input.verification + .verification-result > .verification {
 
 #focus-trigger.hide {
 	display: none;
+}
+
+
+/* media queries */
+
+@media (orientation: landscape) {
+
+	.activity.main .bottom-panel {
+		position: static;
+		height: 4rem;
+	}
+
+	.activity.main .hot-icons {
+		box-shadow: none;
+		background: transparent;
+	}
+
+	.activity.main .hot-icons a {
+		flex-flow: row;
+		width: auto;
+		height: 4rem;
+	}
+
+	.activity.main .hot-icons a span {
+		margin-left: 0.5rem;
+	}
 }

@@ -465,10 +465,10 @@ console.log('acc check result', result)
 							<div class="popup">
 								<a class="account-edit"><i class="mdi mdi-pencil-outline"></i>Изменить</a>
 								<a class="account-history"><i class="mdi mdi-history"></i>История</a>
-								<a class="account-message"><i class="mdi mdi-message-outline"></i>Сообщение</a>
 								<a class="account-delete"><i class="mdi mdi-trash-can-outline"></i>Удалить</a>
 							</div>
 						`
+						// <a class="account-message"><i class="mdi mdi-message-outline"></i>Сообщение</a>
 
 					detailsNode.appendChild(infoNode)
 					detailsNode.appendChild(commandsNode)
@@ -1361,7 +1361,9 @@ console.log('prov', item)
 			}
 
 			nameNode.onclick = pickProvider
+			innNode.onclick = pickProvider
 			serviceNode.onclick = pickProvider
+
 			btnNode.onclick = pickProvider
 
 			item.node = providerNode
@@ -2107,6 +2109,10 @@ console.log('scrolling flag is on...')
 		})
 	}
 
+	activityFeedback.querySelectorAll('.back').forEach(node => node.onclick = () => {
+		history.back()
+	})
+
 	activityFeedback.xonbeforeshow = function (options) {
 		if (options) {
 			messageNode.value = options.message
@@ -2263,7 +2269,9 @@ console.log('stopping media stream of camera')
 					requestAnimationFrame(tick)
 				}
 			}).catch(err => {
-				showMessage('Сканирование кода', 'Не удалось получить доступ к камере.', function () { history.back() })
+				showMessage('Сканирование кода', 'Не удалось получить доступ к камере.', function () {
+					history.go(-2)
+				})
 				console.log(err)
 			})
 		} catch (er) {
