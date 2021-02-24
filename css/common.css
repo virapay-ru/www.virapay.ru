@@ -192,14 +192,6 @@ h1, h2, h3, h4, h5, h6 {
 	padding-right: 1rem;
 }
 
-@media (max-width: 475px) {
-
-	.activity.message .container {
-		margin-left: 1rem;
-		margin-right: 1rem;
-	}
-}
-
 
 
 /* confirm */
@@ -1801,7 +1793,15 @@ input.verification + .verification-result > .verification {
 
 /* media queries */
 
-@media (orientation: landscape) {
+@media (max-width: 475px) {
+
+	.activity.message .container {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
+
+@media (orientation: landscape) and (min-width: 900px) {
 
 	.activity.main .bottom-panel {
 		position: static;
