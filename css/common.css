@@ -159,10 +159,12 @@ h1, h2, h3, h4, h5, h6 {
 .activity.message {
 	padding-top: 4rem;
 	padding-bottom: 40rem;
+	min-height: auto;
 }
 
 .activity.message button {
 	margin-top: 1rem;
+	margin-bottom: 2rem;
 }
 
 .activity.message .container {
@@ -171,8 +173,7 @@ h1, h2, h3, h4, h5, h6 {
 	align-items: center;
 	border: 1px solid #ddd;
 	border-radius: 0.5rem;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
+	padding: 0;
 }
 
 .activity.message .title {
@@ -187,6 +188,8 @@ h1, h2, h3, h4, h5, h6 {
     border-top: 1px solid #eee;
     padding-top: 2rem;
 	text-align: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 @media (max-width: 475px) {
@@ -206,34 +209,43 @@ h1, h2, h3, h4, h5, h6 {
 	padding-bottom: 40rem;
 }
 
-.activity.confirm .container {
-	max-width: 26rem;
+.activity.confirm .container.body {
+	max-width: 30rem;
 	width: 100%;
 	align-items: center;
+	border: 1px solid #ddd;
+	border-radius: 0.5rem;
+	padding: 0;
 }
 
 .activity.confirm .title {
-    max-width: 20rem;
+    max-width: 30rem;
 	width: 100%;
+	text-align: center;
 }
 
 .activity.confirm .info {
 	width: 100%;
-    max-width: 20rem;
+    max-width: 30rem;
     border-top: 1px solid #eee;
     padding-top: 2rem;
+	text-align: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 
 .activity.confirm .buttons {
 	width: 100%;
-    max-width: 20rem;
+    max-width: 30rem;
 	display: flex;
 	flex-flow: row;
+	justify-content: center;
 }
 
 .activity.confirm button {
 	margin-top: 1rem;
+	margin-bottom: 2rem;
 	width: 30%;
 }
 

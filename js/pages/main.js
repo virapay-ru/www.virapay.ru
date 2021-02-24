@@ -2301,7 +2301,7 @@ console.log('stopping media stream of camera')
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 122, 6)
+	console.log('VERSION', 123)
 
 })();
 
