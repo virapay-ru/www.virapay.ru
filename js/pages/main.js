@@ -583,7 +583,7 @@ console.log('acc check result', result)
 						case 3: return "Поступил";
 						case 4: return "Проведен";
 						case 5: return "Отменен";
-						case 6: return "Обработка банком";
+						case 6: return "Обрабатывается";
 						}
 						return 'Ошибка: статус'
 					}
@@ -742,7 +742,7 @@ console.log('acc check result', result)
 									console.log(err)
 								})
 							}
-						}, 10*1000)
+						}, 5*1000)
 					}
 
 					activityAccountHistory.querySelector('.clear-interval').onclick = function () {
