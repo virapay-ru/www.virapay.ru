@@ -282,7 +282,10 @@ async function mainInit() {
 			providerNode.dataset.categories = JSON.stringify(item.categories === null ? [] : item.categories)
 			listNode.appendChild(providerNode)
 
-			favNode.onmousedown = function () { // TODO fix apple
+			favNode.addEventListener('click', function (evt) { // TODO fix apple
+				evt.stopPropagation()
+				evt.preventDefault()
+//console.log('favNode.click', evt)
 				if (favNode.classList.contains('mdi-star-outline')) {
 					favNode.classList.remove('mdi-star-outline')
 					favNode.classList.add('mdi-star')
@@ -311,7 +314,7 @@ async function mainInit() {
 						item.isFavorite = false
 					})
 				}
-			}
+			})
 
 			let accountsList = activityAccounts.querySelector('.accounts-list')
 
@@ -1360,11 +1363,25 @@ console.log('prov', item)
 				}
 			}
 
-			nameNode.onclick = pickProvider
-			innNode.onclick = pickProvider
-			serviceNode.onclick = pickProvider
+//			nameNode.onclick = pickProvider
+//			innNode.onclick = pickProvider
+//			serviceNode.onclick = pickProvider
 
-			btnNode.onclick = pickProvider
+
+			//providerNode.addEventListener('mousedown', evt => {
+			//	console.log('providerNode.mousedown')
+			//})
+
+			//providerNode.addEventListener('mouseup', evt => {
+			//	console.log('providerNode.mouseup')
+			//})
+
+			providerNode.addEventListener('click', evt => {
+				console.log('providerNode.click')
+				pickProvider()
+			})
+
+			//btnNode.onclick = pickProvider
 
 			item.node = providerNode
 
