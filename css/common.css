@@ -224,6 +224,7 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 	padding-left: 1rem;
 	padding-right: 1rem;
+	box-sizing: border-box;
 }
 
 
@@ -1734,6 +1735,10 @@ input.verification + .verification-result > .verification {
 	background: #4c75a3;
 }
 
+.without-auth {
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
 
 /* utilities */
 
@@ -1817,9 +1822,37 @@ input.verification + .verification-result > .verification {
 		flex-flow: row;
 		width: auto;
 		height: 4rem;
+
+		height: 2.75rem;
+		padding: 0;
+		padding-left: 0.4rem;
+		padding-right: 1rem;
+		background: #eee;
+		border-radius: 1.25rem;
+	}
+
+	.activity.main .hot-icons a .icon {
+		font-size: 1.5rem;
+		width: 2.2rem;
+		height: 2.2rem;
 	}
 
 	.activity.main .hot-icons a span {
 		margin-left: 0.5rem;
+
+		text-transform: uppercase;
 	}
+
+	.activity.main .hot-icons .open-favorites.selected {
+		background: #ffcc004f;
+	}
+
+	.activity.main .hot-icons .open-scanner.selected {
+		background: #fd3f3f4f;
+	}
+
+	.activity.main .hot-icons .open-history.selected {
+		background: #44aa004f;
+	}
+
 }

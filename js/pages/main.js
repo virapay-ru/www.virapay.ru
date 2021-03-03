@@ -1,11 +1,13 @@
 ﻿'use strict';
 
+const ANONYMOUS_TOKEN = 'anonymous';
+
 let profileData = null
 let providersList = null
 let paymentsTypesList = null
 let profileSave = function () { };
 let feedbackMessage = function () { };
-let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
+let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, counters) { };
 
 
 // regions selector 
@@ -767,7 +769,10 @@ console.log('commandNode', commandNode)
 					let actionButton = activityAccountPayment.querySelector('.prepare-payment')
 					let countersSection = activityAccountPayment.querySelector('.counters')
 					let countersList = countersSection.querySelector('.counters-list')
+					let inputEmail = activityAccountPayment.querySelector('input.email')
 					let settedCounters = { }
+
+					inputEmail.value = activityProfile.querySelector('.email').value
 
 					countersSection.querySelector('.subject').innerText = item.counters_title
 					countersSection.hidden = true
@@ -1064,7 +1069,7 @@ console.log('infos hidden')
 						hideActivity(getCurrentActivity())
 						showActivity(activityLoading)
 
-						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum, counters)
+						let payment = await profilePaymentInit(rowKey, accItem.paymTyp, accItem.acc, accItem.sum, inputEmail.value, counters)
 						if (payment && payment.id && payment.url) {
 							if (!(profileData.history[rowKey] instanceof Array)) {
 								profileData.history[rowKey] = []
@@ -1644,12 +1649,15 @@ async function profileInit(token, doLogout) {
 
 //	let updatingKey = `/${location.hostname}/updatingToken`
 
+	let anonymousProfileKey = `/${location.hostname}/anonymous/profile`
+	let anonymousDataKey = `/${location.hostname}/anonymous/data`
+
 	let logoutCallback = function () {
 		doLogout()
 		profileData = null
 		profileSave = function () { }
 		feedbackMessage = function () { }
-		profilePaymentInit = function (rowKey, paymentTypeId, account, summ, counters) { };
+		profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, counters) { };
 	}
 
 	hideActivity(getCurrentActivity())
@@ -1657,9 +1665,41 @@ async function profileInit(token, doLogout) {
 
 	try {
 
+		let anonymouseProfile = null
+		let anonymouseData = null
+
+		if (token === ANONYMOUS_TOKEN) {
+			document.body.classList.add('anonymous')
+			anonymouseProfile = storageGet(anonymousProfileKey)
+			anonymouseData = storageGet(anonymousDataKey)
+			if (!anonymouseProfile) {
+				anonymouseProfile = {
+					id: Date.now(),
+					name: 'Неизвестный',
+					email: '',
+					picture: '/images/anonymous_user.svg'
+				}
+				storagePut(anonymousProfileKey, anonymouseProfile)
+			}
+		} else {
+			document.body.classList.remove('anonymous')
+		}
+
 		console.log('LOGIN REQUEST', token)
 
-		let result = await backend.login(token)
+		let result = token === ANONYMOUS_TOKEN
+			? {
+				oauthService: {
+					name: 'anonymous',
+					userId: anonymouseProfile.id
+				},
+				picture: anonymouseProfile.picture,
+				name: anonymouseProfile.name,
+				email: anonymouseProfile.email,
+				data: anonymouseData,
+				isNew: anonymouseData ? false : true
+			}
+			: await backend.login(token)
 
 		console.log('LOGIN RESULT', result)
 
@@ -1667,6 +1707,9 @@ async function profileInit(token, doLogout) {
 
 			if (!result.data) {
 				result.data = { }
+				if (token === ANONYMOUS_TOKEN) {
+					result.isNew = true
+				}
 			}
 			if (!(result.data.favList instanceof Array)) {
 				result.data.favList = [ ]
@@ -1705,33 +1748,42 @@ async function profileInit(token, doLogout) {
 					}
 				}
 			})
-			profileSave = async function () {
-				try {
-					let name = activityProfile.querySelector('.fullname').value
-					let email = activityProfile.querySelector('.email').value
-					let result = await backend.profileUpdate(token, name, email, imageUrl, profileData)
-					return result
-				} catch (errorProfileSaving) {
-					console.log('SAVING PROFILE FAILED', errorProfileSaving)
-					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => pushActivity(activityProfile))
+			profileSave = token === ANONYMOUS_TOKEN
+				? async () => {
+					anonymouseProfile.name = activityProfile.querySelector('.fullname').value
+					anonymouseProfile.email = activityProfile.querySelector('.email').value
+					storagePut(anonymousProfileKey, anonymouseProfile)
+					storagePut(anonymousDataKey, profileData)
+					return 1
 				}
-				return null
-			}
-			feedbackMessage = async function (message) {
+				: async function () {
+					try {
+						let name = activityProfile.querySelector('.fullname').value
+						let email = activityProfile.querySelector('.email').value
+						let result = await backend.profileUpdate(token, name, email, imageUrl, profileData)
+						return result
+					} catch (errorProfileSaving) {
+						console.log('SAVING PROFILE FAILED', errorProfileSaving)
+						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => pushActivity(activityProfile))
+					}
+					return null
+				}
+			feedbackMessage = async function (email, name, message) {
 				try {
-					let name = activityProfile.querySelector('.fullname').value
-					let email = activityProfile.querySelector('.email').value
-					let result = await backend.feedbackMessage(token, message)
+//					let name = activityProfile.querySelector('.fullname').value
+//					let email = activityProfile.querySelector('.email').value
+					let result = await backend.feedbackMessage(email, name, message)
 					return result
 				} catch (errorSending) {
 					console.log('SENDING MESSAGE FAILED', errorSending)
-					showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позднее.', () => pushActivity(activityFeedback, { message }))
+					showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позднее.',
+						() => pushActivity(activityFeedback, { email, name, message }))
 				}
 				return null
 			}
-			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ, counters) {
+			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ, email, counters) {
 				try {
-					let result = await backend.paymentInit(token, rowKey, paymentTypeId, account, summ, counters)
+					let result = await backend.paymentInit(token, rowKey, paymentTypeId, account, summ, email, counters)
 console.log('PAYMENT', result)
 					return result
 				} catch (errorPaymentRegistering) {
@@ -1778,7 +1830,13 @@ console.log('PAYMENT', result)
 			})
 
 			document.querySelectorAll('.navbar .feedback').forEach(node => node.onclick = () => {
-				navBarHide(() => pushActivity(activityFeedback))
+				navBarHide(() => {
+					let name = activityProfile.querySelector('.fullname').value
+					let email = activityProfile.querySelector('.email').value
+					activityFeedback.querySelectorAll('input.fullname').forEach(input => { input.value = name })
+					activityFeedback.querySelectorAll('input.email').forEach(input => { input.value = email })
+					pushActivity(activityFeedback)
+				})
 			})
 
 			if (result.isNew) {
@@ -2099,28 +2157,40 @@ console.log('scrolling flag is on...')
 
 (function () {
 
+	let emailNode = activityFeedback.querySelector('.email')
+	let nameNode = activityFeedback.querySelector('.fullname')
 	let messageNode = activityFeedback.querySelector('.message')
 	let sendButton = activityFeedback.querySelector('.send')
 
-	messageNode.oninput = function () {
-		if (messageNode.value) {
+	function toggleSendButton() {
+		if (messageNode.value && emailNode.value && nameNode.value) {
 			sendButton.removeAttribute('disabled')
 		} else {
 			sendButton.setAttribute('disabled', true)
 		}
 	}
 
+	emailNode.oninput = toggleSendButton
+	nameNode.oninput = toggleSendButton
+	messageNode.oninput = toggleSendButton
+
 	sendButton.onclick = function () {
-		feedbackMessage(messageNode.value).then(result => {
+		feedbackMessage(emailNode.value, nameNode.value, messageNode.value).then(result => {
 			if (result) {
 				showMessage('Отправка сообщения', 'Ваше сообщение отправлено. Спасибо!', () => {
 					pushActivity(activityMain)
+					emailNode.value = ''
+					nameNode.value = ''
 					messageNode.value = ''
 					messageNode.oninput()
 				})
 			} else {
-				showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте аозже.', () => {
-					pushActivity(activityFeedback, { message: messageNode.value })
+				showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позже.', () => {
+					pushActivity(activityFeedback, {
+						email: emailNode.value,
+						name: nameNode.value,
+						message: messageNode.value
+					})
 				})
 			}
 		})
@@ -2132,6 +2202,8 @@ console.log('scrolling flag is on...')
 
 	activityFeedback.xonbeforeshow = function (options) {
 		if (options) {
+			emailNode.value = options.email
+			nameNode.value = options.name
 			messageNode.value = options.message
 		} else {
 			messageNode.value = ''
@@ -2306,19 +2378,39 @@ console.log('stopping media stream of camera')
 (function () {
 
 	let sessionKey = `/${location.hostname}/session`
+	let doLogout = () => {
+		storagePut(sessionKey, null)
+		hideActivity(getCurrentActivity())
+		profileData = null
+		location.reload()
+	}
+
+	// anonymous login
+	activityLogin.querySelectorAll('.without-auth').forEach(btnWithoutAuth => {
+		btnWithoutAuth.onclick = () => {
+			getConfirm(
+				'Вход без регистрации',
+				'При входе без регистрации история действий сохранится только на данном устройстве и не будет синхронизироваться между другими вашими устройствами. Продолжить?',
+				() => {
+					let token = ANONYMOUS_TOKEN
+					storagePut(sessionKey, token)
+					profileInit(token, doLogout)
+				},
+				() => {
+					pushActivity(activityLogin)
+				}
+			)
+		}
+	})
+
+	// login using OAuth2 token
 	let token = storageGet(sessionKey)
 	if (token) {
-		profileInit(token, () => {
-			storagePut(sessionKey, null)
-			hideActivity(getCurrentActivity())
-			profileData = null
-			location.reload()
-		})
+		profileInit(token, doLogout)
 	} else {
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 123)
+	console.log('VERSION', 124)
 
 })();
-
