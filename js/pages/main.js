@@ -1636,7 +1636,7 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 		activityMain.xonaftershow = function () {
 			delete activityMain.xonaftershow
 //alert('dpt(8): ACTIVITY ' + getActivityName(getCurrentActivity()))
-			autoSelectedProvider.node.querySelector('.name').onclick()
+			autoSelectedProvider.node.querySelector('.details').click()
 		}
 	}
 
