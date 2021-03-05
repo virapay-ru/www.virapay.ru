@@ -18,17 +18,15 @@
 	<!-- Webfonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet" crossorigin="anonymous">
-<!--	<link href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous"/>-->
-	<link href="fonts/materialdesignicons/css/materialdesignicons.min.css" rel="stylesheet"/>
+	<link rel="preload" href="fonts/materialdesignicons/css/materialdesignicons.min.css" as="style" onload="this.rel = 'stylesheet'"/>
 
 	<!-- UI framework -->
 	<link href="css/typography.css" rel="stylesheet"/>
 
 	<!-- Common -->
-	<link href="css/common.css?v=0.5" rel="stylesheet"/>
+	<link href="css/common.css?v=0.6" rel="stylesheet"/>
 
 	<!-- Core code -->
-	<!--<script src="js/debug/output.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jsQR.js" type="text/javascript" charset="utf-8"></script>
@@ -43,27 +41,6 @@
 
 @media (min-width: 768px) {
 }
-
-
-/*
-.debug-console {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
-    height: -webkit-fill-available;
-	overflow: auto;
-	z-index: 1000;
-	box-sizing: border-box;
-	padding: 1rem;
-	font-size: 0.8rem;
-}
-
-.debug-console .output {
-	margin: 0;
-}
-*/
 
 
 .text-center {
@@ -85,23 +62,6 @@
 	background: #5682a3;
 }
 
-.tinkoff-logo {
-	max-width: 150px;
-}
-
-.ps-logos {
-	height: 4rem;
-    filter: grayscale(1);
-}
-
-.tinkoff-section, .telegram-section {
-	border-top: 1px solid #e8e8e8;
-    padding-top: 2rem;
-}
-
-.tinkoff-section > p, .telegram-section > p {
-	margin-top: 0;
-}
 
 
 </style>
@@ -109,11 +69,77 @@
 </head>
 <body>
 
+	<div class="activity at-center login is-hidden" data-name="login">
+
+		<div class="container">
+
+			<div class="logo vertical">
+		        <img src="images/logo.svg"/>
+		        <div><span>VIRA</span><span>PAY</span></div>
+			</div>
+
+			<h1>Оплата коммунальных<br/>платежей онлайн</h1>
+
+			<a class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=629466470986-hk0uutib8aigrl4t1fu1g3nldk5orbbe.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Fgoogle.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
+	            <img class="icon" src="/images/google_g_logo.svg"/>
+	            <span>Войти с Google</span>
+			</a>
+
+			<a class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
+	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
+				<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
+	            <span>Войти с Facebook</span>
+			</a>
+
+			<a class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/vk.html">
+	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
+				<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
+	            <span>Войти с ВКонтакте</span>
+			</a>
+
+			<a class="button -button-auth without-auth">
+	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
+				<i class="icon iconify mdi mdi-account-off-outline" data-icon="mdi-account-off-outline"></i>
+	            <span>Без Регистрации</span>
+			</a>
+
+			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+			даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
+
+<!--			<p class="text-center">Ознакомьтесь со <a href="list.html">списоком партнеров</a>.</p>-->
+
+			<div class="telegram-section">
+				<a class="button telegram" href="https://t.me/virapaybot">
+					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
+					<span>@ViraPayBot в Telegram</span>
+				</a>
+				<p>Подключайтесь к боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
+			</div>
+
+			<div class="text-center tinkoff-section">
+				<p>Эквайринг предоставляется банком</p>
+				<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="images/tinkoff_logo.svg"/></a><br/>
+				<img class="ps-logos" src="images/ps_logos.png"/>
+			</div>
+
+			<p class="text-center">
 <!--
-	<div class="debug-console">
-		<pre class="output"></pre>
-	</div>
+				<a class="button telegram" href="https://t.me/virapaybot">
+					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
+					<span>ViraPay в Telegram</span>
+				</a>
 -->
+<!--				<a class="ln" href="policy.html">Политика конфиденциальности</a><br/>
+				<a class="ln" href="offer.html">Условия использования</a><br/>-->
+				&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
+				Все права защищены.<br/>
+				<a class="ln" href="contacts.html">Контактная информация</a><br/>
+			</p>
+
+
+
+		</div>
+	</div>
 
 
 	<div class="activity at-center loading -is-hidden" data-name="loading">
@@ -524,77 +550,6 @@
 	</div>
 
 
-	<div class="activity at-center login is-hidden" data-name="login">
-
-		<div class="container">
-
-			<div class="logo vertical">
-		        <img src="images/logo.svg"/>
-		        <div><span>VIRA</span><span>PAY</span></div>
-			</div>
-
-			<a class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=629466470986-hk0uutib8aigrl4t1fu1g3nldk5orbbe.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Fgoogle.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
-	            <img class="icon" src="/images/google_g_logo.svg"/>
-	            <span>Войти с Google</span>
-			</a>
-
-			<a class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
-	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
-				<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
-	            <span>Войти с Facebook</span>
-			</a>
-
-			<a class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/vk.html">
-	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
-				<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
-	            <span>Войти с ВКонтакте</span>
-			</a>
-
-			<a class="button -button-auth without-auth">
-	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
-				<i class="icon iconify mdi mdi-account-off-outline" data-icon="mdi-account-off-outline"></i>
-	            <span>Без Регистрации</span>
-			</a>
-
-			<p class="text-center">Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
-			даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
-
-			<p class="text-center">Ознакомьтесь со <a href="list.html">списоком партнеров</a>.</p>
-
-			<div class="text-center telegram-section">
-				<a class="button telegram" href="https://t.me/virapaybot">
-					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
-					<span>@ViraPayBot в Telegram</span>
-				</a>
-				<p class="text-center">Подключайтесь к боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
-			</div>
-
-			<div class="text-center tinkoff-section">
-				<p>Эквайринг предоставляется банком</p>
-				<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="images/tinkoff_logo.svg"/></a><br/>
-				<img class="ps-logos" src="images/ps_logos.png"/>
-			</div>
-
-			<p class="text-center">
-<!--
-				<a class="button telegram" href="https://t.me/virapaybot">
-					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
-					<span>ViraPay в Telegram</span>
-				</a>
--->
-<!--				<a class="ln" href="policy.html">Политика конфиденциальности</a><br/>
-				<a class="ln" href="offer.html">Условия использования</a><br/>-->
-				&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
-				Все права защищены.<br/>
-				<a class="ln" href="contacts.html">Контактная информация</a><br/>
-			</p>
-
-
-
-		</div>
-	</div>
-
-
 	<div class="activity main -search-results is-hidden" data-name="main">
 
 		<div class="container">
@@ -702,7 +657,7 @@
 	<script src="js/common.js?v=0.3" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Main -->
-	<script src="js/pages/main.js?v=0.8" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pages/main.js?v=0.9" type="text/javascript" charset="utf-8"></script>
 
 </body>
 

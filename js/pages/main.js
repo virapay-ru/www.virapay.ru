@@ -46,7 +46,11 @@ regionsSelector.classList.toggle('open')
 let mainInited = false
 let accountsCache = { }
 
-async function mainInit() {
+async function mainInit(doStartup) {
+
+	if (!doStartup) {
+		doStartup = () => { }
+	}
 
 	if (mainInited === false) {
 
@@ -186,7 +190,7 @@ async function mainInit() {
 		paymentsTypesList = providersData.paymentsTypes
 
 		// TODO generate list of payments types to activityAccountPayment.querySelector('.payments-types > .list')
-
+//console.log('Got providersList')
 		providersList.forEach((item, sortIndex) => {
 
 			// unpack list
@@ -529,7 +533,7 @@ console.log('acc check result', result)
 
 				accountNode.querySelectorAll('.account-delete').forEach(commandNode => commandNode.onclick = () => {
 					let scrollTop = document.scrollingElement.scrollTop
-					getConfirm('Удаление данных', 'Вы действительно хотите удалить' + (item.acc_name ? ' ' + item.acc_name : '') + '?', () => {
+					getConfirm('Удаление данных', 'Вы действительно хотите удалить' + (item.acc_name ? ' ' + item.acc_name : '').toLowerCase() + ' из вашего списка?', () => {
 						let prevList = profileData.accList[rowKey]
 						accItem.removed = true
 						profileData.accList[rowKey] = profileData.accList[rowKey].filter(x => !x.removed)
@@ -1386,6 +1390,8 @@ console.log('prov', item)
 				pickProvider()
 			})
 
+			providerNode.classList.add('clickable')
+
 			//btnNode.onclick = pickProvider
 
 			item.node = providerNode
@@ -1398,6 +1404,10 @@ console.log('prov', item)
 
 	//filterProviders()
 	pushActivity(activityMain)
+
+console.log('doStartup')
+	doStartup()
+
 	setTimeout(function () {
 		document.querySelector('.bottom-panel').classList.remove('hide')
 	}, 750)
@@ -1636,7 +1646,8 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 		activityMain.xonaftershow = function () {
 			delete activityMain.xonaftershow
 //alert('dpt(8): ACTIVITY ' + getActivityName(getCurrentActivity()))
-			autoSelectedProvider.node.querySelector('.details').click()
+//console.log('autoSelectedProvider.node.click()', autoSelectedProvider.node.classList.contains('clickable'))
+			autoSelectedProvider.node.click()
 		}
 	}
 
@@ -1645,7 +1656,7 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 
 // profile functions
 
-async function profileInit(token, doLogout) {
+async function profileInit(token, doLogout, doStartup) {
 
 //	let updatingKey = `/${location.hostname}/updatingToken`
 
@@ -1842,7 +1853,7 @@ console.log('PAYMENT', result)
 			if (result.isNew) {
 				pushActivity(activityProfile)
 			} else {
-				mainInit()
+				mainInit(doStartup)
 			}
 
 		} else {
@@ -2378,11 +2389,43 @@ console.log('stopping media stream of camera')
 (function () {
 
 	let sessionKey = `/${location.hostname}/session`
+
 	let doLogout = () => {
 		storagePut(sessionKey, null)
 		hideActivity(getCurrentActivity())
 		profileData = null
 		location.reload()
+	}
+
+	let loginWithoutAuth = (doStartup) => {
+		let token = ANONYMOUS_TOKEN
+		storagePut(sessionKey, token)
+		profileInit(token, doLogout, doStartup)
+	}
+
+	let paymentLinkV1 = (p) => {
+		if (p.v == 1 && p.p) {
+			let provDesc = {
+				provider_id: p.p,
+				service_id: p.s ? p.s : null,
+				account: p.a ? p.a : null,
+				summ: p.z ? p.z : null
+			}
+			return () => {
+				activityMain.doAutoSelect = true
+				filterProviders([ provDesc ])
+			}
+		}
+		return undefined
+	}
+
+	let detectPaymentLinks = () => {
+		let p = parseParameters(location.search)
+		let fn = paymentLinkV1(p)
+		if (fn) {
+			return fn
+		}
+		return undefined
 	}
 
 	// anonymous login
@@ -2391,26 +2434,24 @@ console.log('stopping media stream of camera')
 			getConfirm(
 				'Вход без регистрации',
 				'При входе без регистрации история действий сохранится только на данном устройстве и не будет синхронизироваться между другими вашими устройствами. Продолжить?',
-				() => {
-					let token = ANONYMOUS_TOKEN
-					storagePut(sessionKey, token)
-					profileInit(token, doLogout)
-				},
-				() => {
-					pushActivity(activityLogin)
-				}
+				() => loginWithoutAuth(),
+				() => history.back()
 			)
 		}
 	})
 
+	let doStartup = detectPaymentLinks()
+
 	// login using OAuth2 token
 	let token = storageGet(sessionKey)
 	if (token) {
-		profileInit(token, doLogout)
+		profileInit(token, doLogout, doStartup)
+	} else if (doStartup) {
+		loginWithoutAuth(doStartup)
 	} else {
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 124)
+	console.log('VERSION', 125)
 
 })();
