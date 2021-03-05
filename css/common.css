@@ -548,6 +548,26 @@ input.verification + .verification-result > .verification {
 	text-align: center;
 }
 
+.activity.login .text-center {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.activity.login .text-center a.ln {
+	display: inline-flex;
+	margin-bottom: 0.5rem;
+}
+
+.activity.login .text-center .button {
+	margin-bottom: 2rem;
+}
+
+.activity.login .button.telegram {
+	color: #fff;
+	background: #5682a3;
+}
+
+
 /* activity profile */
 
 .activity.profile {
