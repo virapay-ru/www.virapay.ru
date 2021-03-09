@@ -6,10 +6,13 @@
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="virapay" />
-	<meta name="keywords" content="virapay, vira, pay" />
+	<meta name="description" content="virapay - оплата коммунальных платежей онлайн" />
+	<meta name="keywords" content="virapay, vira, pay, virapaybot, оплата жкх, оплата коммунальных услуг, оплата, жкх, жку" />
 	<meta id="theme-color" name="theme-color" content="#ffffff">
 	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+	<!-- Title -->
+	<title>VIRAPAY - оплата коммунальных платежей онлайн</title>
 
 	<!-- Prepare -->
 <!--	<link rel="preconnect" href="https://code.iconify.design"/>-->
@@ -24,7 +27,7 @@
 	<link href="css/typography.css" rel="stylesheet"/>
 
 	<!-- Common -->
-	<link href="css/common.css?v=0.7" rel="stylesheet"/>
+	<link href="css/common.css?v=0.8" rel="stylesheet"/>
 
 	<!-- Core code -->
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
@@ -44,54 +47,79 @@
 		        <div><span>VIRA</span><span>PAY</span></div>
 			</div>
 
-			<h1>Оплата коммунальных<br/>платежей онлайн</h1>
+			<h1>Оплата коммунальных платежей онлайн</h1>
+			<p class="lead">Оплата картой любого банка, Apple Pay или Google Pay</p>
 
-			<a class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=629466470986-hk0uutib8aigrl4t1fu1g3nldk5orbbe.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Fgoogle.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
-	            <img class="icon" src="/images/google_g_logo.svg"/>
-	            <span>Войти с Google</span>
-			</a>
+			<div class="grid-21">
+				<div class="col">
 
-			<a class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
-	            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
-				<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
-	            <span>Войти с Facebook</span>
-			</a>
+					<div class="login-with">
+						<span class="label">Войти с помощью</span>
+						<div class="buttons social">
+							<a class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=629466470986-hk0uutib8aigrl4t1fu1g3nldk5orbbe.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Fgoogle.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
+					            <img class="icon" src="/images/google_g_logo.svg"/>
+					            <span>Google</span>
+							</a>
+							<a class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
+					            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
+								<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
+					            <span>Facebook</span>
+							</a>
+							<a class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/vk.html">
+					            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
+								<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
+					            <span>ВКонтакте</span>
+							</a>
+						</div>
+					</div>
 
-			<a class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/vk.html">
-	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
-				<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
-	            <span>Войти с ВКонтакте</span>
-			</a>
+				</div>
+				<div class="col">
 
-			<a class="button -button-auth without-auth">
-	            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
-				<i class="icon iconify mdi mdi-account-off-outline" data-icon="mdi-account-off-outline"></i>
-	            <span>Без Регистрации</span>
-			</a>
+					<div class="login-with">
+						<span class="label">Или продолжить без регистрации</span>
+						<div class="buttons">
+							<a class="button -button-auth without-auth">
+					            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
+								<i class="icon iconify mdi mdi-account-off-outline" data-icon="mdi-account-off-outline"></i>
+					            <span>Без Регистрации</span>
+							</a>
+						</div>
+					</div>
 
-			<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
-			даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
+				</div>
+
+				<div class="col-2"><p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+				даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p></div>
+
+			</div>
+
 
 <!--			<p class="text-center">Ознакомьтесь со <a href="list.html">списоком партнеров</a>.</p>-->
 
 			<div class="telegram-section">
 				<a class="button telegram" href="https://t.me/virapaybot">
 					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
-					<span>@ViraPayBot в Telegram</span>
+					<span>@ViraPayBot</span>
 				</a>
 				<p>Подключайтесь к боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
 			</div>
 
 			<div class="text-center tinkoff-section">
-				<p>Эквайринг предоставляется банком</p>
-				<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="images/tinkoff_logo.svg"/></a><br/>
-				<img class="ps-logos" src="images/ps_logos.png"/>
+				<p>Эквайринг и перевод средств получателям обеспечивает банк</p>
+				<div class="logos">
+					<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="images/tinkoff_logo.svg?v=0.2"/></a><br/>
+				</div>
 			</div>
 
 			<p class="text-center">
 				&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
 				Все права защищены.<br/>
 				<a class="ln" href="contacts.html">Контактная информация</a><br/>
+			</p>
+
+			<p class="text-center">
+				<img class="ps-logos" src="images/ps_logos.png?v=0.2"/>
 			</p>
 
 		</div>

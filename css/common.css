@@ -52,6 +52,34 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/* grid */
+
+.grid-21 {
+    display: grid;
+    grid-template-rows: auto;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+}
+
+@media (min-width: 480px) {
+
+	.grid-21 {
+	    grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+@media (min-width: 481px) {
+
+	.grid-21 {
+	    grid-template-columns: repeat(2, 1fr);
+	}
+
+	.grid-21 > .col-2 {
+	    grid-column-end: span 2;
+	}
+}
+
+
 /* logo */
 
 .logo {
@@ -565,6 +593,121 @@ input.verification + .verification-result > .verification {
 .activity.login .button.telegram {
 	color: #fff;
 	background: #5682a3;
+}
+
+
+.activity.login .button {
+	display: inline-flex;
+	width: auto;
+	border-radius: 2rem;
+	box-shadow: none;
+	height: 2.5rem;
+	padding-left: 0.7rem;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	text-transform: none;
+	border: 0;
+}
+
+.activity.login p {
+	width: auto;
+}
+
+.activity.login h1 {
+	margin-bottom: 0;
+}
+
+.activity.login h1 + .lead {
+	margin-top: 0;
+	margin-bottom: 2rem;
+    font-size: 1.47rem;
+	text-align: center;
+}
+
+.activity.login .login-with {
+	display: flex;
+	flex-flow: column;
+	padding: 0.5rem 0.5rem 0 0.5rem;
+	background: #f0f0f0;
+	border-radius: 1rem;
+}
+
+.activity.login .login-with .label {
+	display: inline-block;
+	font-weight: 300;
+	margin: 0.5rem 1rem;
+	max-width: 100rem;
+	font-size: 0.8rem;
+	margin-bottom: 1rem;
+}
+
+.activity.login .login-with .buttons {
+	display: flex;
+	flex-flow: column;
+	align-items: start;
+}
+
+.activity.login .login-with .buttons .button {
+	width: calc(100% - 1rem);
+	border-radius: 1rem;
+}
+
+.activity.login .container {
+	max-width: 42rem;
+}
+
+.activity.login .signin-with-facebook {
+	background: #fff;
+	color: rgb(24, 119, 242);
+}
+
+.activity.login .signin-with-vk {
+	background: #fff;
+	color: #4c75a3;
+}
+
+.activity.login .login-with .buttons.social {
+	flex-flow: row;
+}
+
+.activity.login .login-with .buttons.social .button {
+	padding: 0;
+}
+
+.activity.login .login-with .buttons.social .button .icon {
+	margin-right: 0;
+	font-size: 2rem;
+}
+
+.activity.login .login-with .buttons.social .button span {
+	display: none;
+}
+
+.activity.login .login-with .buttons.social .signin-with-google.button .icon {
+	height: 1.8rem;
+}
+
+.activity.login .telegram-section {
+	display: flex;
+	border: 1px solid #e8e8e8;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+	font-weight: 100;
+}
+
+.activity.login .button.telegram {
+	border-radius: 1rem;
+}
+
+.activity.login .ps-logos {
+	-display: none;
+	height: 2.5rem;
+	opacity: 0.5;
+}
+
+.activity.login .tinkoff-section {
+	border: 0;
+	margin-top: 0;
 }
 
 
@@ -1859,6 +2002,26 @@ input.verification + .verification-result > .verification {
 	.activity.message .container {
 		margin-left: 1rem;
 		margin-right: 1rem;
+	}
+
+	.activity.login .telegram-section {
+		flex-flow: column;
+	}
+
+	.activity.login .button.telegram {
+		width: calc(100% - 1rem);
+		max-width: calc(100% - 1rem);
+	}
+
+	.activity.login .button.without-auth {
+		width: calc(100% - 1rem);
+		max-width: calc(100% - 1rem);
+	}
+
+	.activity.login h1 + .lead {
+		margin-top: 1rem;
+		font-size: 1.25rem;
+		line-height: 1.25;
 	}
 }
 
