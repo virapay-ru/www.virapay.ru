@@ -403,11 +403,11 @@ async function mainInit(doStartup) {
 							let accRec = accountsCache[rowKey][acc]
 							let dt = Date.now() - accRec.time
 							if (dt < accRec.ttl) {
-console.log('acc cached check result', accRec.result)
+//console.log('acc cached check result', accRec.result)
 								handleResult(accRec.result)
 								return
 							} else {
-console.log('acc cached check result expired', dt, accRec.ttl)
+//console.log('acc cached check result expired', dt, accRec.ttl)
 							}
 						}
 
@@ -422,7 +422,7 @@ console.log('acc cached check result expired', dt, accRec.ttl)
 								ttl: (result ? 60 : 10) * 1000
 							}
 
-console.log('acc check result', result)
+//console.log('acc check result', result)
 							handleResult(result)
 
 						}).catch(err => {
@@ -444,6 +444,10 @@ console.log('acc check result', result)
 
 				let accountNode = document.createElement('div')
 				accountNode.classList.add('account')
+				if (accItem.acc === '') {
+					//console.log('addAccountNode() hide empty account')
+					accountNode.classList.add('hidden')
+				}
 
 					let detailsNode = document.createElement('div')
 					detailsNode.classList.add('details')
@@ -638,7 +642,7 @@ console.log('acc check result', result)
 					let payments = profileData.history[rowKey] instanceof Array
 						? profileData.history[rowKey].filter(row => row.a == accItem.acc)
 						: []
-					console.log('payments', payments)
+					//console.log('payments', payments)
 
 					let emptyMessage = activityAccountHistory.querySelector('.empty-message')
 					if (payments.length > 0) {
@@ -764,7 +768,7 @@ console.log('acc check result', result)
 				})
 
 				accountNode.querySelectorAll('.account-payment').forEach(commandNode => commandNode.onclick = () => {
-console.log('commandNode', commandNode)
+//console.log('commandNode', commandNode)
 					let inputAccount = activityAccountPayment.querySelector('input.account')
 //					let inputDescription = activityAccountPayment.querySelector('input.description')
 					let inputSum = activityAccountPayment.querySelector('input.summ')
@@ -821,15 +825,23 @@ console.log('commandNode', commandNode)
 							&& inputAccount.classList.contains('valid')
 							&& inputSum.classList.contains('valid')
 
-						countersSection.hidden = true
-						countersList.innerHTML = ''
+						if (result !== undefined) {
+							countersSection.hidden = true
+							countersList.innerHTML = ''
+						}
 
 						if (isValid) {
-							actionButton.removeAttribute('disabled')
+
+							if (Math.abs(parseFloat(inputSum.value)) >= 0.01) {
+								actionButton.removeAttribute('disabled')
+							} else {
+								actionButton.setAttribute('disabled', true)
+							}
+
 							if (item.counters_type_id > 1) {
 //console.log('COUNTERS', result.counters)
 
-								if ((result.counters instanceof Array) && result.counters.length > 0) {
+								if (result && (result.counters instanceof Array) && result.counters.length > 0) {
 
 									result.counters.forEach(counter => {
 
@@ -949,6 +961,7 @@ console.log('commandNode', commandNode)
 
 							inputSum.classList.remove('verification')
 							inputSum.classList.add('valid')
+							onValidationProgress()
 						}
 					}
 
@@ -1020,13 +1033,13 @@ console.log('commandNode', commandNode)
 
 						if (infoNode) {
 							let info = item.infos[paymentTypeId]
-console.log('infos', paymentTypeId, info)
+//console.log('infos', paymentTypeId, info)
 							if (info) {
-console.log('infos shown')
+//console.log('infos shown')
 								infoNode.innerText = info
 								infoNode.classList.remove('is-hidden')
 							} else {
-console.log('infos hidden')
+//console.log('infos hidden')
 								infoNode.classList.add('is-hidden')
 							}
 						}
@@ -1386,7 +1399,7 @@ console.log('prov', item)
 			//})
 
 			providerNode.addEventListener('click', evt => {
-				console.log('providerNode.click')
+				//console.log('providerNode.click')
 				pickProvider()
 			})
 
@@ -1405,7 +1418,7 @@ console.log('prov', item)
 	//filterProviders()
 	pushActivity(activityMain)
 
-console.log('doStartup')
+//console.log('doStartup')
 	doStartup()
 
 	setTimeout(function () {
@@ -1416,7 +1429,7 @@ console.log('doStartup')
 function filterProviders(searchResults = null) {
 
 	let autoSelectedProvider = null
-
+//console.log('filterProviders', searchResults, autoSelectedProvider)
 	let comparator
 
 	function compareBySortIndex(a, b) {
@@ -1471,7 +1484,7 @@ function filterProviders(searchResults = null) {
 		searchResults.forEach(res => {
 			res.rowKey = '' + res.provider_id + '/' + (res.service_id === null ? '0' : res.service_id)
 		})
-console.log('searchResults', searchResults)
+//console.log('searchResults', searchResults)
 //alert('dpt(2):' + JSON.stringify(searchResults))
 
 		let numFoundProviders = 0
@@ -1480,11 +1493,13 @@ console.log('searchResults', searchResults)
 			if (searchItem) {
 				row.searchItem = searchItem
 				row.isMatch = true
-console.log('match', row)
+//console.log('match', row)
 				if (numFoundProviders === 0) {
 					autoSelectedProvider = row
+//console.log('autoSelectedProvider found', autoSelectedProvider)
 				} else {
 					autoSelectedProvider = null
+//console.log('autoSelectedProvider reset', autoSelectedProvider)
 				}
 				numFoundProviders ++
 			} else {
@@ -1493,13 +1508,13 @@ console.log('match', row)
 			}
 		})
 //alert('dpt(3):' + JSON.stringify(autoSelectedProvider))
-console.log('autoSelectedProvider', autoSelectedProvider)
+//console.log('autoSelectedProvider', autoSelectedProvider)
 //console.log('filtration done')
 		comparator = compareBySortIndex
 
 	} else {
 
-//console.log('default filtration')
+//console.log('default filtration', autoSelectedProvider)
 
 		let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
 		let historyFlag = activityMain.querySelector('.open-history').classList.contains('selected')
@@ -1639,7 +1654,7 @@ console.log('autoSelectedProvider', autoSelectedProvider)
 */
 
 //alert('dpt(6):' + JSON.stringify(history.state) + ' ACTIVITY ' + getActivityName(getCurrentActivity()))
-
+//console.log('autoSelectedProvider at final', autoSelectedProvider)
 	if (autoSelectedProvider !== null && activityMain.doAutoSelect) {
 		activityMain.doAutoSelect = false
 //alert('dpt(5):' + JSON.stringify(autoSelectedProvider))
@@ -1696,7 +1711,7 @@ async function profileInit(token, doLogout, doStartup) {
 			document.body.classList.remove('anonymous')
 		}
 
-		console.log('LOGIN REQUEST', token)
+//		console.log('LOGIN REQUEST', token)
 
 		let result = token === ANONYMOUS_TOKEN
 			? {
@@ -1712,7 +1727,7 @@ async function profileInit(token, doLogout, doStartup) {
 			}
 			: await backend.login(token)
 
-		console.log('LOGIN RESULT', result)
+//		console.log('LOGIN RESULT', result)
 
 		if (result) {
 
@@ -1734,6 +1749,10 @@ async function profileInit(token, doLogout, doStartup) {
 			if (typeof result.data.history !== 'object') {
 				result.data.history = { }
 			}
+			if (doStartup) {
+				result.isNew = false
+			}
+
 			profileData = result.data
 
 			let imageUrl = result.picture
@@ -1774,11 +1793,16 @@ async function profileInit(token, doLogout, doStartup) {
 						let result = await backend.profileUpdate(token, name, email, imageUrl, profileData)
 						return result
 					} catch (errorProfileSaving) {
-						console.log('SAVING PROFILE FAILED', errorProfileSaving)
+//						console.log('SAVING PROFILE FAILED', errorProfileSaving)
 						showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => pushActivity(activityProfile))
 					}
 					return null
 				}
+
+			if (token === ANONYMOUS_TOKEN && doStartup) {
+				let rc = await profileSave()
+			}
+
 			feedbackMessage = async function (email, name, message) {
 				try {
 //					let name = activityProfile.querySelector('.fullname').value
@@ -1786,7 +1810,7 @@ async function profileInit(token, doLogout, doStartup) {
 					let result = await backend.feedbackMessage(email, name, message)
 					return result
 				} catch (errorSending) {
-					console.log('SENDING MESSAGE FAILED', errorSending)
+//					console.log('SENDING MESSAGE FAILED', errorSending)
 					showMessage('Отправка сообщения', 'Не удалось отправить сообщение. Попробуйте позднее.',
 						() => pushActivity(activityFeedback, { email, name, message }))
 				}
@@ -1795,7 +1819,7 @@ async function profileInit(token, doLogout, doStartup) {
 			profilePaymentInit = async function (rowKey, paymentTypeId, account, summ, email, counters) {
 				try {
 					let result = await backend.paymentInit(token, rowKey, paymentTypeId, account, summ, email, counters)
-console.log('PAYMENT', result)
+//console.log('PAYMENT', result)
 					return result
 				} catch (errorPaymentRegistering) {
 					console.log('REGISTERING PAYMENT FAILED', errorPaymentRegistering)
@@ -1882,11 +1906,11 @@ let navBarHide = () => { }
 		function trigger(evt) {
 			let scrollElement = category.parentElement.parentElement
 			if (!scrollElement.dataset.draggingToScroll) {
-console.log('category', evt.type, evt)
+//console.log('category', evt.type, evt)
 				category.classList.toggle('selected')
 				filterProviders()
 			} else {
-console.log('scrolling flag is on...')
+//console.log('scrolling flag is on...')
 			}
 		}
 		if (isTouchScreen()) {
@@ -2353,7 +2377,7 @@ console.log('scrolling flag is on...')
 			if (doContinue) {
 				requestAnimationFrame(tick)
 			} else {
-console.log('stopping media stream of camera')
+//console.log('stopping media stream of camera')
 				video.srcObject.getTracks().forEach(track => track.stop())
 			}
 		} // tick
@@ -2408,7 +2432,7 @@ console.log('stopping media stream of camera')
 			let provDesc = {
 				provider_id: p.p,
 				service_id: p.s ? p.s : null,
-				account: p.a ? p.a : null,
+				account: p.a ? p.a : '',
 				summ: p.z ? p.z : null
 			}
 			return () => {
@@ -2452,6 +2476,6 @@ console.log('stopping media stream of camera')
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 125)
+	console.log('VERSION', 126)
 
 })();

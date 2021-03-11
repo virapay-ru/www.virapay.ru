@@ -1220,6 +1220,10 @@ input.verification + .verification-result > .verification {
 	background-color: rgba(215, 231, 251, 1);
 }
 
+.activity.accounts .account.hidden {
+	display: none;
+}
+
 .activity.accounts > .container > .button-container {
 	display: flex;
 	flex-flow: row;
