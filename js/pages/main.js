@@ -643,6 +643,7 @@ async function mainInit(doStartup) {
 						? profileData.history[rowKey].filter(row => row.a == accItem.acc)
 						: []
 					//console.log('payments', payments)
+					payments.sort((a, b) => new Date(b.d) - new Date(a.d))
 
 					let emptyMessage = activityAccountHistory.querySelector('.empty-message')
 					if (payments.length > 0) {
@@ -723,13 +724,13 @@ async function mainInit(doStartup) {
 
 						function doPending() {
 							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
-console.log('pending statuses', Date.now(), pendingIds)
+//console.log('pending statuses', Date.now(), pendingIds)
 							if (pendingIds.length <= 0) {
 								return;
 							} else {
 								let ids = pendingIds.map(paymItem => paymItem.i)
 								backend.paymentGetStatus(ids).then(result => {
-console.log('statuses', ids, '->', result)
+//console.log('statuses', ids, '->', result)
 									let doUpdate = false
 									let doContinue = false
 									for (let id in result) {
@@ -741,11 +742,11 @@ console.log('statuses', ids, '->', result)
 										getStatusColors().forEach(colorClass => paymentNode.classList.remove(colorClass))
 										paymentNode.classList.add(formatStatusColor(status))
 										if (isFinalStatus(status)) {
-console.log('final', id, status)
+//console.log('final', id, status)
 											delete pendingNodes[id]
 											doUpdate = true
 										} else {
-console.log('continue', id, status)
+//console.log('continue', id, status)
 											doContinue = true
 										}
 									}
