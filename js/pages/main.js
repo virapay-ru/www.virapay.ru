@@ -715,23 +715,23 @@ async function mainInit(doStartup) {
 
 
 
-
-					let intervalId = null
+					let pendingTimer = null
 
 					if (pendingIds.length > 0) {
-						let intervalTime = 5000 // TODO
-						intervalId = setInterval(function () {
-							intervalTime = 5*1000
+
+						const PENDING_INTERVAL = 5000
+
+						function doPending() {
 							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
 console.log('pending statuses', Date.now(), pendingIds)
 							if (pendingIds.length <= 0) {
-								clearInterval(intervalId)
-								intervalId = null
+								return;
 							} else {
 								let ids = pendingIds.map(paymItem => paymItem.i)
 								backend.paymentGetStatus(ids).then(result => {
 console.log('statuses', ids, '->', result)
 									let doUpdate = false
+									let doContinue = false
 									for (let id in result) {
 										let status = result[id].status_id
 										let paymentNode = pendingNodes[id]
@@ -746,20 +746,27 @@ console.log('final', id, status)
 											doUpdate = true
 										} else {
 console.log('continue', id, status)
+											doContinue = true
 										}
 									}
 									if (doUpdate) {
 										profileSave()
 									}
+									if (doContinue) {
+										pendingTimer = setTimeout(doPending, PENDING_INTERVAL)
+									}
 								}).catch(err => {
 									console.log(err)
+									pendingTimer = setTimeout(doPending, PENDING_INTERVAL)
 								})
 							}
-						}, intervalTime)
+						}
+
+						doPending()
 					}
 
 					activityAccountHistory.querySelector('.clear-interval').onclick = function () {
-						clearInterval(intervalId)
+						clearTimeout(pendingTimer)
 //console.log('clear interval')
 					}
 
