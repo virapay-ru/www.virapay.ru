@@ -719,8 +719,11 @@ async function mainInit(doStartup) {
 					let intervalId = null
 
 					if (pendingIds.length > 0) {
+						let intervalTime = 500
 						intervalId = setInterval(function () {
+							intervalTime = 5*1000
 							pendingIds = pendingIds.filter(paymItem => !isFinalStatus(paymItem.e))
+console.log('pending statuses', pendingIds)
 							if (pendingIds.length <= 0) {
 								clearInterval(intervalId)
 								intervalId = null
@@ -752,7 +755,7 @@ async function mainInit(doStartup) {
 									console.log(err)
 								})
 							}
-						}, 5*1000)
+						}, intervalTime)
 					}
 
 					activityAccountHistory.querySelector('.clear-interval').onclick = function () {
