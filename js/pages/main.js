@@ -2297,7 +2297,7 @@ let navBarHide = () => { }
 
 		canvas.hidden = true
 		info.forEach(node => node.hidden = true)
-		loadingMessage.hidden = false
+		loadingMessage.classList.remove('hidden')
 
 		let inited = false
 
@@ -2306,7 +2306,7 @@ let navBarHide = () => { }
 			if (video.readyState === video.HAVE_ENOUGH_DATA) {
 
 				if (!inited) {
-					loadingMessage.hidden = true
+					loadingMessage.classList.add('hidden')
 					info.forEach(node => node.hidden = false)
 					canvas.hidden = false
 					canvas.width = video.videoWidth
