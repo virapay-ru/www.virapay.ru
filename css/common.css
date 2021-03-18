@@ -470,13 +470,13 @@ input + .verification-result {
 	margin-top: -3rem;
 	height: 3rem;
 	justify-content: flex-end;
+	align-items: center;
 }
 
 input + .verification-result > * {
 	line-height: 3rem;
-	font-size: 1.3rem;
-	height: 3rem;
-	width: 3rem;
+	margin-right: 1rem;
+    font-size: 1.5rem;
 	text-align: center;
 	display: none;
 }
@@ -780,6 +780,7 @@ input.verification + .verification-result > .verification {
 	-webkit-tap-highlight-color: transparent;
 }
 
+/*
 .activity.main .hot-icons a .icon {
 	font-size: 2.5rem;
 	width: 3rem;
@@ -793,9 +794,27 @@ input.verification + .verification-result > .verification {
 .activity.main .hot-icons .open-scanner .icon {
 	font-size: 2.25rem;
 }
+*/
+
+.activity.main .hot-icons a b {
+	display: inline-flex;
+	width: 3rem;
+    height: 3rem;
+	align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    background-color: #fff;
+	line-height: 0;
+}
+
+.activity.main .hot-icons a .icon {
+	font-size: 2.2rem;
+}
+
+
+
 
 .activity.main .hot-icons a.selected .icon {
-    background-color: #ccc;
 	color: #fff;
 }
 
@@ -807,7 +826,7 @@ input.verification + .verification-result > .verification {
 	color: #fc0;
 }
 
-.activity.main .hot-icons .open-favorites.selected .icon {
+.activity.main .hot-icons .open-favorites.selected b {
     background-color: #fc0;
 }
 
@@ -815,7 +834,7 @@ input.verification + .verification-result > .verification {
 	color: #fd0000;
 }
 
-.activity.main .hot-icons .open-scanner.selected .icon {
+.activity.main .hot-icons .open-scanner.selected b {
     background-color: #fd0000;
 }
 
@@ -823,7 +842,7 @@ input.verification + .verification-result > .verification {
 	color: #4a0;
 }
 
-.activity.main .hot-icons .open-history.selected .icon {
+.activity.main .hot-icons .open-history.selected b {
     background-color: #4a0;
 }
 
@@ -942,7 +961,6 @@ input.verification + .verification-result > .verification {
 	width: 3rem;
 	font-size: 1.5rem;
 	justify-content: center;
-	transition: color 0.3s ease-out;
 	-webkit-tap-highlight-color: transparent;
 }
 
@@ -970,7 +988,11 @@ input.verification + .verification-result > .verification {
 	font-weight: 300;
 }
 
-.activity.main .partners > .provider .icon.selected {
+.activity.main .partners > .provider .fav {
+	transition: color 0.3s ease-out;
+}
+
+.activity.main .partners > .provider .fav.selected {
 	color: rgb(77, 144, 254);
 }
 
@@ -1256,14 +1278,14 @@ input.verification + .verification-result > .verification {
 .activity.accounts .account .details .popup-trigger {
 	width: 2rem;
 	height: 1.5rem;
-	line-height: 1.5;
 	cursor: pointer;
-	display: block;
-	text-align: center;
 	-webkit-tap-highlight-color: transparent;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	user-select: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .activity.accounts .account .details .popup-trigger.is-active {
@@ -1311,9 +1333,10 @@ input.verification + .verification-result > .verification {
 	background-color: rgba(215, 231, 251, 0.7);
 }
 
-.activity.accounts .account .details .popup-trigger + .popup > a > i {
+.activity.accounts .account .details .popup-trigger + .popup > a > .icon {
 	display: inline-block;
 	margin-right: 1em;
+	font-size: inherit;
 }
 
 
@@ -2054,10 +2077,13 @@ input.verification + .verification-result > .verification {
 		border-radius: 1.25rem;
 	}
 
-	.activity.main .hot-icons a .icon {
-		font-size: 1.5rem !important;
+	.activity.main .hot-icons a b {
 		width: 2.2rem;
-		height: 2.2rem;
+	    height: 2.2rem;
+	}
+
+	.activity.main .hot-icons a .icon {
+		font-size: 1.5rem;
 	}
 
 	.activity.main .hot-icons a span {

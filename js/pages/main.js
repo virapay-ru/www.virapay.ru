@@ -241,15 +241,13 @@ async function mainInit(doStartup) {
 			providerNode.classList.add('show')
 
 			let favNode = document.createElement('a')
-			favNode.classList.add('icon')
-			favNode.classList.add('mdi')
 			favNode.classList.add('fav')
 			if (profileData.favList.indexOf(rowKey) >= 0) {
-				favNode.classList.add('mdi-star')
 				favNode.classList.add('selected')
+				favNode.innerHTML = '<i class="iconify icon mdi-star" data-icon="mdi-star"></i>'
 				item.isFavorite = true
 			} else {
-				favNode.classList.add('mdi-star-outline')
+				favNode.innerHTML = '<i class="iconify icon mdi-star-outline" data-icon="mdi-star-outline"></i>'
 				item.isFavorite = false
 			}
 
@@ -275,9 +273,11 @@ async function mainInit(doStartup) {
 			serviceNode.innerText = item.service_name
 
 			let btnNode = document.createElement('a')
+			btnNode.classList.add('iconify')
 			btnNode.classList.add('icon')
 			btnNode.classList.add('mdi')
 			btnNode.classList.add('mdi-chevron-right')
+			btnNode.dataset.icon = 'mdi-chevron-right'
 
 			detailsNode.appendChild(nameNode)
 			detailsNode.appendChild(innNode)
@@ -292,19 +292,17 @@ async function mainInit(doStartup) {
 				evt.stopPropagation()
 				evt.preventDefault()
 //console.log('favNode.click', evt)
-				if (favNode.classList.contains('mdi-star-outline')) {
-					favNode.classList.remove('mdi-star-outline')
-					favNode.classList.add('mdi-star')
+				if (!item.isFavorite) {
 					favNode.classList.add('selected')
+					favNode.innerHTML = '<i class="iconify icon mdi-star" data-icon="mdi-star"></i>'
 					profileData.favList.push(rowKey)
 					item.isFavorite = true
 				} else {
 					favNode.classList.remove('selected')
-					favNode.classList.remove('mdi-star')
-					favNode.classList.add('mdi-star-outline')
-					profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+					favNode.innerHTML = '<i class="iconify icon mdi-star-outline" data-icon="mdi-star-outline"></i>'
 					item.isFavorite = false
 				}
+
 				let result = profileSave()
 				if (result) {
 					let favoritesFlag = activityMain.querySelector('.open-favorites').classList.contains('selected')
@@ -314,8 +312,7 @@ async function mainInit(doStartup) {
 				} else {
 					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 						favNode.classList.remove('selected')
-						favNode.classList.remove('mdi-star')
-						favNode.classList.add('mdi-star-outline')
+						favNode.innerHTML = '<i class="iconify icon mdi-star-outline" data-icon="mdi-star-outline"></i>'
 						profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
 						item.isFavorite = false
 					})
@@ -474,14 +471,14 @@ async function mainInit(doStartup) {
 						let commandsNode = document.createElement('div')
 						commandsNode.classList.add('commands')
 						commandsNode.innerHTML = `
-							<i class="icon mdi mdi-dots-vertical popup-trigger"></i>
+							<a class="popup-trigger"><i class="iconify icon mdi mdi-dots-vertical" data-icon="mdi-dots-vertical"></i></a>
 							<div class="popup">
-								<a class="account-edit"><i class="mdi mdi-pencil-outline"></i>Изменить</a>
-								<a class="account-history"><i class="mdi mdi-history"></i>История</a>
-								<a class="account-delete"><i class="mdi mdi-trash-can-outline"></i>Удалить</a>
+								<a class="account-edit"><i class="iconify icon mdi mdi-pencil-outline" data-icon="mdi-pencil-outline"></i>Изменить</a>
+								<a class="account-history"><i class="iconify icon mdi mdi-history" data-icon="mdi-history"></i>История</a>
+								<a class="account-delete"><i class="iconify icon mdi mdi-trash-can-outline" data-icon="mdi-trash-can-outline"></i>Удалить</a>
 							</div>
 						`
-						// <a class="account-message"><i class="mdi mdi-message-outline"></i>Сообщение</a>
+						// <a class="account-message"><i class="iconify mdi mdi-message-outline" data-icon="mdi-message-outline"></i>Сообщение</a>
 
 					detailsNode.appendChild(infoNode)
 					detailsNode.appendChild(commandsNode)
@@ -493,7 +490,7 @@ async function mainInit(doStartup) {
 				buttonContainerNode.innerHTML = `
 					<button class="button account-payment">
 			            <span>Перейти к оплате</span>
-						<i class="icon mdi mdi-arrow-right"></i>
+						<i class="iconify icon mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 					</button>
 				`
 
@@ -2438,7 +2435,7 @@ let navBarHide = () => { }
 		profileInit(token, doLogout, doStartup)
 	}
 
-	let paymentLinkV1 = (p) => {
+	let paymentLinkV1 = (p) => { // show payment form
 		if (p.v == 1 && p.p) {
 			let provDesc = {
 				provider_id: p.p,
@@ -2454,13 +2451,45 @@ let navBarHide = () => { }
 		return undefined
 	}
 
-	let detectPaymentLinks = () => {
-		let p = parseParameters(location.search)
-		let fn = paymentLinkV1(p)
-		if (fn) {
-			return fn
+	let paymentLinkV2 = (p) => { // show history
+		if (p.v == 2 && p.i) {
+			return () => {
+				for (let rowKey in profileData.history) {
+					let payments = profileData.history[rowKey]
+					if (payments && payments instanceof Array) {
+						let foundPayment = payments.find(payment => payment.i == p.i)
+						if (foundPayment) {
+							console.log('TODO show history', rowKey, foundPayment)
+							let foundProv = providersList.find(prov => prov.rowKey === rowKey)
+							if (foundProv) {
+								let accounts = profileData.accList[rowKey]
+								if (accounts && accounts instanceof Array) {
+									let foundAccount = accounts.find(account => account.acc == foundPayment.a)
+									if (foundAccount) {
+										console.log('TODO found', foundProv, foundAccount, foundPayment)
+									}
+								}
+								//foundProv.node.click()
+							}
+							break
+						}
+					}
+				}
+			}
 		}
 		return undefined
+	}
+
+	let detectPaymentLinks = () => {
+		let p = parseParameters(location.search)
+		let fn = undefined
+		if (!fn) {
+			fn = paymentLinkV1(p)
+		}
+		if (!fn) {
+			fn = paymentLinkV2(p)
+		}
+		return fn
 	}
 
 	// anonymous login
@@ -2487,6 +2516,6 @@ let navBarHide = () => { }
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 126)
+	console.log('VERSION', 127)
 
 })();
