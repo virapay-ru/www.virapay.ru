@@ -1930,6 +1930,7 @@ let navBarHide = () => { }
 	(function () {
 		let timeout = null
 		let searchInput = activityMain.querySelector('.search-field input')
+		let bottomPanel = document.querySelector('.bottom-panel')
 		searchInput.addEventListener('input', evt => {
 			if (timeout !== null) {
 				clearTimeout(timeout)
@@ -1958,7 +1959,7 @@ let navBarHide = () => { }
 			}
 			let el = document.querySelector('.search-field')
 			scrollByYTo(document.scrollingElement, el.offsetTop - parseInt(getComputedStyle(el).marginTop))
-			document.querySelector('.bottom-panel').classList.add('hide')
+			bottomPanel.classList.add('hide')
 		})
 		searchInput.addEventListener('focusout', evt => {
 			if (focusTimeout !== null) {
@@ -1966,7 +1967,7 @@ let navBarHide = () => { }
 				focusTimeout = null
 			}
 			focusTimeout = setTimeout(function () {
-				document.querySelector('.bottom-panel').classList.remove('hide')
+				bottomPanel.classList.remove('hide')
 				focusTimeout = null
 			}, 750)
 		})
@@ -1982,6 +1983,9 @@ let navBarHide = () => { }
 				}, 750)
 			}
 		})*/
+		bottomPanel.querySelectorAll('.switcher').forEach(switcher => switcher.onclick =
+			() => bottomPanel.classList.toggle('hide')
+		)
 	})();
 
 	activityMain.querySelectorAll('.open-favorites').forEach(btn => {
