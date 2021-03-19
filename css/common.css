@@ -2138,4 +2138,8 @@ input.verification + .verification-result > .verification {
 		background: #44aa004f;
 	}
 
+	.bottom-panel .switcher {
+		display: none;
+	}
+
 }
