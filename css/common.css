@@ -197,7 +197,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .activity.message .container {
 	max-width: 30rem;
-	width: 100%;
+	width: calc(100% - 2rem);
 	align-items: center;
 	border: 1px solid #ddd;
 	border-radius: 0.5rem;
@@ -215,9 +215,10 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 30rem;
     border-top: 1px solid #eee;
     padding-top: 2rem;
-	text-align: center;
+	text-align: left;
 	padding-left: 1rem;
 	padding-right: 1rem;
+	box-sizing: border-box;
 }
 
 
@@ -227,6 +228,7 @@ h1, h2, h3, h4, h5, h6 {
 .activity.confirm {
 	padding-top: 4rem;
 	padding-bottom: 40rem;
+	min-height: auto;
 }
 
 .activity.confirm .container.body {
@@ -840,6 +842,7 @@ input.verification + .verification-result > .verification {
 
 .activity.main .hot-icons .open-history .icon {
 	color: #4a0;
+		margin-left: -0.05rem;
 }
 
 .activity.main .hot-icons .open-history.selected b {
@@ -994,6 +997,22 @@ input.verification + .verification-result > .verification {
 
 .activity.main .partners > .provider .fav.selected {
 	color: rgb(77, 144, 254);
+}
+
+.activity.main .partners > .provider .fav .not-in-list {
+	display: inline-block;
+}
+
+.activity.main .partners > .provider .fav .in-list {
+	display: none;
+}
+
+.activity.main .partners > .provider .fav.selected .not-in-list {
+	display: none;
+}
+
+.activity.main .partners > .provider .fav.selected .in-list {
+	display: inline-block;
 }
 
 .activity.main .profile-show {

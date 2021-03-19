@@ -244,12 +244,14 @@ async function mainInit(doStartup) {
 			favNode.classList.add('fav')
 			if (profileData.favList.indexOf(rowKey) >= 0) {
 				favNode.classList.add('selected')
-				favNode.innerHTML = '<i class="iconify icon mdi-star" data-icon="mdi-star"></i>'
 				item.isFavorite = true
 			} else {
-				favNode.innerHTML = '<i class="iconify icon mdi-star-outline" data-icon="mdi-star-outline"></i>'
 				item.isFavorite = false
 			}
+			favNode.innerHTML = `
+				<i class="iconify icon in-list mdi-star" data-icon="mdi-star"></i>
+				<i class="iconify icon not-in-list mdi-star-outline" data-icon="mdi-star-outline"></i>
+			`
 
 			if ((rowKey in profileData.history) && (profileData.history[rowKey] instanceof Array) && profileData.history[rowKey].length > 0) {
 				item.hasHistory = true
@@ -294,12 +296,10 @@ async function mainInit(doStartup) {
 //console.log('favNode.click', evt)
 				if (!item.isFavorite) {
 					favNode.classList.add('selected')
-					favNode.innerHTML = '<i class="iconify icon mdi-star" data-icon="mdi-star"></i>'
 					profileData.favList.push(rowKey)
 					item.isFavorite = true
 				} else {
 					favNode.classList.remove('selected')
-					favNode.innerHTML = '<i class="iconify icon mdi-star-outline" data-icon="mdi-star-outline"></i>'
 					item.isFavorite = false
 				}
 
@@ -312,7 +312,6 @@ async function mainInit(doStartup) {
 				} else {
 					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 						favNode.classList.remove('selected')
-						favNode.innerHTML = '<i class="iconify icon mdi-star-outline" data-icon="mdi-star-outline"></i>'
 						profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
 						item.isFavorite = false
 					})
