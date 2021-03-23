@@ -29,7 +29,7 @@
 	<link href="css/typography.css" rel="stylesheet"/>
 
 	<!-- Common -->
-	<link href="css/common.css?v=0.15" rel="stylesheet"/>
+	<link href="css/common.css?v=0.16" rel="stylesheet"/>
 
 	<!-- Core code -->
 	<script src="js/storage.js" type="text/javascript" charset="utf-8"></script>
@@ -556,10 +556,32 @@
 
 			<h2 class="search-results-header">Результаты поиска</h2>
 
+			<a class="banner force-hidden" id="tech-message">
+				<p>23.03.2021 на время с 23:00 по 02:00 запланированы технические работы, операции в сервисе будут недоступны.</p>
+			</a>
+<script>
+
+(function () {
+
+	let dtBegin = new Date("2021-03-23T22:30:00")
+	let dtEnd = new Date("2021-03-24T03:00:00")
+	let dt = new Date()
+	if (dtBegin <= dt && dt <= dtEnd) {
+		document
+			.querySelector('#tech-message')
+			.classList
+			.remove('force-hidden')
+	}
+
+})();
+
+</script>
+<!--
 			<a class="banner force-hidden">
 				<h3>Место для вашей рекламы</h3>
 				<p>Не упустите ваш шанс!</p>
 			</a>
+-->
 
 			<div class="search-field">
 				<i class="icon iconify mdi mdi-magnify" data-icon="mdi-magnify"></i>

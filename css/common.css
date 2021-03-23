@@ -1076,10 +1076,12 @@ input.verification + .verification-result > .verification {
 	flex-flow: column;
 	align-items: center;
 	justify-content: center;
-	width: 100%;
+	width: calc(100% - 2rem);
 	min-height: 8rem;
 	margin-top: 2rem;
 	cursor: pointer;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .activity.main .banner > * {
@@ -1955,6 +1957,7 @@ input.verification + .verification-result > .verification {
     z-index: 10;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
+	cursor: pointer;
 }
 
 .bottom-panel {
