@@ -1410,7 +1410,7 @@ console.log('prov', item)
 				pickProvider()
 			})
 
-			providerNode.classList.add('clickable')
+			//providerNode.classList.add('clickable')
 
 			//btnNode.onclick = pickProvider
 
@@ -2111,6 +2111,8 @@ let navBarHide = () => { }
 			}
 		}
 
+		const NUM_VISIBLE_PROVIDERS = 40
+
 		navBarShow = () => {
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
@@ -2118,6 +2120,17 @@ let navBarHide = () => { }
 			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
 			activityNavBar.classList.remove('is-hidden')
 			clearTimers()
+			let i = 0
+			providersList.forEach(item => {
+				if (item.isMatch) {
+					clearTimeout(item.timeout)
+					if (++ i >= NUM_VISIBLE_PROVIDERS) {
+						item.node.classList.remove('show')
+					} else {
+						item.node.classList.add('show')
+					}
+				}
+			})
 			timerStep0 = setTimeout(() => {
 				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(100% at ${x}px ${y}px)`
@@ -2148,6 +2161,12 @@ let navBarHide = () => { }
 					activityNavBar.style.clipPath = 'none'
 					activityNavBar.style.transition = 'unset'
 					activityNavBar.classList.add('is-hidden')
+					let i = 0
+					providersList.forEach(item => {
+						if (item.isMatch && (++ i >= NUM_VISIBLE_PROVIDERS)) {
+							item.node.classList.add('show')
+						}
+					})
 					if (callback) {
 						callback()
 					}

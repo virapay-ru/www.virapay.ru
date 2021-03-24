@@ -1958,6 +1958,7 @@ input.verification + .verification-result > .verification {
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
 	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .bottom-panel {
