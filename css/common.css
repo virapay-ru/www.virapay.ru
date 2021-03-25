@@ -87,6 +87,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 27px;
     display: inline-flex;
 	align-items: center;
+	user-select: none;
 }
 
 .logo.vertical {
@@ -171,6 +172,25 @@ h1, h2, h3, h4, h5, h6 {
 	text-decoration: none;
 	color: inherit;
 	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+}
+
+.activity.navbar .links a.do-reload {
+	color: #d25757
+}
+
+.activity.navbar .links a.do-reload:before {
+	display: inline-block;
+	background: red;
+	content: '';
+	overflow: hidden;
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+    margin-left: -1.15rem;
+    margin-right: 0.65rem;
+    position: relative;
+    top: -0.25rem;
 }
 
 .activity.inner {
@@ -768,6 +788,7 @@ input.verification + .verification-result > .verification {
 		background: #fff;
 		border-radius: 10px;
     	box-shadow: 0 0 5rem rgba(0,0,0,0.2);
+	user-select: none;
 }
 
 .activity.main .hot-icons a {
@@ -926,6 +947,8 @@ input.verification + .verification-result > .verification {
 	-webkit-tap-highlight-color: transparent;
 
 		transition: margin-bottom 0.5s ease-out;
+
+	user-select: none;
 }
 
 @keyframes provider-show {
@@ -1020,30 +1043,59 @@ input.verification + .verification-result > .verification {
 	align-items: center;
 	cursor: pointer;
 	border-radius: 2rem;
-	box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	background-color: #eee;
 	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+	transition: all 0.6s ease-out;
+}
+
+.activity.main .profile-show.is-checked {
+	background-color: #fff;
+	box-shadow: 0 0 5rem rgb(0 0 0 / 20%);
 }
 
 .activity.main .avatar {
-	width: 2.5rem;
-	height: 2.5rem;
+	width: 2rem;
+	height: 2rem;
 	border-radius: 50%;
 	margin-right: 0.5rem;
 	background-size: cover;
 	background-position: center center;
+	background-color: #fff;
+    border: 0.2rem solid #fff;
+    margin: 0.25rem 0.5rem 0.25rem 0.3rem;
+    box-sizing: border-box;
 }
 
 .activity.main .fullname {
-    margin-right: 1rem;
+    margin-right: 1.5rem;
     max-width: 8rem;
     white-space: nowrap;
     display: inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
+	user-select: none;
+	text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 100;
 }
 
 .activity.main .profile-show {
 	z-index: 11;
+}
+
+.activity.main .profile-show .do-reload {
+	display: inline-block;
+	background: red;
+	content: '';
+	overflow: hidden;
+	border-radius: 50%;
+	width: 0.5rem;
+	height: 0.5rem;
+    margin-left: -0.5rem;
+    position: relative;
+    top: -1.5rem;
+	left: 0.5rem;
 }
 
 
@@ -1132,6 +1184,7 @@ input.verification + .verification-result > .verification {
 	font-size: 1.2rem;
 	border: 1px solid rgb(77, 144, 254);
     box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+	border-radius: 1.5rem;
 }
 
 .activity.main .search-field .label input:focus {

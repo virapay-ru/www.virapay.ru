@@ -19,17 +19,24 @@
 
 	<!-- Prepare -->
 	<link rel="preconnect" href="https://code.iconify.design"/>
-	<link rel="preconnect" href="https://fonts.googleapis.com"/>
+
+	<!-- Icons -->
+	<link rel="icon" href="/icon/google-touch-icon.png" type="image/svg+xml"/>
+	<link rel="mask-icon" href="/icon/icon.svg" color="#000000" type="image/svg+xml"/>
+	<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png"/>
+
+	<!-- Webmanifest -->
+	<link rel="manifest" href="/app.webmanifest"/>
 
 	<!-- Webfonts -->
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet" crossorigin="anonymous">
+	<link href="/fonts/montserrat/index.css" rel="stylesheet"/>
+	<link href="/fonts/roboto/index.css" rel="stylesheet"/>
 
 	<!-- UI framework -->
 	<link href="/css/typography.css" rel="stylesheet"/>
 
 	<!-- Common -->
-	<link href="/css/common.css?v=0.16" rel="stylesheet"/>
+	<link href="/css/common.css?v=0.16g" rel="stylesheet"/>
 
 	<!-- Core code -->
 	<script src="/js/storage.js" type="text/javascript" charset="utf-8"></script>
@@ -63,12 +70,10 @@
 					            <span>Google</span>
 							</a>
 							<a title="Войти с Facebook" class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/facebook.html&state=fb">
-					            <!--<img class="icon" src="/images/facebook_f_logo.svg"/>-->
 								<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
 					            <span>Facebook</span>
 							</a>
 							<a title="Войти с ВКонтакте" class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/vk.html">
-					            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
 								<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
 					            <span>ВКонтакте</span>
 							</a>
@@ -82,7 +87,6 @@
 						<span class="label">Или продолжить без регистрации</span>
 						<div class="buttons">
 							<a title="Войти без регистрации" class="button -button-auth without-auth">
-					            <!--<img class="icon" src="/images/vk_logo.svg"/>-->
 								<i class="icon iconify mdi mdi-account-off-outline" data-icon="mdi-account-off-outline"></i>
 					            <span>Без Регистрации</span>
 							</a>
@@ -186,7 +190,9 @@
 		</div>
 
 		<div class="container">
-			<i class="iconify mdi mdi-loading display4 spin loading" data-icon="mdi-loading"></i>
+			<div class="loading">
+				<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
+			</div>
 			<p class="info" hidden><b>Наведите камеру на QR-код</b></p>
 			<canvas id="canvas" hidden></canvas>
 			<p class="info" hidden>При успешном распознавании кода раздастся звуковой сигнал</p>
@@ -530,6 +536,9 @@
 				<a href="/policy.html">Политика конфиденциальности</a>
 				<a href="/offer.html">Условия использования</a>
 				<a class="feedback">Обратная связь</a>
+				<a class="do-check-updates force-hidden">Проверить обновления</a>
+				<a class="do-reload force-hidden">Перезагрузить для обновления</a>
+				<a class="is-up-to-date force-hidden">Обновлено</a>
 			</div>
 		</div>
 
@@ -550,12 +559,14 @@
 				<div class="profile-show">
 					<div class="avatar"></div>
 					<span class="fullname"></span>
+					<span class="do-reload force-hidden"></span>
 				</div>
 
 			</div>
 
 			<h2 class="search-results-header">Результаты поиска</h2>
 
+<!--
 			<a class="banner force-hidden" id="tech-message">
 				<p>24.03.2021 на время с 23:00 по 02:00 запланированы технические работы, операции в сервисе будут недоступны.</p>
 			</a>
@@ -576,6 +587,7 @@
 })();
 
 </script>
+-->
 <!--
 			<a class="banner force-hidden">
 				<h3>Место для вашей рекламы</h3>
@@ -668,7 +680,88 @@
 	<script src="/js/common.js?v=0.3" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Main -->
-	<script src="/js/pages/main.js?v=0.19" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/pages/main.js?v=0.22f" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Service worker -->
+	<script>
+
+	'use strict';
+
+	(() => {
+
+		let timerUpdates = null
+
+		function askUserToReload() {
+			clearTimeout(timerUpdates)
+			document.querySelectorAll('.do-check-updates')
+				.forEach(node => node.classList.add('force-hidden'))
+			document.querySelectorAll('.is-up-to-date')
+				.forEach(node => node.classList.add('force-hidden'))
+			document.querySelectorAll('.do-reload')
+				.forEach(node => node.classList.remove('force-hidden'))
+			// app specific
+			if (!activityNavBar.classList.contains('is-hidden')) {
+				activityMain.querySelectorAll('.do-reload')
+					.forEach(node => node.classList.add('force-hidden'))
+			}
+		}
+
+		function registrationHandler(registration) {
+
+			console.log('index.html', 'registration', registration)
+
+			registration.addEventListener('updatefound', () => {
+				const newWorker = registration.installing
+				newWorker.addEventListener('statechange', () => {
+					console.log('index.html', 'newWorker.statechange', 'state', newWorker.state)
+					if (newWorker.state === 'activated') {
+						//getVersion()
+					}
+				})
+			})
+
+			document.querySelectorAll('.do-check-updates').forEach(node => {
+				node.onclick = () => registration.update()
+					.then(registration => {
+						//console.log('index.html', 'updated', registration)
+						document.querySelectorAll('.do-check-updates')
+							.forEach(node => node.classList.add('force-hidden'))
+						document.querySelectorAll('.is-up-to-date')
+							.forEach(node => node.classList.remove('force-hidden'))
+						timerUpdates = setTimeout(() => {
+							document.querySelectorAll('.is-up-to-date')
+								.forEach(node => node.classList.add('force-hidden'))
+							document.querySelectorAll('.do-check-updates')
+								.forEach(node => node.classList.remove('force-hidden'))
+						}, 2000)
+					})
+					.catch(err => console.error(err))
+				node.classList.remove('force-hidden')
+			})
+
+			document.querySelectorAll('.do-reload').forEach(node => {
+				node.onclick = () => location.reload()
+			})
+
+			//getVersion()
+		}
+
+		navigator.serviceWorker
+			.register('/sw.js')
+			.then(registration => {
+				console.log('index.html', 'worker registered', 'scope', registration.scope)
+				registrationHandler(registration)
+			})
+			.catch(err => console.error(err))
+
+		navigator.serviceWorker.addEventListener('controllerchange', evt => {
+			console.log('index.html', 'controllerchange', evt)
+			askUserToReload()
+		})
+
+	})();
+
+	</script>
 
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript" >

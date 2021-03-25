@@ -57,7 +57,10 @@ async function mainInit(doStartup) {
 		hideActivity(getCurrentActivity())
 		showActivity(activityLoading)
 
+
+
 		let storageRegionsKey = `/${location.hostname}/regions`
+/*
 		let regionsData = storageGet(storageRegionsKey)
 		let regionsVersion = (regionsData ? regionsData.version : 0)
 		let regionsNewData = await backend.regionsGetUpdate(regionsVersion)
@@ -65,6 +68,12 @@ async function mainInit(doStartup) {
 			regionsData = regionsNewData
 			storagePut(storageRegionsKey, regionsData)
 		}
+*/
+		storagePut(storageRegionsKey, null) // clean data of prev version
+		let regionsResponse = await fetch('https://connect.virapay.ru/data/regions')
+		let regionsData = await regionsResponse.json()
+
+
 
 		let regionsSelector = document.querySelector('.regions-selector')
 		let regionsList = regionsSelector.querySelector('.list')
@@ -176,6 +185,7 @@ async function mainInit(doStartup) {
 
 
 		let storageProvidersKey = `/${location.hostname}/providers`
+/*
 		let providersData = storageGet(storageProvidersKey)
 		let providersVersion = (providersData ? providersData.version : 0)
 		let providersNewData = await backend.providersGetUpdate(providersVersion)
@@ -183,6 +193,14 @@ async function mainInit(doStartup) {
 			providersData = providersNewData
 			storagePut(storageProvidersKey, providersData)
 		}
+*/
+		let providersResponse = await fetch('https://connect.virapay.ru/data/providers')
+		let providersData = await providersResponse.json()
+
+
+
+
+
 
 		let listNode = activityMain.querySelector('.partners')
 		listNode.innerHTML = ''
@@ -1864,8 +1882,12 @@ async function profileInit(token, doLogout, doStartup) {
 			activityMain.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
 					if (activityNavBar.classList.contains('is-hidden')) {
+						//node.querySelectorAll('.do-reload').forEach(n => n.classList.add('force-hidden'))
 						navBarShow()
 					} else {
+						//if (!activityNavBar.querySelector('.do-reload').classList.contains('force-hidden')) {
+						//	node.querySelectorAll('.do-reload').forEach(n => n.classList.remove('force-hidden'))
+						//}
 						navBarHide()
 					}
 				}
@@ -2097,6 +2119,7 @@ let navBarHide = () => { }
 	;(function () {
 
 		let avatar = activityMain.querySelector('.avatar')
+		let navBarToggleButton = activityMain.querySelector('.profile-show')
 		let timerStep0 = null
 		let timerStep1 = null
 
@@ -2116,6 +2139,8 @@ let navBarHide = () => { }
 		navBarShow = () => {
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
+			navBarToggleButton.classList.add('is-checked')
+			navBarToggleButton.querySelectorAll('.do-reload').forEach(n => n.classList.add('force-hidden'))
 			activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
 			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
 			activityNavBar.classList.remove('is-hidden')
@@ -2156,6 +2181,10 @@ let navBarHide = () => { }
 				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
 				document.querySelector('.bottom-panel').classList.remove('hide')
+				navBarToggleButton.classList.remove('is-checked')
+				if (!activityNavBar.querySelector('.do-reload').classList.contains('force-hidden')) {
+					navBarToggleButton.querySelectorAll('.do-reload').forEach(n => n.classList.remove('force-hidden'))
+				}
 				timerStep1 = setTimeout(() => {
 					timerStep1 = null
 					activityNavBar.style.clipPath = 'none'
@@ -2319,7 +2348,7 @@ let navBarHide = () => { }
 
 		canvas.hidden = true
 		info.forEach(node => node.hidden = true)
-		loadingMessage.classList.remove('hidden')
+		loadingMessage.hidden = false
 
 		let inited = false
 
@@ -2327,8 +2356,9 @@ let navBarHide = () => { }
 
 			if (video.readyState === video.HAVE_ENOUGH_DATA) {
 
+				loadingMessage.hidden = true
+
 				if (!inited) {
-					loadingMessage.classList.add('hidden')
 					info.forEach(node => node.hidden = false)
 					canvas.hidden = false
 					canvas.width = video.videoWidth
@@ -2538,6 +2568,6 @@ let navBarHide = () => { }
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 127)
+	console.log('VERSION', 128)
 
 })();
