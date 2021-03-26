@@ -1,7 +1,7 @@
 // Handle installation
 
 const VERSION = '3.3'
-const CACHE_NAME = 'virapay-build-129-3'
+const CACHE_NAME = 'virapay-bld-129'
 const CACHE_ACTUAL_LIST = [ CACHE_NAME ]
 
 // Static
