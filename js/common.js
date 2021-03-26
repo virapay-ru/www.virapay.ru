@@ -36,7 +36,7 @@
 				setTimeout(() => {
 					if (!node.classList.contains('force-hidden'))
 						location.reload()
-				}, 2900)
+				}, 2000)
 			} else {
 				node.classList.remove('force-hidden')
 				node.classList.remove('online')

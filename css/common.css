@@ -138,32 +138,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .connection-status.online {
-	animation: connection-status-hide 3s ease-out forwards;
+	animation: connection-status-hide 5s ease-out forwards;
 }
 
 @keyframes connection-status-show {
 	0% {
 		opacity: 0;
-		-max-height: 20000rem;
 	}
 	100% {
 		opacity: 1;
-		-max-height: 20000rem;
 	}
 }
 
 @keyframes connection-status-hide {
 	0% {
 		opacity: 1;
-		-max-height: 20000rem;
 	}
 	75% {
 		opacity: 1;
-		-max-height: 20000rem;
 	}
 	100% {
 		opacity: 0;
-		-max-height: 20000rem;
 	}
 }
 
