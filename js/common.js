@@ -33,7 +33,7 @@
 			if (isOnLine) {
 				node.classList.remove('offline')
 				node.classList.add('online')
-				setTimeout(() => node.classList.add('force-hidden'), 3100)
+				setTimeout(() => location.reload(), 2900)
 			} else {
 				node.classList.remove('force-hidden')
 				node.classList.remove('online')
