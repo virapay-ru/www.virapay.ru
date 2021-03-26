@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 const ANONYMOUS_TOKEN = 'anonymous';
 
@@ -57,6 +57,12 @@ async function mainInit(doStartup) {
 		hideActivity(getCurrentActivity())
 		showActivity(activityLoading)
 
+		let versionResponse = await fetch('/version.json')
+		let versionData = await versionResponse.json()
+		document.querySelectorAll('.current-version').forEach(node => {
+			node.innerText = versionData.version
+			node.classList.remove('force-hidden')
+		})
 
 
 		let storageRegionsKey = `/${location.hostname}/regions`
@@ -2568,6 +2574,6 @@ let navBarHide = () => { }
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 128)
+	console.log('VERSION', 129)
 
 })();

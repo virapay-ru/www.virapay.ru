@@ -1,7 +1,7 @@
 // Handle installation
 
-const VERSION = '1m'
-const CACHE_NAME = 'virapay-build-128'
+const VERSION = '3'
+const CACHE_NAME = 'virapay-build-129'
 const CACHE_ACTUAL_LIST = [ CACHE_NAME ]
 
 // Static
@@ -65,6 +65,12 @@ let resourcesToCache = [
 	'/fonts/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2',
 	'/fonts/montserrat/v15/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2',
 	'/fonts/montserrat/v15/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2 ',
+	// icons
+	'/icon/google-touch-icon.png',
+	'/icon/apple-touch-icon.png',
+	'/icon/icon.svg',
+	// data
+	'/version.json',
 ]
 
 // Helpers
@@ -78,7 +84,9 @@ function toCache(request, response) {
 
 function fromCache(request) {
 	console.log('sw.js', VERSION, 'fromCache', request.url)
-	return caches.match(request)
+	//return caches.match(request)
+	return caches.open(CACHE_NAME)
+		.then(cache => cache.match(request))
 }
 
 function fromNetwork(request) {
@@ -89,13 +97,13 @@ function fromNetwork(request) {
 // Strategies
 
 function cacheOrNetwork(request) {
-	console.log('sw.js', VERSION, 'cacheOrNetwork', request.method, request.url, request)
+//	console.log('sw.js', VERSION, 'cacheOrNetwork', request.method, request.url, request)
 	return fromCache(request)
 		.then(response => response || fromNetwork(request))
 }
 
 function cacheOrNetworkUpdate(request) {
-	console.log('sw.js', VERSION, 'cacheOrNetworkUpdate', request.method, request.url, request)
+//	console.log('sw.js', VERSION, 'cacheOrNetworkUpdate', request.method, request.url, request)
 	return fromCache(request)
 		.then(response => response || fromNetwork(request)
 			.then(response => {
@@ -144,7 +152,7 @@ self.addEventListener('activate', evt => {
 })
 
 self.addEventListener('fetch', evt => {
-	console.log('sw.js', VERSION, 'fetch', evt.request)
+//	console.log('sw.js', VERSION, 'fetch', evt.request)
 	return evt.respondWith(doFetch(evt.request))
 })
 
