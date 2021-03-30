@@ -17,9 +17,9 @@
 		}) 
 	}
 
-	function connectionEventHandler() {
+	function connectionEventHandler(evt) {
 //		console.log('CONNECTION connectionEventHandler', navigator.onLine)
-		if (navigator.onLine) {
+		if (evt === 'firstTime' || navigator.onLine === true || navigator.onLine === undefined) {
 			isReachable(getServerUrl())
 				.then(processConnectionEvent)
 		} else {
@@ -48,7 +48,7 @@
 	window.addEventListener('online', connectionEventHandler)
 	window.addEventListener('offline', connectionEventHandler)
 
-	connectionEventHandler()
+	connectionEventHandler('firstTime')
 
 })();
 
