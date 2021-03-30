@@ -1,7 +1,7 @@
 // Handle installation
 
-const VERSION = '3.6'
-const CACHE_NAME = 'bld-129-6'
+const VERSION = '3.7'
+const CACHE_NAME = 'bld-129-7'
 const CACHE_ACTUAL_LIST = [ CACHE_NAME ]
 
 // Static

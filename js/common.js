@@ -44,12 +44,12 @@
 			}
 		})
 	}
-
+/* // BUG safari does not work properly
 	window.addEventListener('online', connectionEventHandler)
 	window.addEventListener('offline', connectionEventHandler)
 
 	connectionEventHandler('firstTime')
-
+*/
 })();
 
 // backend
