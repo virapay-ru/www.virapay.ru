@@ -1,8 +1,6 @@
 // Handle installation
 
-const VERSION = '3.7'
-const CACHE_NAME = 'bld-129-7'
-const CACHE_ACTUAL_LIST = [ CACHE_NAME ]
+const VERSION = 'v3.8b'
 
 // Static
 
@@ -77,7 +75,7 @@ let resourcesToCache = [
 
 function toCache(request, response) {
 	console.log('sw.js', VERSION, 'toCache', 'request.method', request.method, request.url, request)
-	return caches.open(CACHE_NAME)
+	return caches.open(VERSION)
 		.then(cache => cache.put(request, response)
 			.then(() => response))
 }
@@ -85,7 +83,7 @@ function toCache(request, response) {
 function fromCache(request) {
 	console.log('sw.js', VERSION, 'fromCache', request.url)
 	//return caches.match(request)
-	return caches.open(CACHE_NAME)
+	return caches.open(VERSION)
 		.then(cache => cache.match(request))
 }
 
@@ -133,21 +131,31 @@ function doFetch(request) {
 
 self.addEventListener('install', evt => {
 	console.log('sw.js', VERSION, 'install', evt)
-	self.skipWaiting()
 	return evt.waitUntil(
-		caches.open(CACHE_NAME)
-			.then(cache => cache.addAll(resourcesToCache))
+		self.skipWaiting().then(() => 
+			caches.open(VERSION).then(cache =>
+				cache.addAll(resourcesToCache.map(url =>
+					new Request(url, { cache: 'reload' })
+				))
+			)
+		)
 	)
 })
 
 self.addEventListener('activate', evt => {
-	console.log('sw.js', VERSION, 'activate')
+	console.log('sw.js', VERSION, 'activate', 'taking control...')
 	return evt.waitUntil(
-		caches.keys().then(keys => Promise.all(keys.map(key => {
-			if (CACHE_ACTUAL_LIST.indexOf(key) < 0) {
-				return caches.delete(key)
-			}
-		})))
+		clients.claim().then(() => {
+			console.log('sw.js', VERSION, 'activate', 'got control')
+			return caches.keys().then(keys => Promise.all(keys.map(key => {
+				if (key !== VERSION) {
+					console.log('sw.js', VERSION, 'activate', 'remove deprecated cache', key)
+					return caches.delete(key)
+				}
+			}))).then(() => {
+				console.log('sw.js', VERSION, 'activate', 'all deprecated caches removed')
+			})
+		})
 	)
 })
 
