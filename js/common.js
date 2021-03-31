@@ -8,7 +8,7 @@
 
 	function isReachable(url) {
 		return new Promise((resolve, reject) => {
-			fetch(url, { cache: 'no-cache' })
+			fetch(url, { cache: 'reload' })
 				.then(resp => resolve(resp && resp.ok))
 				.catch(err => {
 					console.warn('[connection test failure]:', err)
@@ -44,12 +44,12 @@
 			}
 		})
 	}
-/* // BUG safari does not work properly
+
 	window.addEventListener('online', connectionEventHandler)
 	window.addEventListener('offline', connectionEventHandler)
 
 	connectionEventHandler('firstTime')
-*/
+
 })();
 
 // backend
