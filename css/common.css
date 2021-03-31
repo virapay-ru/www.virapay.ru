@@ -82,25 +82,30 @@ h1, h2, h3, h4, h5, h6 {
 
 /* connection status */
 
+.activity.offline {
+	filter: blur(0.75rem);
+}
+
 .connection-status {
 	position: fixed;
 	top: 0;
 	left: 0;
 	min-width: 100vw;
-	min-height: 100vh;
-	min-height: -webkit-fill-available;
-	background: #fff;
-	z-index: 5000;
+	/*min-height: 200vh;*/
+		/*min-height: -webkit-fill-available;*/
+	/*background: #fff;*/
+	/*background: rgba(0,0,0,0.75);*/
+	z-index: 5001;
 	overflow: hidden;
 	display: flex;
 	flex-flow: column;
 	align-items: center;
-		/*max-height: 20000rem;*/
+		min-height: 20000rem;
 }
 
 .connection-status .message {
 	color: #fff;
-	padding: 2rem;
+	padding: 1rem;
 	margin: 0rem auto 2rem auto;
     max-width: calc(100% - 2rem);
 	box-sizing: border-box;
@@ -108,11 +113,16 @@ h1, h2, h3, h4, h5, h6 {
 	background-color: #000;
 	font-weight: 600;
 	transition: background-color 0.3s ease-out;
+	box-shadow: 0 0 10rem rgb(0 0 0 / 20%);
 }
 
 .connection-status .logo {
 	margin-top: 2rem;
     transform: scale(0.5);
+	padding: 2rem;
+    background: #fff;
+    border-radius: 1rem;
+	box-shadow: 0 0 10rem rgb(0 0 0 / 20%);
 }
 
 .connection-status.offline .message {
@@ -125,7 +135,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .connection-status.offline .message:after {
 	display: inline;
-	content: 'Пожалуйста, проверьте подключение к сети Интернет.';
+	content: 'Проверьте подключение к сети Интернет.';
 }
 
 .connection-status.online .message:after {

@@ -1,57 +1,3 @@
-// handling network state
-
-(() => {
-
-	function getServerUrl() {
-		return 'https://connect.virapay.ru/data/regions/version'
-	}
-
-	function isReachable(url) {
-		return new Promise((resolve, reject) => {
-			fetch(url, { cache: 'reload' })
-				.then(resp => resolve(resp && resp.ok))
-				.catch(err => {
-					console.warn('[connection test failure]:', err)
-					resolve(false)
-				})
-		}) 
-	}
-
-	function connectionEventHandler(evt) {
-//		console.log('CONNECTION connectionEventHandler', navigator.onLine)
-		if (evt === 'firstTime' || navigator.onLine === true || navigator.onLine === undefined) {
-			isReachable(getServerUrl())
-				.then(processConnectionEvent)
-		} else {
-			processConnectionEvent(false)
-		}
-	}
-
-	function processConnectionEvent(isOnLine) {
-//		console.log('CONNECTION processConnectionEvent', 'isOnLine', isOnLine)
-		document.querySelectorAll('.connection-status').forEach(node => {
-			if (isOnLine) {
-				node.classList.remove('offline')
-				node.classList.add('online')
-				setTimeout(() => {
-					if (!node.classList.contains('force-hidden'))
-						location.reload()
-				}, 2000)
-			} else {
-				node.classList.remove('force-hidden')
-				node.classList.remove('online')
-				node.classList.add('offline')
-			}
-		})
-	}
-
-	window.addEventListener('online', connectionEventHandler)
-	window.addEventListener('offline', connectionEventHandler)
-
-	connectionEventHandler('firstTime')
-
-})();
-
 // backend
 
 let backend = new JSONRPC2.RemoteProxyObject(
@@ -149,6 +95,61 @@ function showActivity(activity, options = undefined, isRestoring = false) {
 		}
 	}, 1000/60)	
 }
+
+// handling network state
+
+(() => {
+
+	function getServerUrl() {
+		return 'https://connect.virapay.ru/data/regions/version'
+	}
+
+	function isReachable(url) {
+		return new Promise((resolve, reject) => {
+			fetch(url, { cache: 'reload' })
+				.then(resp => resolve(resp && resp.ok))
+				.catch(err => {
+					console.warn('[connection test failure]:', err)
+					resolve(false)
+				})
+		}) 
+	}
+
+	function connectionEventHandler(evt) {
+//		console.log('CONNECTION connectionEventHandler', navigator.onLine)
+		if (evt === 'firstTime' || navigator.onLine === true || navigator.onLine === undefined) {
+			isReachable(getServerUrl())
+				.then(processConnectionEvent)
+		} else {
+			processConnectionEvent(false)
+		}
+	}
+
+	function processConnectionEvent(isOnLine) {
+//		console.log('CONNECTION processConnectionEvent', 'isOnLine', isOnLine)
+		document.querySelectorAll('.connection-status').forEach(node => {
+			if (isOnLine) {
+				node.classList.remove('offline')
+				node.classList.add('online')
+				setTimeout(() => {
+					if (!node.classList.contains('force-hidden'))
+						location.reload()
+				}, 2000)
+			} else {
+				activities.forEach(activity => activity.classList.add('offline'))
+				node.classList.remove('force-hidden')
+				node.classList.remove('online')
+				node.classList.add('offline')
+			}
+		})
+	}
+
+	window.addEventListener('online', connectionEventHandler)
+	window.addEventListener('offline', connectionEventHandler)
+
+	connectionEventHandler('firstTime')
+
+})();
 
 // activities switcher
 
