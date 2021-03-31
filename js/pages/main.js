@@ -2525,6 +2525,12 @@ let navBarHide = () => { }
 									let foundAccount = accounts.find(account => account.acc == foundPayment.a)
 									if (foundAccount) {
 										console.log('TODO found', foundProv, foundAccount, foundPayment)
+										foundProv.node.click()
+										activityAccounts.querySelectorAll(".accounts-list .account").forEach(accNode => {
+											if (accNode.querySelector('.details .info .value').textContent == foundAccount.acc) {
+												accNode.querySelector('.commands .account-history').click()
+											}
+										})
 									}
 								}
 								//foundProv.node.click()
@@ -2574,6 +2580,6 @@ let navBarHide = () => { }
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 129)
+	console.log('VERSION', 130)
 
 })();

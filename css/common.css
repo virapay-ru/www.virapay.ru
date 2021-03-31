@@ -319,6 +319,7 @@ h1, h2, h3, h4, h5, h6 {
 .activity.message button {
 	margin-top: 1rem;
 	margin-bottom: 2rem;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .activity.message .container {
@@ -398,6 +399,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin-top: 1rem;
 	margin-bottom: 2rem;
 	width: 30%;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .activity.confirm button + button {
@@ -469,6 +471,7 @@ h1, h2, h3, h4, h5, h6 {
 	cursor: pointer;
 	text-decoration: none;
 	color: inherit;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .button > .icon {
