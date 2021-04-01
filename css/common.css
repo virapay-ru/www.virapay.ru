@@ -1649,6 +1649,9 @@ input.verification + .verification-result > .verification {
 }
 */
 
+.activity.account-payment .payments-types {
+	width: 100%;
+}
 
 .activity.account-payment .commission-description {
     margin-left: -0.5rem;
