@@ -890,6 +890,7 @@ async function mainInit(doStartup) {
 										let inputValue = document.createElement('input')
 
 										inputValue.setAttribute('type', 'text')
+										inputValue.setAttribute('inputmode', 'numeric')
 										inputValue.dataset.extData = counter.ext_data
 										inputValue.dataset.name = counter.name
 										inputValue.dataset.orderNo = counter.order_no
