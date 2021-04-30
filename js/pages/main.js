@@ -324,6 +324,7 @@ async function mainInit(doStartup) {
 					item.isFavorite = true
 				} else {
 					favNode.classList.remove('selected')
+					profileData.favList = profileData.favList.filter(x => x != rowKey)
 					item.isFavorite = false
 				}
 
@@ -336,7 +337,7 @@ async function mainInit(doStartup) {
 				} else {
 					showMessage('Профиль пользователя', 'Не удалось сохранить данные. Попробуйте позднее.', () => {
 						favNode.classList.remove('selected')
-						profileData.favList.splice(profileData.favList.indexOf(rowKey), 1)
+						profileData.favList = profileData.favList.filter(x => x != rowKey)
 						item.isFavorite = false
 					})
 				}
