@@ -21,7 +21,7 @@ let resourcesToCache = [
 	'/js/JSONRPC2.js',
 	'/js/qr-scanner/qr-scanner-worker.min.js',
 	'/js/qr-scanner/qr-scanner-worker.min.js.map',
-	'/js/qr-scanner/qr-scanner.min.js'
+	'/js/qr-scanner/qr-scanner.min.js',
 	'/js/qrcode.min.js',
 	'/js/pages/list.js',
 	'/js/pages/main.js',
