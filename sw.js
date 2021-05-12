@@ -1,6 +1,6 @@
 // Handle installation
 
-const VERSION = 'v4.1.3'
+const VERSION = 'v4.1.4.0'
 
 // Static
 
@@ -19,7 +19,9 @@ let resourcesToCache = [
 	'/js/common.js',
 	'/js/storage.js',
 	'/js/JSONRPC2.js',
-	'/js/jsQR.js',
+	'/js/qr-scanner/qr-scanner-worker.min.js',
+	'/js/qr-scanner/qr-scanner-worker.min.js.map',
+	'/js/qr-scanner/qr-scanner.min.js'
 	'/js/qrcode.min.js',
 	'/js/pages/list.js',
 	'/js/pages/main.js',
@@ -68,7 +70,7 @@ let resourcesToCache = [
 	'/icon/apple-touch-icon.png',
 	'/icon/icon.svg',
 	// data
-	'/version.json',
+	//'/version.json',
 ]
 
 // Helpers

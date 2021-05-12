@@ -1,4 +1,5 @@
-'use strict';
+import QrScanner from "/js/qr-scanner/qr-scanner.min.js";
+QrScanner.WORKER_PATH = '/js/qr-scanner/qr-scanner-worker.min.js';
 
 const ANONYMOUS_TOKEN = 'anonymous';
 
@@ -2326,6 +2327,7 @@ let navBarHide = () => { }
 
 	let info = activityScanner.querySelectorAll('.info')
 	let video = document.createElement('video')
+	//let video = activityScanner.querySelector('#camvideo')
 	let canvas = activityScanner.querySelector('canvas')
 	let canvasOffscreen = document.createElement('canvas')
 	let ctx = canvas.getContext('2d')
@@ -2359,46 +2361,89 @@ let navBarHide = () => { }
 		loadingMessage.hidden = false
 
 		let inited = false
+		let tick = () => { }
 
-		function tick() {
+		function tick0(videoRegion, onstop) {
+
+//alert('TODO7')
+//return onstop();
 
 			if (video.readyState === video.HAVE_ENOUGH_DATA) {
+//alert('TODO6')
+//return onstop();
 
 				loadingMessage.hidden = true
 
 				if (!inited) {
+//alert(videoRegion)
+//alert('TODO5')
+//return onstop();
+
 					info.forEach(node => node.hidden = false)
 					canvas.hidden = false
 					canvas.width = video.videoWidth
 					canvas.height = video.videoHeight
 					canvasOffscreen.width = video.videoWidth
 					canvasOffscreen.height = video.videoHeight
+canvas.width = videoRegion.width
+canvas.height = videoRegion.height
+canvasOffscreen.width = videoRegion.width
+canvasOffscreen.height = videoRegion.height
 					let w = canvas.offsetWidth
 					let h = canvas.offsetHeight
 					canvas.width = w
 					canvas.height = h
 					inited = true
+//alert(`videoRegion ${videoRegion.width} x ${videoRegion.height}`)
+//return onstop();
 				}
 
+if (canvas.width !== videoRegion.width || canvas.height !== videoRegion.height) {
+	canvas.width = videoRegion.width
+	canvas.height = videoRegion.height
+	canvasOffscreen.width = videoRegion.width
+	canvasOffscreen.height = videoRegion.height
+}
+
+
+/*
 				let rectWidth = Math.min(canvasOffscreen.width, 256)
 				let rectHeight = Math.min(canvasOffscreen.height, 256)
 				let x = Math.floor((canvasOffscreen.width - rectWidth) / 2)
 				let y = Math.floor((canvasOffscreen.height - rectHeight) / 2)
-
+*/
+/*
 				ctxOffscreen.drawImage(video, 0, 0, canvasOffscreen.width, canvasOffscreen.height)
 				ctxOffscreen.fillStyle = 'rgba(0,0,0,0.5)'
 				ctxOffscreen.fillRect(0, 0, canvasOffscreen.width, y)
 				ctxOffscreen.fillRect(0, y + rectHeight, canvasOffscreen.width, y + 1)
 				ctxOffscreen.fillRect(0, y, x, rectHeight)
 				ctxOffscreen.fillRect(x + rectWidth, y, x, rectHeight)
+*/
+ctxOffscreen.drawImage(videoRegion, 0, 0)
 
+/*
 				let imageData = ctxOffscreen.getImageData(x, y, rectWidth, rectHeight)
+				for (let i = 0, d = imageData.data, l = d.length; i < l; i += 4) {
+					let r = d[i]
+					let g = d[i + 1]
+					let b = d[i + 2]
+					let c = (r + g + b) / 3
+					//let c = ((r + g + b) >= 60*3 ? 255 : 0)
+					d[i] = c
+					d[i + 1] = c
+					d[i + 2] = c
+				}
+				ctxOffscreen.putImageData(imageData, x, y)
+*/
+/*
 				let code = jsQR(imageData.data, imageData.width, imageData.height, {
 					inversionAttempts: "dontInvert",
 				})
-
+*/
 				ctx.drawImage(canvasOffscreen, 0, 0, canvasOffscreen.width, canvasOffscreen.height, 0, 0, canvas.width, canvas.height)
-				
+
+/*				
 				if (code) {
 
 					ctxOffscreen.lineWidth = 4
@@ -2440,17 +2485,68 @@ let navBarHide = () => { }
 //								showMessage('Сканирование кода', 'Данные кода получены, дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
 //							}, 1000)
 				}
+*/
 			}
 
 			if (doContinue) {
 				requestAnimationFrame(tick)
 			} else {
-//console.log('stopping media stream of camera')
-				video.srcObject.getTracks().forEach(track => track.stop())
+//alert('TODO10')
+//return onstop();
+
+console.log('stopping media stream of camera')
+//				video.srcObject.getTracks().forEach(track => track.stop())
+				onstop()
 			}
+
 		} // tick
 
-		try {
+//		try {
+//video.style.filter = 'contrast(1.4)'
+
+			const qrScanner = new QrScanner(video, result => {
+				beep()
+//alert('QRCode:' + result)
+				console.log('QR code data', result)
+				doContinue = false
+				qrScanner.stop()
+
+					backend.scanCode(result).then(results => {
+						console.log('Scanner results', results)
+						if ((results instanceof Array) && results.length > 0) {
+//alert(JSON.stringify(results))
+							if (results.length === 1) {
+								activityMain.doAutoSelect = true
+							}
+							pushActivity(activityMain, { searchResults: results })
+						} else {
+							showMessage('Сканирование кода', 'Направления платежа нет в списке.', function () { history.back() })
+						}
+						//showMessage('Сканирование кода', 'Данные кода получены - ' + JSON.stringify(results) + ', дальнейший функционал еще не реализован. Ожидайте новых релизов.', closeScanner)
+					}).catch(err => {
+						console.log(err)
+//alert(err)
+						showMessage('Сканирование кода', 'Ошибка. Попробуйте отсканировать код еще раз.', function () { history.back() })
+					})
+			})
+
+			qrScanner.start().then(() => {
+
+				if (doContinue) {
+					tick = () => tick0(qrScanner.$canvas, () => qrScanner.stop())
+					//tick = () => tick0(qrScanner.$canvasPostprocessed, () => qrScanner.stop())
+					requestAnimationFrame(tick)
+				}
+
+			}).catch(err => {
+
+				showMessage('Сканирование кода', 'Камера недоступна.', function () { history.go(-2) })
+				console.log(err)
+				doContinue = false
+
+			})
+
+/*
 			navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function(stream) {
 				video.srcObject = stream
 				video.setAttribute('playsinline', true) // required to tell iOS safari we don't want fullscreen
@@ -2466,10 +2562,11 @@ let navBarHide = () => { }
 				})
 				console.log(err)
 			})
-		} catch (er) {
-			showMessage('Сканирование кода', 'Камера недоступна.', function () { history.back() })
-			console.log(er)
-		}
+*/
+//		} catch (er) {
+//			showMessage('Сканирование кода', 'Камера недоступна.', function () { history.back() })
+//			console.log(er)
+//		}
 
 		//filterProviders() // TODO why this called here?
 	}
@@ -2582,6 +2679,6 @@ let navBarHide = () => { }
 		pushActivity(activityLogin)
 	}
 
-	console.log('VERSION', 130)
+	console.log('VERSION', 132)
 
 })();

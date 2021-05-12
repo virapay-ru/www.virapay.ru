@@ -41,7 +41,7 @@
 	<!-- Core code -->
 	<script src="/js/storage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/js/jsQR.js" type="text/javascript" charset="utf-8"></script>
+<!--	<script src="/js/jsQR.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="/js/qrcode.min.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
@@ -195,10 +195,25 @@
 			</div>
 			<p class="info" hidden><b>Наведите камеру на QR-код</b></p>
 			<canvas id="canvas" hidden></canvas>
+<!--			<video id="camvideo"></video>-->
 			<p class="info" hidden>При успешном распознавании кода раздастся звуковой сигнал</p>
 		</div>
 
 	</div>
+
+<style>
+
+#camvideo {
+	position: fixed;
+	right: 4rem;
+	top: 6rem;
+	border-radius: 0.5rem;
+	z-index: 10000;
+	max-width: 10rem;
+	/*filter: contrast(2);*/
+}
+
+</style>
 
 
 	<div class="activity -at-center confirm is-hidden" data-name="confirm">
@@ -694,7 +709,7 @@
 	<script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Main -->
-	<script src="/js/pages/main.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/pages/main.js" type="module" charset="utf-8"></script>
 
 	<!-- Service worker -->
 	<script>
