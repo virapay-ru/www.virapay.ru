@@ -2,3 +2,6 @@ backups/
 js/qr-scanner/src/
 TODO
 *.bak
+transport.html
+js/common-ext.js
+js/pages/transport.js
