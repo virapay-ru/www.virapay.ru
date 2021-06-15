@@ -201,6 +201,8 @@ async function mainInit(doStartup) {
 			storagePut(storageProvidersKey, providersData)
 		}
 */
+
+		// TODO use storage
 		let providersResponse = await fetch('https://connect.virapay.ru/data/providers')
 		let providersData = await providersResponse.json()
 

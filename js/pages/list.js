@@ -17,13 +17,18 @@ async function mainInit() {
 		showActivity(activityLoading)
 
 		let storageProvidersKey = `/${location.hostname}/providers`
-		let providersData = storageGet(storageProvidersKey)
+		/*let providersData = storageGet(storageProvidersKey)
 		let providersVersion = (providersData ? providersData.version : 0)
 		let providersNewData = await backend.providersGetUpdate(providersVersion)
 		if (providersNewData !== null) {
 			providersData = providersNewData
 			storagePut(storageProvidersKey, providersData)
-		}
+		}*/
+
+		// TODO use storage
+		let providersResponse = await fetch('https://connect.virapay.ru/data/providers')
+		let providersData = await providersResponse.json()
+
 
 		let listNode = activityMain.querySelector('.partners')
 		listNode.innerHTML = ''
