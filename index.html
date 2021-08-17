@@ -719,6 +719,18 @@
 	(() => {
 
 		let timerUpdates = null
+		let intervalAutoDetectUpdates = null
+		let currentVersion = null
+
+		fetch('/version.json')
+			.then(versionResponse => versionResponse.json())
+			.then(versionData => {
+				currentVersion = versionData
+				document.querySelectorAll('.current-version').forEach(node => {
+					node.innerText = versionData.version
+					node.classList.remove('force-hidden')
+				})
+			})
 
 		function askUserToReload() {
 			clearTimeout(timerUpdates)
@@ -772,7 +784,20 @@
 				node.onclick = () => location.reload()
 			})
 
-			//getVersion()
+			if (intervalAutoDetectUpdates) {
+				clearInterval(intervalAutoDetectUpdates)
+			}
+			intervalAutoDetectUpdates = setInterval(() => {
+				fetch('https://connect.virapay.ru/data/app/version')
+					.then(data => data.json())
+					.then(versionData => {
+						if (currentVersion !== null && currentVersion.version !== versionData.version) {
+							console.log('available new version', currentVersion.version, '->', versionData.version)
+							document.querySelector('.do-check-updates').click()
+							clearInterval(intervalAutoDetectUpdates)
+						}
+					})
+			}, 15 * 1000)
 		}
 
 		navigator.serviceWorker

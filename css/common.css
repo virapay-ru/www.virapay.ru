@@ -13,6 +13,7 @@ body {
     font-family: 'Roboto', sans-serif;
 	color: #000;
 	background-color: #ffffff;
+	overflow-y: scroll;
 }
 
 p {
@@ -880,13 +881,13 @@ input.verification + .verification-result > .verification {
 	margin-top: 2rem;
 }
 
+/* activity main */
+
 .activity.main > .container {
 	align-items: center;
 	width: 100%;
 	max-width: 50rem;
 }
-
-/* activity main */
 
 .activity.main .hot-icons {
 	width: 100%;

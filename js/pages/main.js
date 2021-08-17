@@ -58,14 +58,6 @@ async function mainInit(doStartup) {
 		hideActivity(getCurrentActivity())
 		showActivity(activityLoading)
 
-		let versionResponse = await fetch('/version.json')
-		let versionData = await versionResponse.json()
-		document.querySelectorAll('.current-version').forEach(node => {
-			node.innerText = versionData.version
-			node.classList.remove('force-hidden')
-		})
-
-
 		let storageRegionsKey = `/${location.hostname}/regions`
 /*
 		let regionsData = storageGet(storageRegionsKey)
