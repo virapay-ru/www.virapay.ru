@@ -81,7 +81,7 @@
 
 			let p = parseParameters(location.search)
 			if (p.code) {
-				backend.oauth2(apiName, p.code).then(token => {
+				backend.oauth2import(apiName, p.code).then(token => {
 					homepage(token)
 				}).catch(error => {
 					showMessage('Вход через ВКонтакте', 'Не удалось получить токен. Попробуйте позднее.', () => homepage())

@@ -82,7 +82,7 @@
 
 			let p = parseParameters(location.search)
 			if (p.code) {
-				backend.oauth2(apiName, p.code).then(token => {
+				backend.oauth2import(apiName, p.code).then(token => {
 					console.log('token', token)
 					homepage(token)
 				}).catch(error => {
