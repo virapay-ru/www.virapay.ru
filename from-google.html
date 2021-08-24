@@ -76,14 +76,12 @@
 			let apiName = 'google'
 
 			function homepage(token = '') {
-				//location.replace('https://evolution.virapay.ru/?importFrom=' + encodeURIComponent(token))
-				console.log('https://evolution.virapay.ru/?importFrom=' + encodeURIComponent(token))
+				location.replace('https://evolution.virapay.ru/?importFrom=' + encodeURIComponent(token))
 			}
 
 			let p = parseParameters(location.search)
 			if (p.code) {
 				backend.oauth2import(apiName, p.code).then(token => {
-					console.log('token', token)
 					homepage(token)
 				}).catch(error => {
 					showMessage('Вход через Google', 'Не удалось получить токен. Попробуйте позднее.', () => homepage())
