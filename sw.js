@@ -1,6 +1,6 @@
 // Handle installation
 
-const VERSION = 'v4.1.4.4'
+const VERSION = 'v4.1.4.4mid'
 
 // Static
 
@@ -10,6 +10,9 @@ let resourcesToCache = [
 	'/facebook.html',
 	'/google.html',
 	'/vk.html',
+	'/from-facebook.html',
+	'/from-google.html',
+	'/from-vk.html',
 	'/debug.html',
 	'/list.html',
 	'/contacts.html',
