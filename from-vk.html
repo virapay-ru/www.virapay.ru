@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay - оплата коммунальных платежей онлайн, вход через ВКонтакте" />
+	<meta name="keywords" content="virapay, vira, pay, virapaybot, оплата жкх, оплата коммунальных услуг, оплата, жкх, жку, вход через вконтакте, вход через vk" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+	<!-- Title -->
+	<title>VIRAPAY - Вход через ВКонтакте</title>
+
+	<!-- Robots -->	
+	<meta name="robots" content="noindex, nofollow"/>
+
+	<!-- Prepare -->
+	<link rel="preconnect" href="https://code.iconify.design"/>
+
+	<!-- Icons -->
+	<link rel="icon" href="/icon/google-touch-icon.png" type="image/svg+xml"/>
+	<link rel="mask-icon" href="/icon/icon.svg" color="#000000" type="image/svg+xml"/>
+	<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png"/>
+
+	<!-- Webfonts -->
+	<link href="/fonts/montserrat/index.css" rel="stylesheet"/>
+	<link href="/fonts/roboto/index.css" rel="stylesheet"/>
+
+	<!-- UI framework -->
+	<link href="/css/typography.css" rel="stylesheet"/>
+
+	<!-- Common -->
+	<link href="/css/common.css" rel="stylesheet"/>
+
+	<!-- Core code -->
+	<script src="/js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/storage.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+
+	<div class="activity at-center loading -is-hidden">
+		<div class="container">
+			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
+		</div>
+	</div>
+
+	<div class="activity -at-center message is-hidden" data-name="message" data-history="untracked">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p class="info">
+				<i class="icon iconify mdi mdi-alert-outline" data-icon="mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+
+	<!-- Iconify -->
+	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+	<!-- Common -->
+	<script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Entry point -->
+	<script>
+
+		(function () {
+
+			let apiName = 'vk'
+
+			function homepage(token = '') {
+				location.replace('https://evolution.virapay.ru/?importFrom=' + encodeURIComponent(token))
+			}
+
+			let p = parseParameters(location.search)
+			if (p.code) {
+				backend.oauth2(apiName, p.code).then(token => {
+					homepage(token)
+				}).catch(error => {
+					showMessage('Вход через ВКонтакте', 'Не удалось получить токен. Попробуйте позднее.', () => homepage())
+				})
+			} else {
+				showMessage('Вход через ВКонтакте', 'Не удалось выполнить вход. Попробуйте позднее.', () => homepage())
+			}
+
+		})();
+
+	</script>
+
+</body>
+</html>
