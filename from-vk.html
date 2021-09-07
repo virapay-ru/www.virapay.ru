@@ -76,7 +76,7 @@
 			let apiName = 'vk'
 
 			function homepage(token = '') {
-				location.replace('https://evolution.virapay.ru/?importFrom=' + encodeURIComponent(token))
+				location.replace('/?importFrom=' + encodeURIComponent(token))
 			}
 
 			let p = parseParameters(location.search)

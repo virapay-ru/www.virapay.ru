@@ -11,6 +11,179 @@ let feedbackMessage = function () { };
 let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, counters) { };
 
 
+// activity identify
+
+(function () {
+
+	const sessionKey = `/${location.hostname}/sessionV2`
+	const anonymousDataKey = `/${location.hostname}/anonymous/data`
+
+	let stages = Array.from(activityIdentify.querySelectorAll('.stage'))
+	let stage1 = activityIdentify.querySelector('.stage-1')
+	let stage2 = activityIdentify.querySelector('.stage-2')
+	let stage3 = activityIdentify.querySelector('.stage-3')
+
+	let sendPhoneButton = stage1.querySelector('.send-phone')
+	let inputCodeButton = stage2.querySelector('.input-code')
+	let sendCodeButton = stage3.querySelector('.send-code')
+	let phoneInput = stage1.querySelector('.phone')
+	let codeInput = stage3.querySelector('.code')
+	let imaskPhone = IMask(phoneInput, { mask: '+{7} (000) 000-00-00' })
+	let imaskCode = IMask(codeInput, { mask: '000000' })
+
+	let userPhone = null
+	let userPassword = null
+
+	function onPhoneIsReady() {
+		sendPhoneButton.removeAttribute('disabled')
+	}
+
+	phoneInput.oninput = phoneInput.onfocus = evt => {
+		if (!/^7\d{10}$/.test(imaskPhone.unmaskedValue)) {
+			sendPhoneButton.setAttribute('disabled', true)
+		}
+	}
+
+	imaskPhone.on('complete', onPhoneIsReady)
+
+	function onCodeIsReady() {
+		sendCodeButton.removeAttribute('disabled')
+	}
+
+	codeInput.oninput = codeInput.onfocus = evt => {
+		if (!/\d{6}$/.test(imaskCode.unmaskedValue)) {
+			sendCodeButton.setAttribute('disabled', true)
+		}
+	}
+
+	imaskCode.on('complete', onCodeIsReady)
+
+	sendPhoneButton.onclick = async (evt) => {
+
+		sendPhoneButton.setAttribute('disabled', true)
+
+		if (!/^7\d{10}$/.test(imaskPhone.unmaskedValue)) {
+			alert('Введите номер телефона.')
+			return
+		}
+
+		userPhone = `${imaskPhone.unmaskedValue}`
+		//phoneInput.value = ''
+
+		// try {
+		// 	let result = await backend.requestCallPassword(userPhone)
+		// 	if (result) {
+				stage1.classList.add('is-hidden')
+				stage2.classList.remove('is-hidden')
+		// 	}
+		// } catch(error) {
+		// 	console.log(error)
+		// 	alert('Вход временно недоступен. Попробуйте позднее.')
+		// }
+
+		sendPhoneButton.removeAttribute('disabled')
+	}
+
+	inputCodeButton.onclick = async (evt) => {
+
+		try {
+			let result = await backend.requestCallPassword(userPhone)
+			if (result) {
+				stage2.classList.add('is-hidden')
+				stage3.classList.remove('is-hidden')
+			} else {
+				alert('Сервис временно недоступен. Попробуйте позднее..')
+			}
+		} catch(error) {
+			console.log(error)
+			alert('Вход временно недоступен. Попробуйте позднее.')
+		}
+
+		codeInput.focus()
+	}
+
+	sendCodeButton.onclick = async (evt) => {
+
+		sendCodeButton.setAttribute('disabled', true)
+
+		if (!/^\d{6}$/.test(imaskCode.unmaskedValue)) {
+			alert('Введите код.')
+			return
+		}
+
+		userPassword = `${imaskCode.unmaskedValue}`
+		//codeInput.value = ''
+
+		try {
+			let token = await backend.verifyCallPassword(userPhone, userPassword)
+			if (token) {
+				storagePut(sessionKey, token)
+				location.replace('/')
+			} else {
+				alert('Введен неправильный код.')
+				setTimeout(() => codeInput.focus(), 250)
+			}
+		} catch(error) {
+			console.log(error)
+			alert('Вход временно недоступен. Попробуйте позднее.')
+		}
+
+		sendCodeButton.removeAttribute('disabled')
+	}			
+
+	activityLoading.classList.add('is-hidden')
+	activityIdentify.classList.remove('is-hidden')
+
+	activityIdentify.xonbeforeshow = function (options) {
+		if (!options) {
+			location.reload('/')
+		}
+		const stagesById = {
+			1: stage1,
+			2: stage2,
+			3: stage3
+		}
+		stages.forEach(node => node.classList.add('is-hidden'))
+		stagesById[options.stage].classList.remove('is-hidden')
+	}
+
+	document.querySelectorAll('.signin-with-phone').forEach(btnIdentify => {
+		btnIdentify.addEventListener('click', evt => {
+			pushActivity(activityIdentify, { stage: 1 })
+		})
+	})
+
+	activityProfile.querySelectorAll('.login-with .without-auth').forEach(btnLoginWithoutAuth => {
+		btnLoginWithoutAuth.addEventListener('click', async (evt) => {
+			if (btnLoginWithoutAuth.classList.contains('is-disabled')) {
+				return
+			}
+			btnLoginWithoutAuth.classList.add('is-disabled')
+			let message = ''
+			try {
+				let token = storageGet(sessionKey)
+				let userData = storageGet(anonymousDataKey)
+				let result = await backend.moveAnonymousUserData(token, JSON.stringify(userData))
+				if (result > 0) {
+					message = 'Импорт данных успешно завершен.'
+				} else {
+					message = 'Не удалось импортировать данные. Попробуйте позднее.'
+				}
+			} catch (error) {
+				console.log(error)
+				message = 'Импорт данных временно недоступен. Попробуйте позднее.'
+			} finally {
+				showMessage('Импорт данных', message, () => {
+					btnLoginWithoutAuth.classList.remove('is-disabled')
+					location.reload('/')
+				})
+			}
+		})
+	})
+
+})();
+
+
 // regions selector 
 
 (function () {
@@ -1787,7 +1960,7 @@ async function profileInit(token, doLogout, doStartup) {
 			activityProfile.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
 			activityProfile.querySelector('.apiname').innerText = result.oauthService.name
 			activityProfile.querySelector('.id').innerText = result.oauthService.userId
-			activityProfile.querySelector('.fullname').value = result.name
+			activityProfile.querySelector('.fullname').value =result.name
 			activityProfile.querySelector('.email').value = result.email
 			activityProfile.querySelectorAll('.logout').forEach(node => {
 				node.onclick = function () {
@@ -1854,6 +2027,10 @@ async function profileInit(token, doLogout, doStartup) {
 				}
 				return null
 			}
+			let getPubName = name =>
+				result.oauthService.name === 'phone' && /^\s*$/.test(name)
+					? ('' + result.oauthService.userId).replace(/^(7)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 ($2) $3-$4-$5')
+					: name
 			activityProfile.querySelectorAll('.profile-save').forEach(node => {
 				node.onclick = async function () {
 
@@ -1862,8 +2039,8 @@ async function profileInit(token, doLogout, doStartup) {
 
 					let result = profileSave()
 					if (result) {
-						let name = activityProfile.querySelector('.fullname').value
-						activityMain.querySelector('.fullname').innerText = name
+						let name = activityProfile.querySelector('.fullname').value;
+						activityMain.querySelector('.fullname').innerText = getPubName(name)
 						activityProfile.querySelectorAll('.back').forEach(node => { // TODO profile
 							node.onclick = function () {
 								history.back()
@@ -1877,7 +2054,7 @@ async function profileInit(token, doLogout, doStartup) {
 				}
 			})
 			activityMain.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
-			activityMain.querySelector('.fullname').innerText = result.name
+			activityMain.querySelector('.fullname').innerText = getPubName(result.name)
 
 			document.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {
 				navBarHide(() => pushActivity(activityProfile))
@@ -2571,7 +2748,7 @@ console.log('stopping media stream of camera')
 
 (function () {
 
-	let sessionKey = `/${location.hostname}/session`
+	let sessionKey = `/${location.hostname}/sessionV2`
 
 	let doLogout = () => {
 		storagePut(sessionKey, null)
@@ -2637,6 +2814,36 @@ console.log('stopping media stream of camera')
 		return undefined
 	}
 
+	let importLinkV1 = (p) => {
+		if (p.importFrom) {
+			return () => {
+				let currentActivity = getCurrentActivity()
+				hideActivity(currentActivity)
+				showActivity(activityLoading)
+				let fromUser = p.importFrom
+				let toUser = storageGet(sessionKey)
+				backend.moveUserData(fromUser, toUser).then(result => {
+					console.log('moveUserData', result)
+					if (result > 0) {
+						showMessage('Профиль пользователя', 'Импорт данных успешно завершен.', () => {
+							location.replace('/')
+						})
+					} else {
+						showMessage('Профиль пользователя', 'Не удалось импортировать данные.', () => {
+							location.replace('/')
+						})
+					}
+				}).catch(err => {
+					console.log(err)
+					showMessage('Профиль пользователя', 'При импорте данных произошла ошибка. Попробуйте позднее.', () => {
+						location.replace('/')
+					})
+				})
+			}
+		}
+		return undefined
+	}
+
 	let detectPaymentLinks = () => {
 		let p = parseParameters(location.search)
 		let fn = undefined
@@ -2645,6 +2852,9 @@ console.log('stopping media stream of camera')
 		}
 		if (!fn) {
 			fn = paymentLinkV2(p)
+		}
+		if (!fn) {
+			fn = importLinkV1(p)
 		}
 		return fn
 	}

@@ -51,6 +51,7 @@ let activityAccountHistory = activities.find(a => a.classList.contains('account-
 let activityScanner = activities.find(a => a.classList.contains('scanner'))
 let activitySBPPay = activities.find(a => a.classList.contains('sbp-pay'))
 let activityFeedback = activities.find(a => a.classList.contains('feedback'))
+let activityIdentify = activities.find(a => a.classList.contains('identify'))
 
 function getActivityByName(name) {
 	return activities.find(activity => activity.dataset.name == name)

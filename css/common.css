@@ -881,6 +881,70 @@ input.verification + .verification-result > .verification {
 	margin-top: 2rem;
 }
 
+.activity.profile .login-with {
+	display: flex;
+	flex-flow: column;
+	background: #f0f0f0;
+	border-radius: 0.5rem;
+	width: 100%;
+	max-width: 21rem;
+	padding: 1rem;
+	box-sizing: border-box;
+	margin-bottom: 1rem;
+}
+
+.activity.profile .login-with .label {
+	display: inline-block;
+	font-weight: 300;
+	/* margin: 0.5rem 1rem; */
+	margin-bottom: 1rem;
+	max-width: 100rem;
+	font-size: 0.8rem;
+	margin-bottom: 1rem;
+}
+
+.activity.profile .login-with .buttons {
+	display: flex;
+	flex-flow: column;
+	align-items: start;
+}
+
+.activity.profile .login-with .buttons .button {
+	width: calc(100% - 1rem);
+	border-radius: 0.25rem;
+	margin-bottom: 0;
+}
+
+.activity.profile .login-with .buttons .button + .button {
+	margin-left: 1rem;
+}
+
+.activity.profile .login-with .buttons.social {
+	flex-flow: row;
+}
+
+.activity.profile .login-with .buttons.social .button {
+	padding: 0;
+}
+
+.activity.profile .login-with .buttons.social .button .icon {
+	margin-right: 0;
+	font-size: 2rem;
+}
+
+.activity.profile .login-with .buttons.social .button span {
+	display: none;
+}
+
+.activity.profile .login-with .buttons.social .signin-with-google.button .icon {
+	height: 1.8rem;
+}
+
+.activity.profile .login-with .buttons .without-auth {
+	width: 100%;
+}
+
+
 /* activity main */
 
 .activity.main > .container {
@@ -2057,6 +2121,70 @@ input.verification + .verification-result > .verification {
 
 .activity.sbp-pay .logo {
 	height: 3rem;
+}
+
+
+/* identify */
+
+.activity.identify .container {
+	width: 100%;
+    align-items: center;
+}
+
+.activity.identify .content {
+	align-items: center;
+	display: flex;
+	flex-flow: column;
+}
+
+.activity.identify .stage {
+	width: 100%;
+	max-width: 20rem;
+	align-items: center;
+	display: flex;
+	flex-flow: column;
+}
+
+.activity.identify .stage .label {
+	margin-bottom: 2rem;
+	display: block;
+	width: 100%;
+	max-width: 20rem;
+}
+
+.activity.identify .stage .button {
+	width: 100%;
+	max-width: 20rem;
+}
+
+.activity.identify .stage .info {
+	margin-bottom: 2rem;
+}
+
+.activity.identify h2 {
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+	font-size: 1.75rem;
+	background: #eee;
+	padding: 1rem 2rem;
+	border-radius: 1rem;
+	color: rgb(24, 119, 242);
+}
+
+.activity.identify .text-center {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.activity.identify .stage > .hint {
+	border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    font-weight: 100;
+	margin-left: 0;
+    margin-right: 0;
 }
 
 

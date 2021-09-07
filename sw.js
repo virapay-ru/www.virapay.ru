@@ -1,6 +1,6 @@
 // Handle installation
 
-const VERSION = 'v4.1.4.4.md'
+const VERSION = 'v4.1.4.4n'
 
 // Static
 
@@ -28,6 +28,18 @@ let resourcesToCache = [
 	'/js/qrcode.min.js',
 	'/js/pages/list.js',
 	'/js/pages/main.js',
+	'/js/imask/imask.es.js',
+	'/js/imask/imask.es.js.map',
+	'/js/imask/imask.es.min.js',
+	'/js/imask/imask.es.min.js.map',
+	'/js/imask/imask.esm.js',
+	'/js/imask/imask.esm.js.map',
+	'/js/imask/imask.esm.min.js',
+	'/js/imask/imask.esm.min.js.map',
+	'/js/imask/imask.js',
+	'/js/imask/imask.js.map',
+	'/js/imask/imask.min.js',
+	'/js/imask/imask.min.js.map',
 	// css
 	'/css/typography.css',
 	'/css/common.css',

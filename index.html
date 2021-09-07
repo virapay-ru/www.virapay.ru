@@ -43,9 +43,84 @@
 	<script src="/js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
 <!--	<script src="/js/jsQR.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="/js/qrcode.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/imask/imask.min.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
 <body>
+
+	<div class="activity identify is-hidden" data-name="login">
+
+		<!-- <div class="action-bar">
+			<div class="container">
+				<a class="icon back"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
+			</div>
+		</div> -->
+
+		<div class="container">
+			<div class="content">
+
+				<div class="logo vertical">
+			        <img src="/images/logo.svg"/>
+			        <div><span>VIRA</span><span>PAY</span></div>
+				</div>
+
+				<h2>&laquo;Вход в приложение&raquo;</h2>
+
+				<div class="stage stage-1">
+	
+					<label class="label">
+						<div class="subject">Номер телефона</div>
+						<div><input class="phone" type="text" placeholder="+7 (000) 000-00-00"/></div>
+					</label>
+		
+					<button class="button primary send-phone">
+						<span>Продолжить</span>
+						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+					</button>
+
+					<p class="hint">Если вы ранее использовали для входа кнопки социальных сетей или входили без регистрации, вы можете импортировать,
+						ранее введенные данные и историю платежей после входа по номеру телефона в разделе <q>Профиль пользователя</q>.</p>
+
+				</div>
+
+				<div class="stage stage-2 is-hidden">
+
+					<p class="info">Вам позвонят с неизвестного номера. Звонок можно отклонить. Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p>
+		
+					<button class="button primary input-code">
+						<span>Понятно</span>
+						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+					</button>
+
+				</div>
+
+				<div class="stage stage-3 is-hidden">
+
+					<p class="info">Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p>
+
+					<label class="label">
+						<div class="subject">Код для входа</div>
+						<div><input class="code" type="text" placeholder="000000"/></div>
+					</label>
+		
+					<button class="button primary send-code">
+						<span>Войти</span>
+						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+					</button>
+
+				</div>
+
+				<p class="text-center">
+					&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
+					Все права защищены.<br/>
+					<a class="ln" href="contacts.html">Контактная информация</a><br/>
+				</p>
+	
+			</div>
+		</div>
+
+	</div>
+
 
 	<div class="activity at-center login is-hidden" data-name="login">
 
@@ -59,6 +134,7 @@
 			<h1>Оплата коммунальных платежей онлайн</h1>
 			<p class="lead">Оплата картой любого банка, Apple Pay или Google Pay</p>
 
+			<!--
 			<div class="grid-21">
 				<div class="col">
 
@@ -99,16 +175,121 @@
 				даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p></div>
 
 			</div>
+			-->
+
+			<!-- <div class="grid-21" style="width: 100%; max-width: 34rem;">
+				<div class="col">
+
+					<div class="login-with">
+						<span class="label">Войдите в приложение</span>
+						<div class="buttons">
+							<a title="Войти" class="button -button-auth signin-with-phone">
+								<i class="icon iconify mdi mdi-account" data-icon="mdi-account"></i>
+								<span>Вход</span>
+							</a>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-1">
+
+					<div>Ознакомлен(а) и согласен(сна):</div>
+					<div>
+						<label><input type="checkbox" checked="true" readonly="on"/><span>с <a href="policy.html">политикой конфиденциальности</a></span></label>
+					</div>
+					<div>
+						<label><input type="checkbox" checked="true" readonly="on"/><span>с <a href="offer.html">условиями использования</a></label>
+					</div>
+					<div>
+						<label><input type="checkbox" checked="true" readonly="on"/><span>на обработку персональных данных</label>
+					</div>
+
+				</div>
+			</div> -->
+
+<style>
+
+.login-v2 {
+	/*border: 1px solid #e8e8e8;*/
+	border-radius: 1rem;
+	padding: 0 1rem;
+	font-weight: 100;
+	/*background: #cbe3f76b;*/
+	width: 100%;
+	max-width: 36rem;
+	margin-bottom: 1.5rem;
+}
+
+.activity.login .telegram-section {
+	max-width: 36rem;
+}
+
+.login-v2 .lead {
+	text-align: center;
+}
+
+.login-v2 .buttons {
+	display: flex;
+	justify-content: center;
+}
+
+.login-v2 .signin-with-phone {
+	margin-top: 0.5rem;
+	min-width: 20rem;
+}
+
+.activity.login .button {
+	border-radius: 0.25rem;
+	box-shadow: 0.05rem 0.15rem 0 rgb(0 0 0 / 20%);
+	height: 3rem;
+}
+
+@media (max-width: 475px) {
+
+	.login-v2 {
+		border-radius: 0;
+	}
+
+	.login-v2 {
+		max-width: 22rem;
+	}
+
+}
+	
+</style>
+
+
+			<div class="login-v2">
+
+				<!-- <p class="lead">Войдите в приложение</p> -->
+
+				<!-- <p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+					даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p> -->
+
+				<div class="buttons">
+					<a title="Войти" class="button primary -button-auth signin-with-phone">
+						<i class="icon iconify mdi mdi-account" data-icon="mdi-account"></i>
+						<span>Вход в приложение</span>
+					</a>
+				</div>
+
+				<p>Нажимая кнопку, вы подтверждаете, что ознакомились с <a href="policy.html">политикой конфиденциальности</a>,
+					даете согласие на обработку своих персональных данных и соглашаетесь с <a href="offer.html">условиями использования</a>.</p>
+
+			</div>
+
+
 
 
 <!--			<p class="text-center">Ознакомьтесь со <a href="list.html">списоком партнеров</a>.</p>-->
 
 			<div class="telegram-section">
-				<a class="button telegram" href="https://t.me/virapaybot">
+				<!-- <a class="button telegram" href="https://t.me/virapaybot">
 					<i class="icon mdi mdi-telegram iconify" data-icon="mdi-telegram"></i>
 					<span>@ViraPayBot</span>
-				</a>
-				<p>Подключайтесь к боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
+				</a> -->
+				<p>Подключайтесь к <a href="https://t.me/virapaybot">@ViraPayBot</a> боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
 			</div>
 
 			<div class="text-center tinkoff-section">
@@ -315,6 +496,36 @@
 	            <span>Продолжить</span>
 				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 			</button>
+
+			<!-- <p class="info">Если вы ранее использовали для входа кнопки социальных сетей или входили без авторизации, вы можете импортировать, ранее введенные данные и историю платежей.</p> -->
+
+			<div class="login-with">
+				<span class="label">Если вы ранее использовали для входа кнопки социальных сетей, вы можете импортировать, ранее введенные данные и историю платежей.</span>
+				<div class="buttons social">
+					<a title="Войти с Google" class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=629466470986-hk0uutib8aigrl4t1fu1g3nldk5orbbe.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Ffrom-google.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
+						<img class="icon" src="/images/google_g_logo.svg"/>
+						<span>Google</span>
+					</a>
+					<a title="Войти с Facebook" class="button -button-auth signin-with-facebook" href="https://www.facebook.com/v7.0/dialog/oauth?client_id=2682741668715941&redirect_uri=https://virapay.ru/from-facebook.html&state=fb">
+						<i class="icon iconify mdi mdi-facebook" data-icon="mdi-facebook"></i>
+						<span>Facebook</span>
+					</a>
+					<a title="Войти с ВКонтакте" class="button -button-auth signin-with-vk" href="https://oauth.vk.com/authorize?client_id=7498783&display=page&scope=email,offline&response_type=code&v=5.120&state=vk&redirect_uri=https://virapay.ru/from-vk.html">
+						<i class="icon iconify mdi mdi-vk" data-icon="mdi-vk"></i>
+						<span>ВКонтакте</span>
+					</a>
+				</div>
+			</div>
+
+			<div class="login-with">
+				<span class="label">Если ранее входили без регистрации</span>
+				<div class="buttons">
+					<a title="Войти без регистрации" class="button -button-auth without-auth">
+						<i class="icon iconify mdi mdi-account-off-outline" data-icon="mdi-account-off-outline"></i>
+						<span>Без Регистрации</span>
+					</a>
+				</div>
+			</div>
 
 			<p class="info">Вы можете выйти в любое время. Если возникла такая необходимость, нажмите кнопку <q>Выход</q>.</p>
 
@@ -800,18 +1011,21 @@
 			}, 15 * 1000)
 		}
 
-		navigator.serviceWorker
-			.register('/sw.js')
-			.then(registration => {
-				console.log('index.html', 'worker registered', 'scope', registration.scope)
-				registrationHandler(registration)
-			})
-			.catch(err => console.error(err))
+		if (navigator.serviceWorker) {
 
-		navigator.serviceWorker.addEventListener('controllerchange', evt => {
-			console.log('index.html', 'controllerchange', evt)
-			askUserToReload()
-		})
+			navigator.serviceWorker
+				.register('/sw.js')
+				.then(registration => {
+					console.log('index.html', 'worker registered', 'scope', registration.scope)
+					registrationHandler(registration)
+				})
+				.catch(err => console.error(err))
+
+			navigator.serviceWorker.addEventListener('controllerchange', evt => {
+				console.log('index.html', 'controllerchange', evt)
+				askUserToReload()
+			})
+		}
 
 	})();
 
