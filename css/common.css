@@ -221,6 +221,7 @@ h1, h2, h3, h4, h5, h6 {
 	min-height: 100vh;
     min-height: -webkit-fill-available;
 	position: absolute;
+	overflow-x: hidden;
 	left: 0;
 	top: 0;
 }
@@ -343,7 +344,8 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 30rem;
     border-top: 1px solid #eee;
     padding-top: 2rem;
-	text-align: left;
+	/* text-align: left; */
+	text-align: center;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	box-sizing: border-box;
@@ -683,19 +685,23 @@ input.verification + .verification-result > .verification {
 	max-width: 150px;
 }
 
+.activity.login .sber-logo {
+	max-width: 150px;
+}
+
 .activity.login .ps-logos {
 	height: 4rem;
     filter: grayscale(1);
 }
 
-.activity.login .tinkoff-section,
+.activity.login .banks-section,
 .activity.login .telegram-section {
 	border-top: 1px solid #e8e8e8;
     padding-top: 2rem;
 	margin-top: 1rem;
 }
 
-.activity.login .tinkoff-section > p,
+.activity.login .banks-section > p,
 .activity.login .telegram-section > p {
 	margin-top: 0;
 }
@@ -747,10 +753,10 @@ input.verification + .verification-result > .verification {
 
 .activity.login h1 {
 	margin-bottom: 0;
+	font-size: 1.75rem;
 }
 
 .activity.login h1 + .lead {
-	margin-top: 0;
 	margin-bottom: 2rem;
     font-size: 1.47rem;
 	text-align: center;
@@ -837,9 +843,20 @@ input.verification + .verification-result > .verification {
 	opacity: 0.5;
 }
 
-.activity.login .tinkoff-section {
+.activity.login .banks-section {
 	border: 0;
 	margin-top: 0;
+}
+
+.activity.login .banks-section .logos {
+	display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity.login .banks-section .logos > a + a {
+	margin-left: 1rem;
 }
 
 
@@ -947,6 +964,7 @@ input.verification + .verification-result > .verification {
 
 /* activity main */
 
+.activity.transport > .container,
 .activity.main > .container {
 	align-items: center;
 	width: 100%;
@@ -1212,6 +1230,7 @@ input.verification + .verification-result > .verification {
 	display: inline-block;
 }
 
+.activity.transport .profile-show,
 .activity.main .profile-show {
 	display: flex;
 	align-items: center;
@@ -1223,11 +1242,13 @@ input.verification + .verification-result > .verification {
 	transition: all 0.6s ease-out;
 }
 
+.activity.transport .profile-show.is-checked,
 .activity.main .profile-show.is-checked {
 	background-color: #fff;
 	box-shadow: 0 0 5rem rgb(0 0 0 / 20%);
 }
 
+.activity.transport .avatar,
 .activity.main .avatar {
 	width: 2rem;
 	height: 2rem;
@@ -1241,6 +1262,7 @@ input.verification + .verification-result > .verification {
     box-sizing: border-box;
 }
 
+.activity.transport .fullname,
 .activity.main .fullname {
     margin-right: 1.5rem;
     max-width: 8rem;
@@ -1254,10 +1276,12 @@ input.verification + .verification-result > .verification {
     font-weight: 100;
 }
 
+.activity.transport .profile-show,
 .activity.main .profile-show {
 	z-index: 11;
 }
 
+.activity.transport .profile-show .do-reload,
 .activity.main .profile-show .do-reload {
 	display: inline-block;
 	background: red;
@@ -1274,6 +1298,7 @@ input.verification + .verification-result > .verification {
 
 
 
+.activity.transport .header,
 .activity.main .header {
 	display: flex;
 	flex-flow: row;
@@ -1283,10 +1308,12 @@ input.verification + .verification-result > .verification {
 	min-height: 3rem;
 }
 
+.activity.transport .header .logo,
 .activity.main .header .logo {
 	font-size: 1.25rem;
 }
 
+.activity.transport .header .logo img,
 .activity.main .header .logo img {
 	height: 2.5rem;
 }
@@ -2188,6 +2215,894 @@ input.verification + .verification-result > .verification {
 }
 
 
+/* flip */
+
+.flip {
+	background-color: transparent;
+	width: 10rem;
+	height: 10rem;
+	perspective: 45rem; /* Remove this if you don't want the 3D effect */
+}
+
+.flip-inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	transition: transform 0.8s;
+	transform-style: preserve-3d;
+}
+
+.flip-vertical.flipped .flip-inner {
+	transform: rotateY(180deg);
+}
+
+.flip-horizontal.flipped .flip-inner {
+	transform: rotateX(-180deg);
+}
+
+.flip-front, .flip-back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	-webkit-backface-visibility: hidden; /* Safari */
+	backface-visibility: hidden;
+}
+
+.flip-vertical .flip-back {
+	transform: rotateY(180deg);
+}
+
+.flip-horizontal .flip-back {
+	transform: rotateX(-180deg);
+}
+
+
+/* activity transport */
+
+.card {
+	width: calc(85.6rem * 1 / 3.5);
+	height: calc(53.98rem * 1 / 3.5);
+width: calc(85.6rem * 1 / 2.7);
+height: calc(53.98rem * 1 / 2.7);
+	cursor: pointer;
+	box-sizing: border-box;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.transport .ticket {
+	max-width: calc(85.6rem * 1 / 2.7 - 2rem);
+}
+
+.card-spacer {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+padding-left: 3.5rem;
+padding-right: 3.5rem;
+
+}
+
+.card .flip-front, .card .flip-back {
+	border-radius: 1rem;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+		box-sizing: border-box;
+		padding-top: 1rem;
+		background-size: cover;
+		background-position: center center;
+}
+
+
+
+
+
+.card.card-1 .flip-front, .card-1-fcolors {
+	background-color: dodgerblue;
+	color: white;
+}
+
+.card.card-1 .flip-back, .card-1-bcolors {
+	background-color: deepskyblue;
+	color: white;
+}
+
+.card.card-2 .flip-front, .card-2-fcolors {
+	background-color: crimson;
+	color: white;
+}
+
+.card.card-2 .flip-back, .card-2-bcolors {
+	background-color: brown;
+	color: white;
+}
+
+.card.card-3 .flip-front, .card-3-fcolors {
+	background-color: gold;
+	color: white;
+}
+
+.card.card-3 .flip-back, .card-3-bcolors {
+	background-color: goldenrod;
+	color: white;
+}
+
+.card.card-4 .flip-front, .card-4-fcolors {
+	background-color: mediumseagreen;
+	color: white;
+}
+
+.card.card-4 .flip-back, .card-4-bcolors {
+	background-color: seagreen;
+	color: white;
+}
+
+.card.card-5 .flip-front, .card-5-fcolors {
+	background-color: orchid;
+	color: white;
+}
+
+.card.card-5 .flip-back, .card-5-bcolors {
+	background-color: purple;
+	color: white;
+}
+
+.card.card-6 .flip-front, .card-6-fcolors {
+	background-color: sandybrown;
+	color: white;
+}
+
+.card.card-6 .flip-back, .card-6-bcolors {
+	background-color: tan;
+	color: white;
+}
+
+.card.card-7 .flip-front, .card-7-fcolors {
+	background-color: coral;
+	color: white;
+}
+
+.card.card-7 .flip-back, .card-7-bcolors {
+	background-color: chocolate;
+	color: white;
+}
+
+
+.card.card-1 .flip-front {
+	background-image: url(/images/cards/card-1/front.svg?_=1);
+}
+
+.card.card-1 .flip-back {
+	background-image: url(/images/cards/card-1/back.svg?_=1);
+}
+
+.card.card-2 .flip-front {
+	background-image: url(/images/cards/card-2/front.svg?_=1);
+}
+
+.card.card-2 .flip-back {
+	background-image: url(/images/cards/card-2/back.svg?_=1);
+}
+
+.card.card-3 .flip-front {
+	background-image: url(/images/cards/card-3/front.svg?_=1);
+}
+
+.card.card-3 .flip-back {
+	background-image: url(/images/cards/card-3/back.svg?_=1);
+}
+
+.card.card-4 .flip-front {
+	background-image: url(/images/cards/card-4/front.svg?_=1);
+}
+
+.card.card-4 .flip-back {
+	background-image: url(/images/cards/card-4/back.svg?_=1);
+}
+
+.card.card-5 .flip-front {
+	background-image: url(/images/cards/card-5/front.svg?_=1);
+}
+
+.card.card-5 .flip-back {
+	background-image: url(/images/cards/card-5/back.svg?_=1);
+}
+
+.card.card-6 .flip-front {
+	background-image: url(/images/cards/card-6/front.svg?_=1);
+}
+
+.card.card-6 .flip-back {
+	background-image: url(/images/cards/card-6/back.svg?_=1);
+}
+
+.card.card-7 .flip-front {
+	background-image: url(/images/cards/card-7/front.svg?_=1);
+}
+
+.card.card-7 .flip-back {
+	background-image: url(/images/cards/card-7/back.svg?_=1);
+}
+
+
+.card.add .flip-back {
+	background-color: dodgerblue;
+	color: white;
+}
+
+.card.add .flip-front {
+	background-color: #eee;
+	color: black;
+	align-items: center;
+}
+
+.card.add h1 {
+	display: inline-block;
+	padding: 1rem;
+	border-radius: 1rem;
+	background: #e2e2e2;
+	width: 3rem;
+	color: #1e90ff;
+}
+
+.card h1, .card h2 {
+	margin-top: 0;
+	line-height: 1;
+}
+
+.card .actions {
+	margin-top: 1rem;
+}
+
+.card .actions button {
+	border-radius: 2rem;
+	background-color: #fff;
+	text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 100;
+	user-select: none;
+	border: 0;
+	cursor: pointer;
+	height: 2rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+/* .card .actions button + button {
+	margin-left: 1rem;
+} */
+
+.card .actions .freeze {
+	display: none;
+}
+
+.card .property {
+	font-size: 1.1rem;
+	margin-bottom: 0.5rem;
+}
+
+.card .flip-inner .flip-back {
+	align-items: center;
+}
+
+.card .flip-back .property {
+	text-align: left;
+}
+
+.card .flip-back .property .name {
+	/* width: 13rem; */
+	display: inline-block;
+	text-align: right;
+}
+
+
+.card .property .value {
+	font-weight: bold;
+	background: rgba(0,0,0,0.1);
+	padding: 0.2rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.card .property .value.with-star:after {
+	display: inline;
+	content: '*';
+	position: relative;
+	top: -0.2rem;
+	left: 0.25rem;
+}
+
+.card .star-info:before {
+	display: inline;
+	content: '*';
+	position: relative;
+	top: -0.2rem;
+	left: -0.25rem;
+}
+
+.card .property.status .value {
+	text-transform: lowercase;
+}
+
+.card-holder {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	display: flex;
+	flex-flow: row;
+}
+
+.card-holder .card-sidebar {
+	margin-left: 1rem;
+	margin-right: 1rem;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+margin-left: 0;
+margin-right: 0;
+}
+
+.card-holder .card-sidebar button {
+	width: 4rem;
+	height: 4rem;
+	border-radius: 1rem;
+	border: 0;
+	background-color: #eee;
+	color: #1e90ff;
+	font-size: 2rem;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	display: flex;
+	padding: 0;
+	align-items: center;
+	justify-content: center;
+}
+
+.card-holder .card-sidebar button[disabled] {
+	color: #ddd;
+	cursor: default;
+}
+
+.card-slider {
+	overflow-x: hidden;
+	max-width: calc(85.6rem * 1 / 3.5 + 1.5rem * 2);
+max-width: calc(85.6rem * 1 / 2.7 + 3.5rem * 2);
+}
+
+.card-slider-inner {
+	display: flex;
+	flex-flow: row;
+}
+
+.card-holder.is-invisible {
+	visibility: hidden;
+}
+
+
+
+.card-dots {
+	width: 100%;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.card-dots button {
+	border: 0;
+	cursor: pointer;
+	padding: 0;
+	color: #ddd;
+	margin: 0.25rem;
+	background: transparent;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.card-dots button.active {
+	color: #aaa;
+}
+
+.card-tickets {
+	margin-top: 1rem;
+	margin-bottom: 10rem;
+	align-items: center;
+    display: flex;
+    flex-flow: column;
+}
+
+.activity.transport.preloading * {
+	visibility: hidden;
+}
+
+.activity.transport .ticket.showing {
+	transform: scale(0.5);
+	opacity: 0;
+}
+
+.activity.transport .ticket.hide {
+	animation-name: provider-hide;
+	display: flex;
+}
+
+.activity.transport .ticket.show {
+	animation-name: provider-show;
+	display: flex;
+}
+
+.activity.transport .ticket {
+	padding: 1rem;
+	margin: 1rem;
+	display: flex;
+	flex-flow: column;
+	border-radius: 1rem;
+	background: #f5f5f5;
+	cursor: pointer;
+	transform-origin: center;
+	transform: scale(1);
+	opacity: 0;
+	transition: all 0.15s ease-out;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+	-webkit-tap-highlight-color: transparent;
+}
+
+
+.activity.transport .ticket .details {
+	display: flex;
+	flex-flow: row;
+	-padding: 1rem;
+	-border-radius: 1rem;
+	-background: #f5f5f5;
+	-margin: 1rem;
+	-cursor: pointer;
+	align-items: center;
+	justify-content: center;
+}
+
+.activity.transport .ticket .icon {
+	width: 4rem;
+	height: 4rem;
+	min-width: 4rem;
+	min-height: 4rem;
+	border-radius: 50%;
+	background: #999;
+	color: #fff;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 2.5rem;
+}
+
+.activity.transport .ticket.card-1 .icon {
+	background-color: dodgerblue;
+}
+
+.activity.transport .ticket.card-2 .icon {
+	background-color: crimson;
+}
+
+.activity.transport .ticket.card-3 .icon {
+	background-color: gold;
+}
+
+.activity.transport .ticket.card-4 .icon {
+	background-color: mediumseagreen;
+}
+
+.activity.transport .ticket.card-5 .icon {
+	background-color: orchid;
+}
+
+.activity.transport .ticket.card-6 .icon {
+	background-color: sandybrown;
+}
+
+.activity.transport .ticket .title {
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	height: 4rem;
+	width: 20rem;
+	margin-left: 1.5rem;
+	margin-right: 1.5rem;
+}
+
+.activity.transport .ticket .title .name {
+	font-weight: 500;
+}
+
+.activity.transport .ticket .title .inn {
+	font-weight: 200;
+}
+
+.activity.transport .ticket .title .timestamp {
+	font-weight: 200;
+}
+
+.activity.transport .ticket .title .inn:before {
+	display: inline;
+	content: 'ИНН ';
+}
+
+.activity.transport .ticket .title .timestamp:before {
+	display: inline;
+	content: 'Время проезда: ';
+}
+
+.activity.transport .ticket .price {
+	display: inline-flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: center;
+	height: 4rem;
+	padding-left: 1rem;
+	padding-right: 0.5rem;
+	border-radius: 1rem;
+	background: #eee;
+}
+
+.activity.transport .ticket.not-payed .price {
+	color: red;
+}
+
+.activity.transport .ticket.payed .price {
+	color: green;
+}
+
+.activity.transport .ticket .price .summ {
+	font-size: 2rem;
+}
+
+.activity.transport .ticket .price .currency {
+	font-size: 1.5rem;
+}
+
+.activity.transport .ticket .actions {
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	flex-flow: row;
+	transition: all 0.3s ease-out;
+	height: 0;
+	overflow: hidden;
+}
+
+.activity.transport .ticket.picked .actions {
+	height: 4rem;
+}
+
+.activity.transport .ticket .actions button {
+	border-radius: 2rem;
+	background-color: dodgerblue;
+	color: #fff;
+	text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 100;
+	user-select: none;
+	border: 0;
+	cursor: pointer;
+	height: 2rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.activity.transport .ticket .actions button + button {
+	margin-left: 1rem;
+}
+
+.activity.transport .scanners {
+	width: 100%;
+	margin-top: 1.5rem;
+	margin-bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.activity.transport button.nfc {
+	background-color: dodgerblue;
+	color: #fff;
+	border: 0;
+	border-radius: 0.5rem;
+	height: 3rem;
+	min-width: 15rem;
+		box-shadow: none;
+
+		min-width: 12rem;
+}
+
+.activity.transport button.qr {
+	background-color: gold;
+	color: #000;
+	border: 0;
+	border-radius: 0.5rem;
+	height: 3rem;
+	margin-left: 1rem;
+	min-width: 3rem;
+		box-shadow: none;
+}
+
+.activity.transport button.inf {
+	background-color: #eee;
+	color: dodgerblue;
+	border: 0;
+	border-radius: 0.5rem;
+	height: 3rem;
+	margin-left: 1rem;
+	min-width: 3rem;
+		box-shadow: none;
+}
+
+.activity.transport .pay-tickets {
+	margin-top: 2rem;
+	margin-bottom: -1rem;
+	box-shadow: none;
+    border-radius: 0.5rem;
+}
+
+.activity.transport .load-tickets {
+	margin-top: 2rem;
+	background: #eee;
+    box-shadow: none;
+    border-radius: 0.5rem;
+    color: #1e90ff;
+}
+
+.activity.transport .load-tickets[disabled] {
+	visibility: hidden;
+}
+
+.activity.transport .scanners button > span {
+	width: calc(100% - 2rem);
+	font-size: 1rem;
+}
+
+.activity.transport button.nfc > span:after {
+	display: inline;
+	content: 'Включить сканнер';
+	content: 'nfc сканнер';
+	text-transform: uppercase;
+	font-weight: 100;
+}
+
+.activity.transport button.qr {
+	width: auto;
+}
+.activity.transport button.qr > .icon {
+	margin: 0;
+}
+.activity.transport button.qr > span {
+	display: none;
+}
+/* 
+.activity.transport button.qr > span:after {
+	display: inline;
+	content: 'QR Код';
+	text-transform: uppercase;
+	font-weight: 100;
+} */
+
+.activity.transport button.inf {
+	width: auto;
+}
+.activity.transport button.inf > .icon {
+	margin: 0;
+}
+.activity.transport button.inf > span {
+	display: none;
+}
+
+
+.activity.transport button.nfc[disabled],
+.activity.transport button.nfc[disabled]:hover {
+	color: #000;
+	background-color: #eee;
+	box-shadow: none;
+	opacity: 1;
+}
+
+.activity.transport button.nfc[disabled] > .icon {
+	color: dodgerblue;
+	color: #ddd;
+}
+
+.activity.transport button.nfc[disabled] > span:after {
+	content: 'Включается...';
+}
+
+.activity.transport button.nfc.is-turned-on[disabled] > span:after {
+	content: 'Сканер включен' !important;
+	content: 'NFC Включен' !important;
+}
+
+/*.activity.ticket {
+	background: rgba(255,255,255,0.75);
+	padding-top: 4rem;
+	z-index: 10;
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100vh;
+		margin: 0;
+		box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.activity.ticket .content {
+	margin-top: 2rem;
+	background: #fff;
+	padding: 1rem;
+	border-radius: 10px;
+	box-shadow: 0 0 5rem rgba(0,0,0,0.2);
+	min-width: 27rem;
+	min-height: 30rem;
+}*/
+
+
+.activity.approve-action .container .page-title {
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.activity.approve-action .action {
+	text-align: center;
+}
+
+.activity.approve-action .action .button {
+	margin-top: 0.5rem;
+    background: #eee;
+    box-shadow: none;
+    border-radius: 0.5rem;
+    color: #1e90ff;
+	box-shadow: none;
+	text-transform: uppercase;
+	display: inline-flex;
+	width: 100%;
+}
+
+.activity.approve-action .action .button.primary {
+	color: #fff;
+	background: #1e90ff;
+	margin-top: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 475px) {
+
+	.card .flip-back .actions {
+		margin-top: 0.5rem;
+	}
+
+	.activity.transport .ticket {
+		max-width: calc(100% - 3rem);
+	}
+
+	.card {
+		width: calc(85.6rem * 1 / 4.5);
+		height: calc(53.98rem * 1 / 4.5);
+width: calc(85.6rem * 1 / 4);
+height: calc(53.98rem * 1 / 4);
+	}
+
+	.card h2 {
+		font-size: 1.5rem;
+	}
+
+	.card-spacer {
+		padding-left: 1rem;
+		padding-right: 1rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+	}
+
+	.activity.transport .ticket .icon {
+		width: 2.5rem;
+		height: 2.5rem;
+		min-width: 2.5rem;
+		min-height: 2.5rem;
+		font-size: 1.75rem;
+	}
+
+	.activity.transport .ticket .price {
+		/* width: 3rem; */
+		height: 3rem;
+		/* min-width: 3rem; */
+		min-height: 3rem;
+	}
+
+	.activity.transport .ticket .price .summ {
+		font-size: 1.75rem;
+	}
+
+	.card-slider {
+		max-width: calc(85.6rem * 1 / 4.5 + 1rem * 2);
+max-width: calc(85.6rem * 1 / 4 + 1rem * 2);
+	}
+
+	.card-holder .card-sidebar {
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+display: none;
+	}
+
+	.card-holder .card-sidebar button {
+		width: 1.5rem;
+		height: 3rem;
+		background: none;
+		padding: 0;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.card-holder .card-sidebar button svg {
+		width: 1rem;
+	}
+
+	.card-tickets {
+		max-width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.card.add h1 {
+		padding: 0.5rem;
+		border-radius: 1rem;
+		background: #e2e2e2;
+		width: 3rem;
+		color: #1e90ff;
+		margin-bottom: 0;
+	}
+
+	.activity.transport .ticket .title .timestamp:before {
+		content: 'Время ';
+	}
+
+	.activity.transport .scanners button > span {
+		width: calc(100% - 2rem);
+		font-size: 1rem;
+	}
+
+	.activity.transport button.nfc {
+		width: 10rem;
+	}
+
+	.activity.transport .ticket .title {
+		font-size: 0.8rem;
+		text-overflow: ellipsis;
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+
+	.activity.transport .ticket {
+		padding: 0.5rem 1rem;
+		margin: 0.5rem;
+	}
+
+	/* .activity.ticket .content {
+		min-width: 20rem;
+	} */
+
+}
+
+
 /* regions selector */
 
 .regions-selector {
@@ -2356,7 +3271,22 @@ input.verification + .verification-result > .verification {
 
 /* media queries */
 
+@media (max-width: 320px) {
+
+	.activity.login .tinkoff-logo {
+		max-width: 130px;
+	}
+}
+
 @media (max-width: 475px) {
+
+	.activity.login .sber-logo {
+		max-width: 130px;
+	}
+
+	.activity.login h1 {
+		font-size: 1.6rem;
+	}
 
 	.activity.message .container {
 		margin-left: 1rem;

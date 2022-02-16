@@ -1,0 +1,406 @@
+<!doctype html>
+<html>
+<head>
+
+	<!-- Meta Tag -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="virapay - оплата коммунальных платежей онлайн, список партнеров" />
+	<meta name="keywords" content="virapay, vira, pay, virapaybot, оплата жкх, оплата коммунальных услуг, оплата, жкх, жку, список партнеров, партнеры, список" />
+	<meta id="theme-color" name="theme-color" content="#ffffff">
+	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="-1"/>
+
+
+	<!-- Title -->
+	<title>VIRAPAY - Список партнеров</title>
+
+	<!-- Robots -->	
+	<meta name="robots" content="index, follow"/>
+
+	<!-- Prepare -->
+	<link rel="preconnect" href="https://code.iconify.design"/>
+
+	<!-- Icons -->
+	<link rel="icon" href="/icon/google-touch-icon.png" type="image/svg+xml"/>
+	<link rel="mask-icon" href="/icon/icon.svg" color="#000000" type="image/svg+xml"/>
+	<link rel="apple-touch-icon" href="/icon/apple-touch-icon.png"/>
+
+	<!-- Webfonts -->
+	<link href="/fonts/montserrat/index.css" rel="stylesheet"/>
+	<link href="/fonts/roboto/index.css" rel="stylesheet"/>
+
+	<!-- UI framework -->
+	<link href="/css/typography.css" rel="stylesheet"/>
+
+	<!-- Common -->
+	<link href="/css/common.css" rel="stylesheet"/>
+
+	<!-- Core code -->
+	<script src="/js/storage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/JSONRPC2.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/qrcode.min.js" type="text/javascript" charset="utf-8"></script>
+
+<style>
+
+.logo {
+    transform: scale(0.5);
+}
+
+.activity.main .partners {
+	margin-top: 3rem;
+}
+
+.activity.main .partners > .provider.show {
+	cursor: default;
+}
+
+</style>
+
+</head>
+<body>
+
+
+	<div class="activity at-center loading -is-hidden" data-name="loading">
+		<div class="container">
+			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
+		</div>
+	</div>
+
+
+	<div class="activity -at-center message is-hidden" data-name="message">
+		<div class="container">
+			<h2 class="title"></h2>
+			<p class="info">
+				<i class="icon iconify mdi mdi-alert-outline" data-icon="mdi-alert-outline"></i>
+				<span class="text"></span>
+			</p>
+			<button class="button primary action">
+	            <span>Продолжить</span>
+				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+
+<style>
+
+.activity.ticket .container {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.activity.ticket .container h2 {
+    margin-bottom: 2rem;
+}
+
+/* .activity.ticket .actions {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+} */
+
+.activity.ticket .actions {
+    margin-bottom: 20rem;
+}
+
+.activity.ticket .ticket .anim-bg {
+    margin-top: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 26rem;
+    border-radius: 0.5rem;
+    padding: 1px;
+    padding-bottom: 2rem;
+    animation-duration: 8s;
+    animation-name: animate-background;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+}
+
+/* .activity.ticket .ticket .details {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem;
+} */
+
+.activity.ticket .ticket .details > .title {
+    font-weight: bold;
+}
+
+.activity.ticket .ticket .qrcode {
+    margin-top: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    /* background: #fff; */
+        border: 0.4rem solid #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+    width: 8rem;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity.ticket .ticket .qrcode {
+    width: 6rem;
+    font-size: 5rem;
+
+        color: transparent;
+        background-color: transparent;
+        background-image: url(/images/ticket/admiral.svg);
+        background-size: cover;
+        background-position: center center;
+}
+
+.activity.ticket .ticket .qrcode * {
+    /* width: 100%; */
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    /* min-width: 100%; */
+}
+
+.activity.ticket .ticket .details-1col,
+.activity.ticket .ticket .details-2col {
+    display: flex;
+    flex-flow: row;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem;
+}
+
+.activity.ticket .ticket .details-2col > div {
+    width: 50%;
+}
+
+
+@keyframes animate-background {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 100% 0%;
+    }
+    75% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
+.activity.ticket .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 3rem;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 21rem;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #eee;
+    box-shadow: 0.05rem 0.15rem 0 rgb(0 0 0 / 20%);
+    box-shadow: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    text-transform: uppercase;
+    color: #1e90ff;
+}
+
+.activity.ticket .actions {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity.ticket .price {
+    /* text-decoration: line-through; */
+    display: none;
+}
+
+.activity.ticket .ticket .actions .pay {
+    background: rgb(24, 119, 242);
+    color: #fff;
+}
+
+.activity.ticket .ticket.payed .actions .pay {
+    display: none;
+}
+
+
+.activity.ticket .ticket .anim-bg {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity.ticket .ticket .simple-property {
+    display: inline-flex;
+    flex-flow: row;
+    background: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+}
+
+.activity.ticket .ticket .simple-property > span + span {
+    margin-left: 0.5rem;
+}
+
+.activity.ticket .ticket .simple-property.ticket-num {
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.activity.ticket .ticket .simple-property.ticket-timestamp {
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.activity.ticket .ticket .simple-property .currency {
+    margin-top: 0.2rem;
+}
+
+.activity.ticket .ticket .simple-property.contragent {
+    max-width: 15rem;
+}
+
+.activity.ticket .ticket .simple-property.doc-name {
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+}
+
+</style>
+
+	<div class="activity ticket is-hidden" data-name="ticket">
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon back" href="/"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
+			</div>
+		</div>
+		<div class="container">
+			<!-- <div class="logo vertical">
+		        <img src="/images/logo.svg" width="100"/>
+		        <div><span>VIRA</span><span>PAY</span></div>
+			</div> -->
+            <div class="page">
+                <!-- <h2 class="">Выберите тариф</h2> -->
+
+                <div class="ticket">
+                    <div class="anim-bg">
+                        <div class="qrcode" id="qrcode-ticket"></div>
+
+                        <div class="simple-property doc-name">Билет</div>
+                        <div class="simple-property ticket-num"><span class="serial">XY</span> <span class="num">1274822</span></div>
+                        <div class="simple-property ticket-timestamp">04.07.2021 07:41:23</div>
+                        <div class="simple-property transport"><span class="transport-name">Тролейбус</span> <span class="transport-num">2202</span></div>
+                        <div class="simple-property route"><span>Маршрут</span> <span class="route-num">6</span></div>
+                        <div class="simple-property ticket-sum is-hidden"><span>Сумма</span> <span class="summ">0.00</span><span class="iconify currency" data-icon="mdi:currency-rub"></span></div>
+                        <div class="simple-property card-name is-hidden"></div>
+                        <div class="simple-property contragent"><span><span>Перевозчик</span> ИНН <span class="contragent-inn"></span> <span class="contragent-name"></span></span></div>
+
+                        <!-- <div class="details-2col">
+                            <div class="details">
+                                <div class="title">Номер билета</div>
+                                <div class="value ticket-num">1274822</div>
+                            </div>
+                            <div class="details">
+                                <div class="title">Дата и время</div>
+                                <div class="value timestamp">04.07.2021 07:41:23</div>
+                            </div>
+                        </div>
+                        <div class="details-2col">
+                            <div class="details">
+                                <div class="title">Маршрут</div>
+                                <div class="value route-num">6</div>
+                            </div>
+                            <div class="details">
+                                <div class="title">Транспорт</div>
+                                <div class="value"><span class="transport-name">Тролейбус</span> <span class="transport-num">2202</span></div>
+                            </div>
+                        </div>
+                        <div class="details-2col">
+                            <div class="details">
+                                <div class="title">Тариф</div>
+                                <div class="value tariff-name">&laquo;Безлимит на Сутки&raquo;</div>
+                            </div>
+                            <div class="details">
+                                <div class="title">Сумма</div>
+                                <div class="value"><span class="price">20.00</span> <span class="summ">0.00</span> <span class="iconify currency" data-icon="mdi:currency-rub"></span></div>
+                            </div>
+                        </div>
+                        <div class="details-1col">
+                            <div class="details">
+                                <div class="title">Перевозчик</div>
+                                <div class="value contragent-inn">21389719821</div>
+                                <div class="value contragent-name">МУП &laquo;ИПТ&raquo;</div>
+                            </div>
+                        </div>-->
+                    </div>
+                    <div class="actions">
+                        <button class="button pay primary">Оплатить</button>
+                        <a class="button back" href="/">Закрыть</a>
+                    </div>
+                </div>
+                
+
+                
+            </div>
+		</div>
+	</div>
+
+
+	<input type="text" id="focus-trigger" class="hide"/>
+
+	<!-- Iconify -->
+	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+	<!-- Common -->
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Add product -->
+	<script src="js/pages/ticket.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- Yandex.Metrika counter -->
+	<!-- <script type="text/javascript" >
+	   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+	   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+	   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+	   ym(73310326, "init", {
+	        clickmap:true,
+	        trackLinks:true,
+	        accurateTrackBounce:true
+	   });
+	</script>
+	<noscript><div><img src="https://mc.yandex.ru/watch/73310326" style="position:absolute; left:-9999px;" alt="" /></div></noscript> -->
+	<!-- /Yandex.Metrika counter -->
+
+</body>
+
+</html>

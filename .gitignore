@@ -1,4 +1,6 @@
 backups/
+backup/
+.removed/
 js/qr-scanner/src/
 TODO
 *.bak

@@ -10,7 +10,6 @@ let profileSave = function () { };
 let feedbackMessage = function () { };
 let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, counters) { };
 
-
 // activity identify
 
 (function () {
@@ -22,6 +21,10 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 	let stage1 = activityIdentify.querySelector('.stage-1')
 	let stage2 = activityIdentify.querySelector('.stage-2')
 	let stage3 = activityIdentify.querySelector('.stage-3')
+	let countDownBlock = stage3.querySelector('.count-down')
+	let tryArainBlock = stage3.querySelector('.try-again')
+	let countDownEl = countDownBlock.querySelector('.time-remaining')
+	let repeatCallEl = tryArainBlock.querySelector('.repeat-call')
 
 	let sendPhoneButton = stage1.querySelector('.send-phone')
 	let inputCodeButton = stage2.querySelector('.input-code')
@@ -84,13 +87,31 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 		sendPhoneButton.removeAttribute('disabled')
 	}
 
+	let countDownTimer = null
+
 	inputCodeButton.onclick = async (evt) => {
 
 		try {
 			let result = await backend.requestCallPassword(userPhone)
 			if (result) {
 				stage2.classList.add('is-hidden')
+				tryArainBlock.classList.add('is-hidden')
+				countDownBlock.classList.remove('is-hidden')
 				stage3.classList.remove('is-hidden')
+				let countDown = 60
+				countDownEl.innerText = `${countDown}`
+				let countDownTimer = setInterval(() => {
+					countDownEl.innerText = `${countDown}`
+					countDown --
+					if (countDown <= 0) {
+						clearInterval(countDownTimer)
+						countDownBlock.classList.add('is-hidden')
+						tryArainBlock.classList.remove('is-hidden')
+					}
+				}, 1000)
+
+
+
 			} else {
 				alert('Сервис временно недоступен. Попробуйте позднее..')
 			}
@@ -100,6 +121,8 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 		}
 
 		codeInput.focus()
+		let logo = activityIdentify.querySelector('.logo')
+		document.scrollingElement.scrollTop = logo.offsetTop + logo.offsetHeight
 	}
 
 	sendCodeButton.onclick = async (evt) => {
@@ -118,6 +141,7 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 			let token = await backend.verifyCallPassword(userPhone, userPassword)
 			if (token) {
 				storagePut(sessionKey, token)
+				clearInterval(countDownTimer)
 				location.replace('/')
 			} else {
 				alert('Введен неправильный код.')
@@ -129,7 +153,15 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 		}
 
 		sendCodeButton.removeAttribute('disabled')
-	}			
+	}
+
+	repeatCallEl.onmousedown = evt => {
+		evt.preventDefault()
+		stage1.classList.add('is-hidden')
+		stage2.classList.add('is-hidden')
+		stage3.classList.add('is-hidden')
+		sendPhoneButton.onclick()
+	}
 
 	activityLoading.classList.add('is-hidden')
 	activityIdentify.classList.remove('is-hidden')
@@ -1617,7 +1649,14 @@ console.log('prov', item)
 	}
 
 	//filterProviders()
-	pushActivity(activityMain)
+
+	const sessionActiveProjectKey = `/${location.hostname}/activeProject`
+console.log('sessionActiveProjectKey', storageGet(sessionActiveProjectKey))
+	if (storageGet(sessionActiveProjectKey) === 'transport' && profileData && !profileData.isAnonymous) {
+		pushActivity(activityTransport)
+	} else {
+		pushActivity(activityMain)
+	}
 
 //console.log('doStartup')
 	doStartup()
@@ -1929,6 +1968,7 @@ async function profileInit(token, doLogout, doStartup) {
 			: await backend.login(token)
 
 //		console.log('LOGIN RESULT', result)
+//console.log('isTester', result.isTester)
 
 		if (result) {
 
@@ -1954,7 +1994,12 @@ async function profileInit(token, doLogout, doStartup) {
 				result.isNew = false
 			}
 
+			if (result.isTester) {
+				activityNavBar.querySelector('.go-transport').classList.remove('is-hidden')
+			}
+
 			profileData = result.data
+			profileData.isAnonymous = token === ANONYMOUS_TOKEN ? true : false
 
 			let imageUrl = result.picture
 			activityProfile.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
@@ -2027,6 +2072,8 @@ async function profileInit(token, doLogout, doStartup) {
 				}
 				return null
 			}
+ window.profilePaymentInit = profilePaymentInit
+
 			let getPubName = name =>
 				result.oauthService.name === 'phone' && /^\s*$/.test(name)
 					? ('' + result.oauthService.userId).replace(/^(7)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 ($2) $3-$4-$5')
@@ -2040,7 +2087,8 @@ async function profileInit(token, doLogout, doStartup) {
 					let result = profileSave()
 					if (result) {
 						let name = activityProfile.querySelector('.fullname').value;
-						activityMain.querySelector('.fullname').innerText = getPubName(name)
+						//activityMain.querySelector('.fullname').innerText = getPubName(name)
+						document.querySelectorAll('.fullname').forEach(n => { n.innerText = getPubName(name) })
 						activityProfile.querySelectorAll('.back').forEach(node => { // TODO profile
 							node.onclick = function () {
 								history.back()
@@ -2053,13 +2101,18 @@ async function profileInit(token, doLogout, doStartup) {
 
 				}
 			})
-			activityMain.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
-			activityMain.querySelector('.fullname').innerText = getPubName(result.name)
+			//activityMain.querySelector('.avatar').style.backgroundImage = 'url(' + imageUrl + ')'
+			document.querySelectorAll('.avatar').forEach(n => { n.style.backgroundImage = 'url(' + imageUrl + ')' })
+			//activityMain.querySelector('.fullname').innerText = getPubName(result.name)
+			document.querySelectorAll('.fullname').forEach(n => { n.innerText = getPubName(name) })
 
-			document.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {
-				navBarHide(() => pushActivity(activityProfile))
+			activityNavBar.querySelectorAll('.profile-show').forEach(node => node.onclick = () => {
+				//navBarHide(() => pushActivity(activityProfile))
+				activityNavBar.xonafterhide = () => pushActivity(activityProfile)
+				activityNavBar.querySelector('.back').click()
 			})
-			activityMain.querySelectorAll('.profile-show').forEach(node => {
+			//activityMain.querySelectorAll('.profile-show').forEach(node => {
+/*			document.querySelectorAll('.profile-show').forEach(node => {
 				node.onclick = function () {
 					if (activityNavBar.classList.contains('is-hidden')) {
 						//node.querySelectorAll('.do-reload').forEach(n => n.classList.add('force-hidden'))
@@ -2071,16 +2124,17 @@ async function profileInit(token, doLogout, doStartup) {
 						navBarHide()
 					}
 				}
-			})
+			})*/
 
 			document.querySelectorAll('.navbar .feedback').forEach(node => node.onclick = () => {
-				navBarHide(() => {
+				activityNavBar.xonafterhide = () => {
 					let name = activityProfile.querySelector('.fullname').value
 					let email = activityProfile.querySelector('.email').value
 					activityFeedback.querySelectorAll('input.fullname').forEach(input => { input.value = name })
 					activityFeedback.querySelectorAll('input.email').forEach(input => { input.value = email })
 					pushActivity(activityFeedback)
-				})
+				}
+				activityNavBar.querySelector('.back').click()
 			})
 
 			if (result.isNew) {
@@ -2104,8 +2158,8 @@ async function profileInit(token, doLogout, doStartup) {
 
 //
 
-let navBarShow = () => { }
-let navBarHide = () => { }
+// let navBarShow = () => { }
+// let navBarHide = () => { }
 
 // common controls
 
@@ -2296,10 +2350,14 @@ let navBarHide = () => { }
 		}
 	});
 
-	;(function () {
+	;document.querySelectorAll('.header > .profile-show').forEach(function (navBarToggleButton) {
 
-		let avatar = activityMain.querySelector('.avatar')
-		let navBarToggleButton = activityMain.querySelector('.profile-show')
+		let activity = navBarToggleButton
+		while (!activity.classList.contains('activity')) {
+			activity = activity.parentElement
+		}
+
+		let avatar = navBarToggleButton.querySelector('.avatar')
 		let timerStep0 = null
 		let timerStep1 = null
 
@@ -2316,7 +2374,9 @@ let navBarHide = () => { }
 
 		const NUM_VISIBLE_PROVIDERS = 40
 
-		navBarShow = () => {
+		const navBarShow = () => {
+			activityNavBar.xonbeforehide = () => { }
+			activityNavBar.xonafterhide = () => { }
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
 			navBarToggleButton.classList.add('is-checked')
@@ -2325,6 +2385,9 @@ let navBarHide = () => { }
 			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
 			activityNavBar.classList.remove('is-hidden')
 			clearTimers()
+			if (activityNavBar.xonbeforeshow) {
+				activityNavBar.xonbeforeshow()
+			}
 			let i = 0
 			providersList.forEach(item => {
 				if (item.isMatch) {
@@ -2344,12 +2407,15 @@ let navBarHide = () => { }
 					timerStep1 = null
 					activityNavBar.style.clipPath = 'none'
 					activityNavBar.style.transition = 'unset'
-					activityNavBar.style.height = `${activityMain.offsetHeight}px`
+					activityNavBar.style.height = `${activity.offsetHeight}px`
+					if (activityNavBar.xonaftershow) {
+						activityNavBar.xonaftershow()
+					}
 				}, 600)
 			}, 50)
 		}
 
-		navBarHide = (callback) => {
+		const navBarHide = (callback) => {
 			let x = avatar.offsetLeft + avatar.offsetWidth/2
 			let y = avatar.offsetTop + avatar.offsetHeight/2
 			document.scrollingElement.scrollTop = 0
@@ -2358,6 +2424,9 @@ let navBarHide = () => { }
 			activityNavBar.style.transition = 'clip-path 0.6s ease-out'
 			clearTimers()
 			timerStep0 = setTimeout(() => {
+				if (activityNavBar.xonbeforehide) {
+					activityNavBar.xonbeforehide()
+				}
 				timerStep0 = null
 				activityNavBar.style.clipPath = `circle(0% at ${x}px ${y}px)`
 				document.querySelector('.bottom-panel').classList.remove('hide')
@@ -2379,6 +2448,9 @@ let navBarHide = () => { }
 					if (callback) {
 						callback()
 					}
+					if (activityNavBar.xonafterhide) {
+						activityNavBar.xonafterhide()
+					}
 				}, 600)
 			}, 50)
 		}
@@ -2387,7 +2459,15 @@ let navBarHide = () => { }
 			navBarHide()
 		}
 
-	})();
+		navBarToggleButton.onclick = evt => {
+			if (activityNavBar.classList.contains('is-hidden')) {
+				navBarShow()
+			} else {
+				navBarHide()
+			}
+		}
+
+	});
 
 })();
 
@@ -2682,6 +2762,25 @@ console.log('stopping media stream of camera')
 				doContinue = false
 				qrScanner.stop()
 
+				{
+					// alert('scan res = ' + result)
+					let m = result.match(/^https\:\/\/(?:(?:evolution|www)\.)?virapay\.ru\/\?t=([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})(\&n=[1-9][0-9]*)?$/)
+					if (m) {
+						const sessionTransportKey = `/${location.hostname}/transport`
+						const sessionActiveProjectKey = `/${location.hostname}/activeProject`
+						// alert(`linkId = '${m[1]}'`)
+						let linkId = m[1]
+						let sessionTransport = storageGet(sessionTransportKey)
+						if (sessionTransport.lastCardId) {
+							sessionTransport.lastLinkId = linkId
+							storagePut(sessionTransportKey, sessionTransport)
+							storagePut(sessionActiveProjectKey, 'transport')
+							location.replace('./tariffs.html')
+							return;
+						}
+					}
+				}
+
 					backend.scanCode(result).then(results => {
 						console.log('Scanner results', results)
 						if ((results instanceof Array) && results.length > 0) {
@@ -2758,9 +2857,10 @@ console.log('stopping media stream of camera')
 	}
 
 	let loginWithoutAuth = (doStartup) => {
-		let token = ANONYMOUS_TOKEN
-		storagePut(sessionKey, token)
-		profileInit(token, doLogout, doStartup)
+		// let token = ANONYMOUS_TOKEN
+		// storagePut(sessionKey, token)
+		// profileInit(token, doLogout, doStartup)
+		doLogout()
 	}
 
 	let paymentLinkV1 = (p) => { // show payment form
@@ -2814,7 +2914,7 @@ console.log('stopping media stream of camera')
 		return undefined
 	}
 
-	let importLinkV1 = (p) => {
+	let importLinkV1 = (p) => { // import from previous app versions
 		if (p.importFrom) {
 			return () => {
 				let currentActivity = getCurrentActivity()
@@ -2844,6 +2944,26 @@ console.log('stopping media stream of camera')
 		return undefined
 	}
 
+	let transportLinkV1 = (p) => { // transport link
+		if (p.t && /^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/.test(p.t)) {
+			return () => {
+				showActivity(activityLoading)
+				const sessionTransportKey = `/${location.hostname}/transport`
+				const sessionActiveProjectKey = `/${location.hostname}/activeProject`
+				let sessionTransport =  storageGet(sessionTransportKey)
+				storagePut(sessionActiveProjectKey, 'transport')
+				if (sessionTransport.lastCardId) {
+					sessionTransport.lastLinkId = p.t
+					sessionTransport.askBeforeTransaction = true
+					storagePut(sessionTransportKey, sessionTransport)
+					location.replace('/tariffs.html')
+				} else {
+					location.replace('/')
+				}
+			}
+		}
+	}
+
 	let detectPaymentLinks = () => {
 		let p = parseParameters(location.search)
 		let fn = undefined
@@ -2856,20 +2976,23 @@ console.log('stopping media stream of camera')
 		if (!fn) {
 			fn = importLinkV1(p)
 		}
+		if (!fn) {
+			fn = transportLinkV1(p)
+		}
 		return fn
 	}
 
 	// anonymous login
-	activityLogin.querySelectorAll('.without-auth').forEach(btnWithoutAuth => {
-		btnWithoutAuth.onclick = () => {
-			getConfirm(
-				'Вход без регистрации',
-				'При входе без регистрации история действий сохранится только на данном устройстве и не будет синхронизироваться между другими вашими устройствами. Продолжить?',
-				() => loginWithoutAuth(),
-				() => history.back()
-			)
-		}
-	})
+	// activityLogin.querySelectorAll('.without-auth').forEach(btnWithoutAuth => {
+	// 	btnWithoutAuth.onclick = () => {
+	// 		getConfirm(
+	// 			'Вход без регистрации',
+	// 			'При входе без регистрации история действий сохранится только на данном устройстве и не будет синхронизироваться между другими вашими устройствами. Продолжить?',
+	// 			() => loginWithoutAuth(),
+	// 			() => history.back()
+	// 		)
+	// 	}
+	// })
 
 	let doStartup = detectPaymentLinks()
 
@@ -2877,8 +3000,8 @@ console.log('stopping media stream of camera')
 	let token = storageGet(sessionKey)
 	if (token) {
 		profileInit(token, doLogout, doStartup)
-	} else if (doStartup) {
-		loginWithoutAuth(doStartup)
+	// } else if (doStartup) {
+	// 	loginWithoutAuth(doStartup)
 	} else {
 		pushActivity(activityLogin)
 	}

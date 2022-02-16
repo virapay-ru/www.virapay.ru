@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
 
@@ -10,6 +10,10 @@
 	<meta name="keywords" content="virapay, vira, pay, virapaybot, оплата жкх, оплата коммунальных услуг, оплата, жкх, жку, список партнеров, партнеры, список" />
 	<meta id="theme-color" name="theme-color" content="#ffffff">
 	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="-1"/>
+
 
 	<!-- Title -->
 	<title>VIRAPAY - Список партнеров</title>
@@ -42,13 +46,7 @@
 <style>
 
 .logo {
-	justify-content: center;
-    font-size: 3rem;
-    transform: scale(0.7);
-}
-
-.page .title {
-	text-align: center;
+    transform: scale(0.5);
 }
 
 .activity.main .partners {
@@ -86,23 +84,92 @@
 		</div>
 	</div>
 
+<style>
 
-	<div class="activity main is-hidden" data-name="main">
+.activity.prolong-card .container {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.activity.prolong-card .container h2 {
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.activity.prolong-card .tariff {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #eee;
+    border-radius: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 0;
+}
+
+.activity.prolong-card .tariff > * {
+    font-size: 1.25rem;
+}
+
+.activity.prolong-card .tariff h3 {
+    margin: 0;
+    margin-right: 1rem;
+	text-align: left;
+	line-height: 1.1;
+}
+
+.activity.prolong-card .tariff h3 .tariff {
+	padding: 0;
+	margin: 0;
+}
+
+.activity.prolong-card .tariff h3 .provider-name {
+    margin: 0;
+    font-size: 0.8rem;
+	font-weight: 100;
+	margin-left: 0.7rem;
+}
+
+.activity.prolong-card .tariff .actions {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+</style>
+
+	<div class="activity prolong-card is-hidden" data-name="prolong-card">
 		<div class="action-bar">
 			<div class="container">
-				<a class="icon back" href="/"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
+				<a class="icon" href="/"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
 			</div>
 		</div>
 		<div class="container">
-			<div class="logo horizontal">
-		        <img src="/images/logo.svg"/>
+			<!-- <div class="logo vertical">
+		        <img src="/images/logo.svg" width="100"/>
 		        <div><span>VIRA</span><span>PAY</span></div>
-			</div>
-			<div class="page">
-				<h2 class="title">Список партнеров</h2>
-				<!-- <p class="light">Данный список представляет собой перечень доступных направлений при использовании VIRAPAY</p> -->
-				<div class="partners"></div>
-			</div>
+			</div> -->
+            <div class="page">
+                <h2 class="title">Пополнить карту</h2>
+                <div class="tariffs-list">
+                    <!-- <div class="tariff">
+                        <h3>&laquo;Первый&raquo;</h3>
+                        <div class="cost"><span class="price">0.00</span><span class="iconify currency" data-icon="mdi:currency-rub"></span></div>
+                    </div>
+                    <div class="tariff">
+                        <h3>&laquo;Второй&raquo;</h3>
+                        <div class="cost"><span class="price">0.00</span><span class="iconify currency" data-icon="mdi:currency-rub"></span></div>
+                    </div> -->
+                </div>
+                <p class="hint">Стоимость указана в рамках выбранного электронного проездного билета.</p>
+            </div>
 		</div>
 	</div>
 
@@ -115,11 +182,11 @@
 	<!-- Common -->
 	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 
-	<!-- Main -->
-	<script src="js/pages/list.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Add product -->
+	<script src="js/pages/prolong.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Yandex.Metrika counter -->
-	<script type="text/javascript" >
+	<!-- <script type="text/javascript" >
 	   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
 	   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
 	   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
@@ -130,7 +197,7 @@
 	        accurateTrackBounce:true
 	   });
 	</script>
-	<noscript><div><img src="https://mc.yandex.ru/watch/73310326" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+	<noscript><div><img src="https://mc.yandex.ru/watch/73310326" style="position:absolute; left:-9999px;" alt="" /></div></noscript> -->
 	<!-- /Yandex.Metrika counter -->
 
 </body>

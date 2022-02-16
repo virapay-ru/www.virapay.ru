@@ -52,6 +52,7 @@ let activityScanner = activities.find(a => a.classList.contains('scanner'))
 let activitySBPPay = activities.find(a => a.classList.contains('sbp-pay'))
 let activityFeedback = activities.find(a => a.classList.contains('feedback'))
 let activityIdentify = activities.find(a => a.classList.contains('identify'))
+let activityTransport = activities.find(a => a.classList.contains('transport'))
 
 function getActivityByName(name) {
 	return activities.find(activity => activity.dataset.name == name)
@@ -65,33 +66,33 @@ function getCurrentActivity() {
 	return activities.find(activity => !activity.classList.contains('is-hidden'))
 }
 
-function hideActivity(activity) {
+async function hideActivity(activity) {
 	if (!activity) {
 		return
 	}
 	if (activity.xonbeforehide) {
-		activity.xonbeforehide()
+		await activity.xonbeforehide()
 	}
 	activity.classList.add('is-hidden')
 	if (activity.xonafterhide) {
-		activity.xonafterhide()
+		await activity.xonafterhide()
 	}
 }
 
-function showActivity(activity, options = undefined, isRestoring = false) {
+async function showActivity(activity, options = undefined, isRestoring = false) {
 	if (!activity) {
 		return
 	}
 	if (activity.xonbeforeshow) {
-		activity.xonbeforeshow(options)
+		await activity.xonbeforeshow(options)
 	}
 	activity.style.visibility = 'hidden'
 	activity.classList.remove('is-hidden')
 	document.scrollingElement.scrollTop = 0
-	setTimeout(function () {
+	setTimeout(async function () {
 		activity.style.visibility = 'visible'
 		if (activity.xonaftershow) {
-			activity.xonaftershow(options)
+			await activity.xonaftershow(options)
 		}
 	}, 1000/60)	
 }
@@ -153,9 +154,9 @@ function showActivity(activity, options = undefined, isRestoring = false) {
 
 // activities switcher
 
-function pushActivity(activity, options) {
-	hideActivity(getCurrentActivity())
-	showActivity(activity, options)
+async function pushActivity(activity, options) {
+	await hideActivity(getCurrentActivity())
+	await showActivity(activity, options)
 	let state = {
 		activity: getActivityName(activity),
 		scrollTop: 0,
@@ -169,9 +170,9 @@ function pushActivity(activity, options) {
 	)
 }
 
-function popActivity(activity, state) {
-	hideActivity(getCurrentActivity())
-	showActivity(activity, (state ? state.options : undefined), true)
+async function popActivity(activity, state) {
+	await hideActivity(getCurrentActivity())
+	await showActivity(activity, (state ? state.options : undefined), true)
 }
 
 window.switchActivity = pushActivity // TODO deprecated

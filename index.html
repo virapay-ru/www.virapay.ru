@@ -56,6 +56,12 @@
 			</div>
 		</div> -->
 
+<style>
+.activity.identify .logo {
+	font-size: 27px;
+}
+</style>
+
 		<div class="container">
 			<div class="content">
 
@@ -78,8 +84,8 @@
 						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 					</button>
 
-					<p class="hint">Если вы ранее использовали для входа кнопки социальных сетей или входили без регистрации, вы можете импортировать,
-						ранее введенные данные и историю платежей после входа по номеру телефона в разделе <q>Профиль пользователя</q>.</p>
+					<!-- <p class="hint">Если вы ранее использовали для входа кнопки социальных сетей или входили без регистрации, вы можете импортировать,
+						ранее введенные данные и историю платежей после входа по номеру телефона в разделе <q>Профиль пользователя</q>.</p> -->
 
 				</div>
 
@@ -96,8 +102,6 @@
 
 				<div class="stage stage-3 is-hidden">
 
-					<p class="info">Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p>
-
 					<label class="label">
 						<div class="subject">Код для входа</div>
 						<div><input class="code" type="text" placeholder="000000"/></div>
@@ -108,10 +112,15 @@
 						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 					</button>
 
+					<p class="info count-down is-hidden">Ожидание звонка: <span class="time-remaining">60</span> сек.</p>
+					<p class="info try-again is-hidden">Не поступил звонок? <a href="#" class="repeat-call">Повторить</a>.</p>
+
+					<p class="hint">Дождитесь звонка. Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p>
+
 				</div>
 
 				<p class="text-center">
-					&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
+					&copy; 2011&mdash;2022 ООО «Регистратор».<br/>
 					Все права защищены.<br/>
 					<a class="ln" href="contacts.html">Контактная информация</a><br/>
 				</p>
@@ -119,7 +128,7 @@
 			</div>
 		</div>
 
-	</div>
+	</div><!-- /.activity.identity -->
 
 
 	<div class="activity at-center login is-hidden" data-name="login">
@@ -132,6 +141,7 @@
 			</div>
 
 			<h1>Оплата коммунальных платежей онлайн</h1>
+			<!-- <h1>Коммунальные платежи и<br/>электронные проездные</h1> -->
 			<p class="lead">Оплата картой любого банка, Apple Pay или Google Pay</p>
 
 			<!--
@@ -292,15 +302,16 @@
 				<p>Подключайтесь к <a href="https://t.me/virapaybot">@ViraPayBot</a> боту в Telegram, получайте электронные счета, передавайте показания счетчиков и оплачивайте квитанции.</p>
 			</div>
 
-			<div class="text-center tinkoff-section">
-				<p>Эквайринг и перевод средств получателям обеспечивает банк</p>
+			<div class="text-center banks-section">
+				<p>Эквайринг и перевод средств получателям обеспечивают банки</p>
 				<div class="logos">
-					<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="/images/tinkoff_logo.svg"/></a><br/>
+					<a href="https://www.tinkoff.ru/" rel="nofollow"><img class="tinkoff-logo" src="/images/tinkoff_logo.svg"/></a>
+					<a href="https://www.sberbank.ru/" rel="nofollow"><img class="sber-logo" src="/images/sber_logo.svg"/></a>
 				</div>
 			</div>
 
 			<p class="text-center">
-				&copy; 2011&mdash;2021 ООО «Регистратор».<br/>
+				&copy; 2011&mdash;2022 ООО «Регистратор».<br/>
 				Все права защищены.<br/>
 				<a class="ln" href="contacts.html">Контактная информация</a><br/>
 			</p>
@@ -310,14 +321,15 @@
 			</p>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.login -->
 
 
 	<div class="activity at-center loading -is-hidden" data-name="loading">
 		<div class="container">
 			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
 		</div>
-	</div>
+	</div><!-- /.activity.loading -->
 
 
 	<div class="activity at-center sbp-pay is-hidden" data-name="sbp-pay">
@@ -344,7 +356,8 @@
 			финансовой доступности, снижение стоимости платежей для населения.</p>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.sbp-pay -->
 
 
 	<div class="activity -at-center message is-hidden" data-name="message">
@@ -359,7 +372,7 @@
 				<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
 			</button>
 		</div>
-	</div>
+	</div><!-- /.activity.message -->
 
 
 	<div class="activity at-center scanner is-hidden" data-name="scanner">
@@ -380,7 +393,7 @@
 			<p class="info" hidden>При успешном распознавании кода раздастся звуковой сигнал</p>
 		</div>
 
-	</div>
+	</div><!-- /.activity.scanner -->
 
 <style>
 
@@ -423,7 +436,7 @@
 			</div>
 		</div>
 
-	</div>
+	</div><!-- /.activity.confirm -->
 
 
 	<div class="activity feedback is-hidden" data-name="feedback">
@@ -463,7 +476,8 @@
 			</div>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.feedback -->
 
 
 	<div class="activity profile is-hidden" data-name="profile">
@@ -499,7 +513,7 @@
 
 			<!-- <p class="info">Если вы ранее использовали для входа кнопки социальных сетей или входили без авторизации, вы можете импортировать, ранее введенные данные и историю платежей.</p> -->
 
-			<div class="login-with">
+			<!-- <div class="login-with">
 				<span class="label">Если вы ранее использовали для входа кнопки социальных сетей, вы можете импортировать, ранее введенные данные и историю платежей.</span>
 				<div class="buttons social">
 					<a title="Войти с Google" class="button -button-auth signin-with-google" href="https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=629466470986-hk0uutib8aigrl4t1fu1g3nldk5orbbe.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fvirapay.ru%2Ffrom-google.html&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&approval_prompt=auto">
@@ -525,14 +539,15 @@
 						<span>Без Регистрации</span>
 					</a>
 				</div>
-			</div>
+			</div> -->
 
 			<p class="info">Вы можете выйти в любое время. Если возникла такая необходимость, нажмите кнопку <q>Выход</q>.</p>
 
 			<button class="button light logout">Выход</button>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.profile -->
 
 
 	<div class="activity inner accounts is-hidden" data-name="accounts">
@@ -562,7 +577,8 @@
 			</div>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.accounts -->
 
 
 	<div class="activity inner account-history is-hidden" data-name="account-history">
@@ -592,7 +608,8 @@
 			<button class="clear-interval" hidden="true"></button>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.account-history -->
 
 
 	<div class="activity inner account-edit is-hidden" data-name="account-edit">
@@ -641,7 +658,8 @@
 			</div>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.account-edit -->
 
 
 	<div class="activity inner account-payment is-hidden" data-name="account-payment">
@@ -745,7 +763,8 @@
 <!--			<p style="text-align: center;">Нажимая кнопку, вы соглашаетесь<br/> с <a href="offer.html">условиями использования</a>.</p>-->
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.account-payment -->
 
 
 	<div class="activity navbar is-hidden" data-name="navbar">
@@ -759,6 +778,8 @@
 		<div class="container">
 			<div class="links">
 				<a class="profile-show">Профиль пользователя</a>
+				<a class="go-transport is-hidden">Электронные проездные</a>
+				<a class="go-main is-hidden">Коммунальные и прочее услуги</a>
 				<a href="/policy.html">Политика конфиденциальности</a>
 				<a href="/offer.html">Условия использования</a>
 				<a class="feedback">Обратная связь</a>
@@ -769,7 +790,98 @@
 			</div>
 		</div>
 
-	</div>
+	</div><!-- /.activity.navbar -->
+
+
+	<div class="activity transport is-hidden preloading" data-name="transport">
+
+
+
+		<div class="container">
+
+			<div class="header">
+
+				<div class="logo horizontal">
+			        <img src="/images/logo.svg"/>
+			        <div><span>VIRA</span><span>PAY</span></div>
+				</div>
+
+				<div class="profile-show">
+					<div class="avatar"></div>
+					<span class="fullname"></span>
+					<span class="do-reload force-hidden"></span>
+				</div>
+
+			</div>
+
+			<div class="card-holder">
+
+				<div class="card-sidebar">
+					<button class="prev"><i class="iconify" data-icon="mdi-chevron-left"></i></button>
+				</div>
+
+				<div class="card-slider">
+					<div class="card-slider-inner">
+
+						<div class="card-spacer card-insert-point">
+							<div class="card add -flip -flip-horizontal">
+								<div class="flip-inner">
+									<div class="flip-front">
+										<h1><i class="iconify" data-icon="mdi-plus-circle"></i></h1>
+										<div class="actions">
+											<button class="add-product">Добавить продукт</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="card-sidebar">
+					<button class="next"><i class="iconify" data-icon="mdi-chevron-right"></i></button>
+				</div>
+
+			</div>
+
+			<div class="card-dots">
+				<button class="active"><i class="iconify" data-icon="mdi-checkbox-blank-circle"></i></button>
+				<button><i class="iconify" data-icon="mdi-checkbox-blank-circle"></i></button>
+				<button><i class="iconify" data-icon="mdi-checkbox-blank-circle"></i></button>
+				<button><i class="iconify" data-icon="mdi-checkbox-blank-circle"></i></button>
+			</div>
+
+			<div class="scanners">
+				<button class="button nfc">
+					<!--<i class="iconify icon" data-icon="flat-color-icons:nfc-sign"></i>-->
+					<i class="iconify icon" data-icon="mdi-nfc"></i>
+					<span></span>
+				</button>
+				<button class="button qr">
+					<!--<i class="iconify icon" data-icon="flat-color-icons:nfc-sign"></i>-->
+					<i class="iconify icon" data-icon="mdi-qrcode-scan"></i>
+					<span></span>
+				</button>
+				<button class="button inf">
+					<!--<i class="iconify icon" data-icon="flat-color-icons:nfc-sign"></i>-->
+					<!-- <i class="iconify icon" data-icon="mdi-qrcode-scan"></i> -->
+					<i class="iconify icon" data-icon="ant-design:question-circle-outlined"></i>
+					<span></span>
+				</button>
+			</div>
+
+			<div class="products-list is-hidden"></div>
+
+			<div class="card-tickets">
+			</div>
+
+		</div>
+
+
+
+
+	</div><!-- /.activity.transport -->
 
 
 	<div class="activity main -search-results is-hidden" data-name="main">
@@ -896,7 +1008,33 @@
 		</button>
 
 		</div>
-	</div>
+
+	</div><!-- /.activity.main -->
+
+
+
+	<div class="activity approve-action is-hidden" data-name="approve-action">
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon cancel"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
+			</div>
+		</div>
+		<div class="container">
+			<!-- <div class="logo vertical">
+				<img src="/images/logo.svg" width="100"/>
+				<div><span>VIRA</span><span>PAY</span></div>
+			</div> -->
+			<div class="page">
+				<h2 class="page-title">Подтвердите действие</h2>
+				<p class="hint">Если вы дйствительно хотите зафиксировать поездку и получить билет, нажмите соответствующую кнопку.</p>
+				<div class="action">
+					<button class="button pick-tariff primary">Выдать билет</button>
+                    <a class="button cancel">Отмена</a>
+				</div>
+			</div>
+		</div>
+	</div><!-- /.activity.approve-action -->
+
 
 
 	<div class="connection-status online force-hidden">
@@ -908,7 +1046,7 @@
 
 		<p class="message"></p>
 
-	</div>
+	</div><!-- /.connection-status -->
 
 
 	<input type="text" id="focus-trigger" class="hide"/>
@@ -921,6 +1059,7 @@
 
 	<!-- Main -->
 	<script src="/js/pages/main.js" type="module" charset="utf-8"></script>
+	<script src="/js/pages/transport.js" type="module" charset="utf-8"></script>
 
 	<!-- Service worker -->
 	<script>

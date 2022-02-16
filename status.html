@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
 
@@ -10,6 +10,10 @@
 	<meta name="keywords" content="virapay, vira, pay, virapaybot, оплата жкх, оплата коммунальных услуг, оплата, жкх, жку, список партнеров, партнеры, список" />
 	<meta id="theme-color" name="theme-color" content="#ffffff">
 	<meta name="yandex-verification" content="0e027f9006505dab" />
+
+    <meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="-1"/>
+
 
 	<!-- Title -->
 	<title>VIRAPAY - Список партнеров</title>
@@ -42,13 +46,7 @@
 <style>
 
 .logo {
-	justify-content: center;
-    font-size: 3rem;
-    transform: scale(0.7);
-}
-
-.page .title {
-	text-align: center;
+    transform: scale(0.5);
 }
 
 .activity.main .partners {
@@ -65,7 +63,7 @@
 <body>
 
 
-	<div class="activity at-center loading -is-hidden" data-name="loading">
+	<div class="activity at-center loading is-hidden" data-name="loading">
 		<div class="container">
 			<i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
 		</div>
@@ -86,26 +84,95 @@
 		</div>
 	</div>
 
+<style>
 
-	<div class="activity main is-hidden" data-name="main">
-		<div class="action-bar">
-			<div class="container">
-				<a class="icon back" href="/"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
-			</div>
-		</div>
+.activity.status .container {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.activity .container .page-title {
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.activity.status .checking,
+.activity.status .done {
+    max-width: 26rem;
+}
+
+.activity.status .checking,
+.activity.status .done > div {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    padding: 1rem 4rem;
+    border-radius: 1rem;
+}
+
+.activity.status .done > div {
+    color: green;
+}
+
+.activity.status .done {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity.status .done .button {
+    margin-top: 3rem;
+    box-shadow: none;
+    border-radius: 0.5rem;
+    max-width: 16rem;
+}
+
+.activity.status .done .button span {
+    font-size: 1rem !important;
+}
+
+.activity.status .checking span,
+.activity.status .done span {
+    margin-left: 1rem;
+    font-size: 1.25rem;
+}
+
+@media (max-width: 475px) {
+
+    .activity.status .checking,
+    .activity.status .done > div {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+
+</style>
+
+	<div class="activity status -is-hidden" data-name="ticket">
 		<div class="container">
-			<div class="logo horizontal">
-		        <img src="/images/logo.svg"/>
-		        <div><span>VIRA</span><span>PAY</span></div>
-			</div>
-			<div class="page">
-				<h2 class="title">Список партнеров</h2>
-				<!-- <p class="light">Данный список представляет собой перечень доступных направлений при использовании VIRAPAY</p> -->
-				<div class="partners"></div>
-			</div>
+            <h2 class="page-title">Оплата</h2>
+            <div class="checking -is-hidden">
+                <i class="iconify mdi mdi-loading display4 spin" data-icon="mdi-loading"></i>
+                <span>Проверка платежа...</span>
+            </div>
+            <div class="done is-hidden">
+                <div>
+                    <i class="iconify mdi mdi-check-circle-outline display4" data-icon="mdi-check-circle-outline"></i>
+                    <span>Платеж подтвержден</span>
+                </div>
+                <button class="button primary continue">
+                    <span>Продолжить</span>
+                    <i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+                </button>
+            </div>
+            
 		</div>
 	</div>
-
 
 	<input type="text" id="focus-trigger" class="hide"/>
 
@@ -115,11 +182,11 @@
 	<!-- Common -->
 	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 
-	<!-- Main -->
-	<script src="js/pages/list.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Add product -->
+	<script src="js/pages/status.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Yandex.Metrika counter -->
-	<script type="text/javascript" >
+	<!-- <script type="text/javascript" >
 	   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
 	   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
 	   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
@@ -130,7 +197,7 @@
 	        accurateTrackBounce:true
 	   });
 	</script>
-	<noscript><div><img src="https://mc.yandex.ru/watch/73310326" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+	<noscript><div><img src="https://mc.yandex.ru/watch/73310326" style="position:absolute; left:-9999px;" alt="" /></div></noscript> -->
 	<!-- /Yandex.Metrika counter -->
 
 </body>

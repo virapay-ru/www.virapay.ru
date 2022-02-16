@@ -1,23 +1,28 @@
 // Handle installation
 
-const VERSION = 'v4.1.4.4n'
+const VERSION = 'v4.2'
 
 // Static
 
 let resourcesToCache = [
 	// html
 	'/index.html',
-	'/facebook.html',
-	'/google.html',
-	'/vk.html',
+//	'/facebook.html',
+//	'/google.html',
+//	'/vk.html',
 //	'/from-facebook.html',
 //	'/from-google.html',
 //	'/from-vk.html',
-	'/debug.html',
+//	'/debug.html',
+	'/info.html',
 	'/list.html',
 	'/contacts.html',
 	'/policy.html',
 	'/offer.html',
+	'/prolong.html',
+	'/status.html',
+	'/tariffs.html',
+	'/ticket.html',
 	// js
 	'/js/common.js',
 	'/js/storage.js',
@@ -26,8 +31,14 @@ let resourcesToCache = [
 	'/js/qr-scanner/qr-scanner-worker.min.js.map',
 	'/js/qr-scanner/qr-scanner.min.js',
 	'/js/qrcode.min.js',
+	'/js/pages/add.js',
 	'/js/pages/list.js',
 	'/js/pages/main.js',
+	'/js/pages/prolong.js',
+	'/js/pages/status.js',
+	'/js/pages/tariffs.js',
+	'/js/pages/ticket.js',
+	'/js/pages/transport.js',
 	'/js/imask/imask.es.js',
 	'/js/imask/imask.es.js.map',
 	'/js/imask/imask.es.min.js',
@@ -50,7 +61,21 @@ let resourcesToCache = [
 	'/images/logo.svg',
 	'/images/ps_logos.png',
 	'/images/sbp_logo.png',
+	'/images/sber_logo.svg',
 	'/images/tinkoff_logo.svg',
+	'/images/ticket/admiral.svg',
+	'/images/cards/card-1/front.svg',
+	'/images/cards/card-1/back.svg',
+	'/images/cards/card-2/front.svg',
+	'/images/cards/card-2/back.svg',
+	'/images/cards/card-3/front.svg',
+	'/images/cards/card-3/back.svg',
+	'/images/cards/card-4/front.svg',
+	'/images/cards/card-4/back.svg',
+	'/images/cards/card-5/front.svg',
+	'/images/cards/card-5/back.svg',
+	'/images/cards/card-6/front.svg',
+	'/images/cards/card-6/back.svg',
 	// fonts
 	'/fonts/roboto/index.css',
 	'/fonts/roboto/v20/KFOlCnqEu92Fr1MmSU5fABc4EsA.woff2',
