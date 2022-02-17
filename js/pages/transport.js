@@ -697,7 +697,8 @@ activeCard.classList.remove('flipped')
 						// )
 						if (record.recordType === 'url') {
 							let url = '' + decoder.decode(record.data)
-							let m = url.match(/^https\:\/\/evolution\.virapay\.ru\/\?t=([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})(\&n=[1-9][0-9]*)?$/)
+							// let m = url.match(/^https\:\/\/evolution\.virapay\.ru\/\?t=([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})(\&n=[1-9][0-9]*)?$/)
+							let m = url.match(/^https\:\/\/(?:(?:evolution|www)\.)?virapay\.ru\/\?t=([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})(\&n=[1-9][0-9]*)?$/)
 							if (m) {
 								// alert(`linkId = '${m[1]}'`)
 								let linkId = m[1]
@@ -708,6 +709,8 @@ activeCard.classList.remove('flipped')
 										storagePut(sessionTransportKey, sessionTransport)
 										// alert('redirecting...')
 										location.replace('./tariffs.html')
+									} else {
+										showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', () => {})
 									}
 								}
 								hideActivity(activityTransport)
@@ -727,22 +730,22 @@ activeCard.classList.remove('flipped')
 
 
 // { simulation
-{
-	let linkId = '91c47034-f732-44a6-bc82-3f28a0c1ce31'
-	showTariffsActivity = () => {
-		let sessionTransport = storageGet(sessionTransportKey)
-		if (sessionTransport.lastCardId) {
-			sessionTransport.lastLinkId = linkId
-			storagePut(sessionTransportKey, sessionTransport)
-			// alert('redirecting...')
-			location.replace('./tariffs.html')
-		}
-	}
-	window.simulateNFCTagReading = () => {
-		hideActivity(activityTransport)
-		showActivity(activityApproveAction)
-	}
-}
+// {
+// 	let linkId = '91c47034-f732-44a6-bc82-3f28a0c1ce31'
+// 	showTariffsActivity = () => {
+// 		let sessionTransport = storageGet(sessionTransportKey)
+// 		if (sessionTransport.lastCardId) {
+// 			sessionTransport.lastLinkId = linkId
+// 			storagePut(sessionTransportKey, sessionTransport)
+// 			// alert('redirecting...')
+// 			location.replace('./tariffs.html')
+// 		}
+// 	}
+// 	window.simulateNFCTagReading = () => {
+// 		hideActivity(activityTransport)
+// 		showActivity(activityApproveAction)
+// 	}
+// }
 // } simulation
 
 

@@ -2776,8 +2776,10 @@ console.log('stopping media stream of camera')
 							storagePut(sessionTransportKey, sessionTransport)
 							storagePut(sessionActiveProjectKey, 'transport')
 							location.replace('./tariffs.html')
-							return;
+						} else {
+							showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', function () { history.back() })
 						}
+						return;
 					}
 				}
 
