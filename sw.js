@@ -1,6 +1,6 @@
 // Handle installation
 
-const VERSION = 'v4.2.0.1'
+const VERSION = 'v4.2.0.2'
 
 // Static
 
@@ -116,21 +116,21 @@ let resourcesToCache = [
 // Helpers
 
 function toCache(request, response) {
-	console.log('sw.js', VERSION, 'toCache', 'request.method', request.method, request.url, request)
+	//console.log('sw.js', VERSION, 'toCache', 'request.method', request.method, request.url, request)
 	return caches.open(VERSION)
 		.then(cache => cache.put(request, response)
 			.then(() => response))
 }
 
 function fromCache(request) {
-	console.log('sw.js', VERSION, 'fromCache', request.url)
+	//console.log('sw.js', VERSION, 'fromCache', request.url)
 	//return caches.match(request)
 	return caches.open(VERSION)
 		.then(cache => cache.match(request))
 }
 
 function fromNetwork(request) {
-	console.log('sw.js', VERSION, 'fromNetwork', request.url)
+	//console.log('sw.js', VERSION, 'fromNetwork', request.url)
 	return fetch(request)
 }
 

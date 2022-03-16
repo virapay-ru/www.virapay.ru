@@ -66,7 +66,13 @@ function getCurrentActivity() {
 	return activities.find(activity => !activity.classList.contains('is-hidden'))
 }
 
+function getCurrentActivities() {
+	return activities.filter(activity => !activity.classList.contains('is-hidden'))
+}
+
 async function hideActivity(activity) {
+// console.log('>> hideActivity', activity)
+// console.trace()
 	if (!activity) {
 		return
 	}
@@ -80,6 +86,8 @@ async function hideActivity(activity) {
 }
 
 async function showActivity(activity, options = undefined, isRestoring = false) {
+// console.log('>> showActivity', activity, '>> current', getCurrentActivity())
+// console.trace()
 	if (!activity) {
 		return
 	}
@@ -155,7 +163,7 @@ async function showActivity(activity, options = undefined, isRestoring = false) 
 // activities switcher
 
 async function pushActivity(activity, options) {
-	await hideActivity(getCurrentActivity())
+	await Promise.all(getCurrentActivities().map(hideActivity))
 	await showActivity(activity, options)
 	let state = {
 		activity: getActivityName(activity),

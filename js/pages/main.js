@@ -1653,9 +1653,9 @@ console.log('prov', item)
 	const sessionActiveProjectKey = `/${location.hostname}/activeProject`
 console.log('sessionActiveProjectKey', storageGet(sessionActiveProjectKey))
 	if (storageGet(sessionActiveProjectKey) === 'transport' && profileData && !profileData.isAnonymous) {
-		pushActivity(activityTransport)
+		await pushActivity(activityTransport)
 	} else {
-		pushActivity(activityMain)
+		await pushActivity(activityMain)
 	}
 
 //console.log('doStartup')
