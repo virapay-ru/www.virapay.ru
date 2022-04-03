@@ -1996,6 +1996,15 @@ async function profileInit(token, doLogout, doStartup) {
 
 			if (result.isTester) {
 				activityNavBar.querySelector('.go-transport').classList.remove('is-hidden')
+				document.querySelectorAll('.projects-tabs').forEach(projectsTabs => {
+					projectsTabs.classList.remove('is-hidden')
+					projectsTabs.querySelector('.vp-transport').addEventListener('click', () => {
+						pushActivity(activityTransport)
+					})
+					projectsTabs.querySelector('.vp-classic').addEventListener('click', () => {
+						pushActivity(activityMain)
+					})
+				})
 			}
 
 			profileData = result.data
