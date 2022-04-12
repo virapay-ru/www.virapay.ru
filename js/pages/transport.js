@@ -229,14 +229,18 @@ console.log('getIndexByCardTypeId(', cardTypeId, ')', found)
 
 	function flipCard(node, callback) {
 		if (touchPoint.touched === false && scrolling === null && flipping === null) {
-			node.classList.toggle('flipped')
-			flipping = true
-			setTimeout(() => {
-				flipping = null
-				if (callback) {
-					callback(node)
-				}
-			}, 1000)
+			if (node.classList.contains('add')) {
+				location.replace('/add.html')
+			} else {
+				node.classList.toggle('flipped')
+				flipping = true
+				setTimeout(() => {
+					flipping = null
+					if (callback) {
+						callback(node)
+					}
+				}, 1000)
+			}
 		}
 	}
 
@@ -606,10 +610,10 @@ activeCard.classList.remove('flipped')
 		btnsNext.forEach(node => node.onclick = () =>
 			selectCard(getCurrentCardIndex() + 1))
 
-		holderNode.querySelector('.card.add').addEventListener('click', evt => {
-			//productsList.classList.remove('is-hidden')
-			location.replace('/add.html')
-		})
+		// holderNode.querySelector('.card.add').addEventListener('click', evt => {
+		// 	//productsList.classList.remove('is-hidden')
+		// 	location.replace('/add.html')
+		// })
 
 	// 	selectCard(0)
 	// }

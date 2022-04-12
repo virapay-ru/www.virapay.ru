@@ -69,7 +69,7 @@
                 }
             } catch (err) {
                 console.warn(err)
-                showMessage('Добавить продукт', 'При добавлении произошла ошибка.', () => {
+                showMessage('Добавить ТК', 'При добавлении произошла ошибка.', () => {
                     btnAdd.removeAttribute('disabled')
                 })
             }
