@@ -102,7 +102,7 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 				doCall.href = `tel:+${result.confirmationNumber}`
 				// countDownBlock.classList.remove('is-hidden')
 				stage3.classList.remove('is-hidden')
-				let countDown = 15*60
+				let countDown = 14*60+45
 				const formatTimeRemaining = () => {
 					const m = Math.floor(countDown / 60)
 					const s = countDown - m * 60
@@ -116,6 +116,7 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 						clearInterval(countDownTimer)
 						// countDownBlock.classList.add('is-hidden')
 						// tryArainBlock.classList.remove('is-hidden')
+						location.replace('/')
 					}
 				}, 1000)
 
