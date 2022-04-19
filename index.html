@@ -60,6 +60,12 @@
 .activity.identify .logo {
 	font-size: 27px;
 }
+.activity.identify .confirmation-number {
+	font-size: 1.5rem;
+}
+.activity.identify .time-remaining {
+	font-size: 1.5rem;
+}
 </style>
 
 		<div class="container">
@@ -91,7 +97,8 @@
 
 				<div class="stage stage-2 is-hidden">
 
-					<p class="info">Вам позвонят с неизвестного номера. Звонок можно отклонить. Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p>
+					<!-- <p class="info">Вам позвонят с неизвестного номера. Звонок можно отклонить. Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p> -->
+					<p class="info">Для поддтверждения указанного номера Вам потребуется позвонить на специальный номер.</p>
 		
 					<button class="button primary input-code">
 						<span>Понятно</span>
@@ -102,7 +109,7 @@
 
 				<div class="stage stage-3 is-hidden">
 
-					<label class="label">
+					<!-- <label class="label">
 						<div class="subject">Код для входа</div>
 						<div><input class="code" type="text" placeholder="000000"/></div>
 					</label>
@@ -110,12 +117,20 @@
 					<button class="button primary send-code">
 						<span>Войти</span>
 						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
-					</button>
+					</button> -->
+					<p class="text-center">Номен телефона для дозвона:<br/><span class="confirmation-number">79001112233</span></p>
 
-					<p class="info count-down is-hidden">Ожидание звонка: <span class="time-remaining">60</span> сек.</p>
-					<p class="info try-again is-hidden">Не поступил звонок? <a href="#" class="repeat-call">Повторить</a>.</p>
+					<p class="info count-down text-center">Ожидаем вашего звонка:<br/><span class="time-remaining"></span>.</p>
 
-					<p class="hint">Дождитесь звонка. Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p>
+					<a class="button primary do-call" href="tel:+79001112233">
+						<i class="icon iconify mdi mdi-phone" data-icon="mdi-phone"></i>
+						<span>Позвонить</span>
+					</a>
+
+					<!-- <p class="info count-down is-hidden">Ожидание звонка: <span class="time-remaining">60</span> сек.</p> -->
+					<!-- <p class="info try-again is-hidden">Не поступил звонок? <a href="#" class="repeat-call">Повторить</a>.</p> -->
+
+					<!-- <p class="hint">Дождитесь звонка. Используйте последние 6 цифр номера звонившего телефона в качестве кода для входа в приложение.</p> -->
 
 				</div>
 

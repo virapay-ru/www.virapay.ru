@@ -21,18 +21,20 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 	let stage1 = activityIdentify.querySelector('.stage-1')
 	let stage2 = activityIdentify.querySelector('.stage-2')
 	let stage3 = activityIdentify.querySelector('.stage-3')
-	let countDownBlock = stage3.querySelector('.count-down')
-	let tryArainBlock = stage3.querySelector('.try-again')
-	let countDownEl = countDownBlock.querySelector('.time-remaining')
-	let repeatCallEl = tryArainBlock.querySelector('.repeat-call')
+	// let countDownBlock = stage3.querySelector('.count-down')
+	// let tryArainBlock = stage3.querySelector('.try-again')
+	let confirmationNumber = stage3.querySelector('.confirmation-number')
+	let doCall = stage3.querySelector('.do-call')
+	let countDownEl = stage3.querySelector('.time-remaining')
+	// let repeatCallEl = tryArainBlock.querySelector('.repeat-call')
 
 	let sendPhoneButton = stage1.querySelector('.send-phone')
 	let inputCodeButton = stage2.querySelector('.input-code')
 	let sendCodeButton = stage3.querySelector('.send-code')
 	let phoneInput = stage1.querySelector('.phone')
-	let codeInput = stage3.querySelector('.code')
+	// let codeInput = stage3.querySelector('.code')
 	let imaskPhone = IMask(phoneInput, { mask: '+{7} (000) 000-00-00' })
-	let imaskCode = IMask(codeInput, { mask: '000000' })
+	// let imaskCode = IMask(codeInput, { mask: '000000' })
 
 	let userPhone = null
 	let userPassword = null
@@ -53,13 +55,13 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 		sendCodeButton.removeAttribute('disabled')
 	}
 
-	codeInput.oninput = codeInput.onfocus = evt => {
-		if (!/\d{6}$/.test(imaskCode.unmaskedValue)) {
-			sendCodeButton.setAttribute('disabled', true)
-		}
-	}
+	// codeInput.oninput = codeInput.onfocus = evt => {
+	// 	if (!/\d{6}$/.test(imaskCode.unmaskedValue)) {
+	// 		sendCodeButton.setAttribute('disabled', true)
+	// 	}
+	// }
 
-	imaskCode.on('complete', onCodeIsReady)
+	// imaskCode.on('complete', onCodeIsReady)
 
 	sendPhoneButton.onclick = async (evt) => {
 
@@ -90,27 +92,43 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 	let countDownTimer = null
 
 	inputCodeButton.onclick = async (evt) => {
-
 		try {
-			let result = await backend.requestCallPassword(userPhone)
+			let result = await backend.requestCallConfirmation(userPhone)
+// console.log(result)
 			if (result) {
 				stage2.classList.add('is-hidden')
-				tryArainBlock.classList.add('is-hidden')
-				countDownBlock.classList.remove('is-hidden')
+				// tryArainBlock.classList.add('is-hidden')
+				confirmationNumber.innerText = '+' + result.confirmationNumber
+				doCall.href = `tel:+${result.confirmationNumber}`
+				// countDownBlock.classList.remove('is-hidden')
 				stage3.classList.remove('is-hidden')
-				let countDown = 60
-				countDownEl.innerText = `${countDown}`
+				let countDown = 15*60
+				const formatTimeRemaining = () => {
+					const m = Math.floor(countDown / 60)
+					const s = countDown - m * 60
+					return `${m} мин, ${s} сек`
+				}
+				countDownEl.innerText = formatTimeRemaining()
 				let countDownTimer = setInterval(() => {
-					countDownEl.innerText = `${countDown}`
+					countDownEl.innerText = formatTimeRemaining()
 					countDown --
 					if (countDown <= 0) {
 						clearInterval(countDownTimer)
-						countDownBlock.classList.add('is-hidden')
-						tryArainBlock.classList.remove('is-hidden')
+						// countDownBlock.classList.add('is-hidden')
+						// tryArainBlock.classList.remove('is-hidden')
 					}
 				}, 1000)
 
-
+				const checkCall = async () => {
+					let token = await backend.checkCallConfirmation(userPhone, result.password)
+					if (token) {
+						storagePut(sessionKey, token)
+						location.replace('/')
+					} else {
+						setTimeout(checkCall, 2000)
+					}
+				}
+				setTimeout(checkCall, 2000)
 
 			} else {
 				alert('Сервис временно недоступен. Попробуйте позднее..')
@@ -119,49 +137,83 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 			console.log(error)
 			alert('Вход временно недоступен. Попробуйте позднее.')
 		}
-
-		codeInput.focus()
-		let logo = activityIdentify.querySelector('.logo')
-		document.scrollingElement.scrollTop = logo.offsetTop + logo.offsetHeight
+		// let logo = activityIdentify.querySelector('.logo')
+		// document.scrollingElement.scrollTop = logo.offsetTop + logo.offsetHeight
 	}
 
-	sendCodeButton.onclick = async (evt) => {
+	// inputCodeButton.onclick = async (evt) => {
 
-		sendCodeButton.setAttribute('disabled', true)
+	// 	try {
+	// 		let result = await backend.requestCallPassword(userPhone)
+	// 		if (result) {
+	// 			stage2.classList.add('is-hidden')
+	// 			tryArainBlock.classList.add('is-hidden')
+	// 			countDownBlock.classList.remove('is-hidden')
+	// 			stage3.classList.remove('is-hidden')
+	// 			let countDown = 60
+	// 			countDownEl.innerText = `${countDown}`
+	// 			let countDownTimer = setInterval(() => {
+	// 				countDownEl.innerText = `${countDown}`
+	// 				countDown --
+	// 				if (countDown <= 0) {
+	// 					clearInterval(countDownTimer)
+	// 					countDownBlock.classList.add('is-hidden')
+	// 					tryArainBlock.classList.remove('is-hidden')
+	// 				}
+	// 			}, 1000)
 
-		if (!/^\d{6}$/.test(imaskCode.unmaskedValue)) {
-			alert('Введите код.')
-			return
-		}
 
-		userPassword = `${imaskCode.unmaskedValue}`
-		//codeInput.value = ''
 
-		try {
-			let token = await backend.verifyCallPassword(userPhone, userPassword)
-			if (token) {
-				storagePut(sessionKey, token)
-				clearInterval(countDownTimer)
-				location.replace('/')
-			} else {
-				alert('Введен неправильный код.')
-				setTimeout(() => codeInput.focus(), 250)
-			}
-		} catch(error) {
-			console.log(error)
-			alert('Вход временно недоступен. Попробуйте позднее.')
-		}
+	// 		} else {
+	// 			alert('Сервис временно недоступен. Попробуйте позднее..')
+	// 		}
+	// 	} catch(error) {
+	// 		console.log(error)
+	// 		alert('Вход временно недоступен. Попробуйте позднее.')
+	// 	}
 
-		sendCodeButton.removeAttribute('disabled')
-	}
+	// 	codeInput.focus()
+	// 	let logo = activityIdentify.querySelector('.logo')
+	// 	document.scrollingElement.scrollTop = logo.offsetTop + logo.offsetHeight
+	// }
 
-	repeatCallEl.onmousedown = evt => {
-		evt.preventDefault()
-		stage1.classList.add('is-hidden')
-		stage2.classList.add('is-hidden')
-		stage3.classList.add('is-hidden')
-		sendPhoneButton.onclick()
-	}
+	// sendCodeButton.onclick = async (evt) => {
+
+	// 	sendCodeButton.setAttribute('disabled', true)
+
+	// 	if (!/^\d{6}$/.test(imaskCode.unmaskedValue)) {
+	// 		alert('Введите код.')
+	// 		return
+	// 	}
+
+	// 	userPassword = `${imaskCode.unmaskedValue}`
+	// 	//codeInput.value = ''
+
+	// 	try {
+	// 		let token = await backend.verifyCallPassword(userPhone, userPassword)
+	// 		if (token) {
+	// 			storagePut(sessionKey, token)
+	// 			clearInterval(countDownTimer)
+	// 			location.replace('/')
+	// 		} else {
+	// 			alert('Введен неправильный код.')
+	// 			setTimeout(() => codeInput.focus(), 250)
+	// 		}
+	// 	} catch(error) {
+	// 		console.log(error)
+	// 		alert('Вход временно недоступен. Попробуйте позднее.')
+	// 	}
+
+	// 	sendCodeButton.removeAttribute('disabled')
+	// }
+
+	// repeatCallEl.onmousedown = evt => {
+	// 	evt.preventDefault()
+	// 	stage1.classList.add('is-hidden')
+	// 	stage2.classList.add('is-hidden')
+	// 	stage3.classList.add('is-hidden')
+	// 	sendPhoneButton.onclick()
+	// }
 
 	activityLoading.classList.add('is-hidden')
 	activityIdentify.classList.remove('is-hidden')
