@@ -712,7 +712,8 @@ activeCard.classList.remove('flipped')
 										sessionTransport.lastLinkId = linkId
 										storagePut(sessionTransportKey, sessionTransport)
 										// alert('redirecting...')
-										location.replace('./tariffs.html')
+										//location.replace('./tariffs.html')
+										location.replace(url)
 									} else {
 										showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', () => {})
 									}

@@ -2867,6 +2867,7 @@ console.log('stopping media stream of camera')
 							} else {
 								showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', function () { history.back() })
 							}
+							return;
 						}
 					}
 				}
