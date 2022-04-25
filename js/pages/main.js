@@ -2825,23 +2825,49 @@ console.log('stopping media stream of camera')
 				qrScanner.stop()
 
 				{
-					// alert('scan res = ' + result)
-					let m = result.match(/^https\:\/\/(?:(?:evolution|www)\.)?virapay\.ru\/\?t=([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})(\&n=[1-9][0-9]*)?$/)
-					if (m) {
-						const sessionTransportKey = `/${location.hostname}/transport`
-						const sessionActiveProjectKey = `/${location.hostname}/activeProject`
-						// alert(`linkId = '${m[1]}'`)
-						let linkId = m[1]
-						let sessionTransport = storageGet(sessionTransportKey)
-						if (sessionTransport.lastCardId) {
-							sessionTransport.lastLinkId = linkId
-							storagePut(sessionTransportKey, sessionTransport)
-							storagePut(sessionActiveProjectKey, 'transport')
-							location.replace('./tariffs.html')
-						} else {
-							showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', function () { history.back() })
+					const sessionTransportKey = `/${location.hostname}/transport`
+					const sessionActiveProjectKey = `/${location.hostname}/activeProject`
+					{
+						// alert('scan res = ' + result)
+						let m = result.match(/^https\:\/\/(?:(?:evolution|www)\.)?virapay\.ru\/\?t=([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})(\&n=[1-9][0-9]*)?$/)
+						if (m) {
+							// alert(`linkId = '${m[1]}'`)
+							let linkId = m[1]
+							let sessionTransport = storageGet(sessionTransportKey)
+							if (sessionTransport.lastCardId) {
+								sessionTransport.lastLinkId = linkId
+								storagePut(sessionTransportKey, sessionTransport)
+								storagePut(sessionActiveProjectKey, 'transport')
+								location.replace('./tariffs.html')
+							} else {
+								showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', function () { history.back() })
+							}
+							return;
 						}
-						return;
+					}
+					{
+						let m = result.match(/^https?\:\/\/onelink.to\/xpcv64\?R=37\&C=\d+\&M=\d+&V=(\d+)$/i)
+						if (m) {
+							let sessionTransport = storageGet(sessionTransportKey)
+							if (sessionTransport.lastCardId) {
+								backend.tGetLinkIdByRegNumber(sessionTransport.lastCardId, m[1]).then(result => {
+									if (result._error_code == 0) {
+										sessionTransport.lastLinkId = result._qr_code_uuid
+										storagePut(sessionTransportKey, sessionTransport)
+										storagePut(sessionActiveProjectKey, 'transport')
+										location.replace('./tariffs.html')
+									} else {
+										showMessage('Сканирование кода', result._error_message, function () { history.back() })
+									}
+								}).catch(err => {
+									console.log(err)
+		//alert(err)
+									showMessage('Сканирование кода', 'Ошибка. Попробуйте отсканировать код еще раз.', function () { history.back() })
+								})
+							} else {
+								showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', function () { history.back() })
+							}
+						}
 					}
 				}
 
