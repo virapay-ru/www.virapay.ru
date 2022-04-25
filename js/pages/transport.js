@@ -710,10 +710,11 @@ activeCard.classList.remove('flipped')
 									let sessionTransport = storageGet(sessionTransportKey)
 									if (sessionTransport.lastCardId) {
 										sessionTransport.lastLinkId = linkId
+										sessionTransport.askBeforeTransaction = true
 										storagePut(sessionTransportKey, sessionTransport)
 										// alert('redirecting...')
-										//location.replace('./tariffs.html')
-										location.replace(url)
+										location.replace('./tariffs.html')
+										//location.replace(url)
 									} else {
 										showMessage('Сканирование кода', 'Сначала выберите транспортную карту.', () => {})
 									}

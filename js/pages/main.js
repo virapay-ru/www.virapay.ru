@@ -2836,6 +2836,7 @@ console.log('stopping media stream of camera')
 							let sessionTransport = storageGet(sessionTransportKey)
 							if (sessionTransport.lastCardId) {
 								sessionTransport.lastLinkId = linkId
+								sessionTransport.askBeforeTransaction = true
 								storagePut(sessionTransportKey, sessionTransport)
 								storagePut(sessionActiveProjectKey, 'transport')
 								location.replace('./tariffs.html')
@@ -2853,6 +2854,7 @@ console.log('stopping media stream of camera')
 								backend.tGetLinkIdByRegNumber(sessionTransport.lastCardId, m[1]).then(result => {
 									if (result._error_code == 0) {
 										sessionTransport.lastLinkId = result._qr_code_uuid
+										sessionTransport.askBeforeTransaction = true
 										storagePut(sessionTransportKey, sessionTransport)
 										storagePut(sessionActiveProjectKey, 'transport')
 										location.replace('./tariffs.html')
