@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://virapay.ru/</loc>
-        <lastmod>2021-08-17</lastmod>
+        <lastmod>2022-05-15</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
@@ -14,19 +14,25 @@
     </url>
     <url>
         <loc>https://virapay.ru/policy.html</loc>
-        <lastmod>2021-03-12</lastmod>
+        <lastmod>2021-05-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://virapay.ru/offer.html</loc>
-        <lastmod>2021-03-12</lastmod>
+        <lastmod>2021-05-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://virapay.ru/list.html</loc>
         <lastmod>2021-06-18</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://virapay.ru/info.html</loc>
+        <lastmod>2022-05-15</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.5</priority>
     </url>
