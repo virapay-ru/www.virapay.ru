@@ -1,6 +1,6 @@
 // Handle installation
 
-const VERSION = 'v4.2.0.18'
+const VERSION = 'v4.2.0.19'
 
 // Static
 
