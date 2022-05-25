@@ -10,6 +10,8 @@ let profileSave = function () { };
 let feedbackMessage = function () { };
 let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, counters) { };
 
+const isEmailValid = value => { return /^[a-z0-9_\.\-]+\@[a-z0-9_][a-z0-9_\-\.]*(\.[a-z0-9]+)$/i.test(value) }
+
 // activity identify
 
 (function () {
@@ -237,6 +239,58 @@ let profilePaymentInit = function (rowKey, paymentTypeId, account, summ, email, 
 			pushActivity(activityIdentify, { stage: 1 })
 		})
 	})
+
+	{
+		const inputFullname = activityProfile.querySelector('input.fullname')
+		const inputEmail = activityProfile.querySelector('input.email')
+		const btnSave = activityProfile.querySelector('.profile-save')
+
+		const onValidationProgress = () => {
+			if (inputFullname.classList.contains('error') || inputEmail.classList.contains('error')) {
+				btnSave.setAttribute('disabled', true)
+			} else {
+				btnSave.removeAttribute('disabled')
+			}
+		}
+
+		const validateFullname = () => {
+			if (inputFullname.value === '' || /\S/i.test(inputFullname.value)) {
+				inputFullname.classList.remove('error')
+				if (inputFullname.value !== '') {
+					inputFullname.classList.add('valid')
+				} else {
+					inputFullname.classList.remove('valid')
+				}
+			} else {
+				inputFullname.classList.remove('valid')
+				inputFullname.classList.add('error')
+			}
+			onValidationProgress()
+		}
+
+		const validateEmail = () => {
+			if (inputEmail.value === '' || isEmailValid(inputEmail.value)) {
+				inputEmail.classList.remove('error')
+				if (inputEmail.value !== '') {
+					inputEmail.classList.add('valid')
+				} else {
+					inputEmail.classList.remove('valid')
+				}
+			} else {
+				inputEmail.classList.remove('valid')
+				inputEmail.classList.add('error')
+			}
+			onValidationProgress()
+		}
+		
+		inputFullname.addEventListener('input', validateFullname)
+		inputEmail.addEventListener('input', validateEmail)
+
+		activityProfile.xonaftershow = function () {
+			validateFullname()
+			validateEmail()
+		}
+	}
 
 	activityProfile.querySelectorAll('.login-with .without-auth').forEach(btnLoginWithoutAuth => {
 		btnLoginWithoutAuth.addEventListener('click', async (evt) => {
@@ -1109,6 +1163,7 @@ async function mainInit(doStartup) {
 						let isValid = true
 							&& inputAccount.classList.contains('valid')
 							&& inputSum.classList.contains('valid')
+							&& !inputEmail.classList.contains('error')
 
 						if (result !== undefined) {
 							countersSection.hidden = true
@@ -1338,6 +1393,25 @@ async function mainInit(doStartup) {
 						updateSumms()
 					}
 
+					const validateEmail = () => {
+						if (inputEmail.value === '' || isEmailValid(inputEmail.value)) {
+							inputEmail.classList.remove('error')
+							if (inputEmail.value !== '') {
+								inputEmail.classList.add('valid')
+							} else {
+								inputEmail.classList.remove('valid')
+							}
+						} else {
+							inputEmail.classList.remove('valid')
+							inputEmail.classList.add('error')
+						}
+						onValidationProgress()
+					}
+
+					inputEmail.oninput = function () {
+						validateEmail()
+					}
+
 					let paymentTypeControl = activityAccountPayment.querySelector('input.payment-type-id[value="' + initPaymentTypeId + '"]')
 					if (!paymentTypeControl) {
 						paymentTypeControl = activityAccountPayment.querySelector('input.payment-type-id[value="' + defaultPaymentTypeId + '"]')
@@ -1420,6 +1494,7 @@ async function mainInit(doStartup) {
 
 					inputAccount.oninput()
 					inputSum.oninput()
+					inputEmail.oninput()
 					switchActivity(activityAccountPayment)
 				})
 
