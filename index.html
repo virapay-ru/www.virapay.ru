@@ -912,6 +912,8 @@
 				</button>
 			</div>
 
+			<div class="manual-input"><a>Не получается отсканировать?</a></div>
+
 			<div class="products-list is-hidden"></div>
 
 			<div class="card-tickets">
@@ -1079,6 +1081,44 @@
 			</div>
 		</div>
 	</div><!-- /.activity.approve-action -->
+
+
+
+	<div class="activity input-transport-num is-hidden" data-name="input-transport-num">
+		<div class="action-bar">
+			<div class="container">
+				<a class="icon back"><i class="iconify mdi mdi-chevron-left" data-icon="mdi-chevron-left"></i></a>
+			</div>
+		</div>
+		<div class="container">
+			<!-- <div class="logo vertical">
+				<img src="/images/logo.svg" width="100"/>
+				<div><span>VIRA</span><span>PAY</span></div>
+			</div> -->
+			<div class="page">
+				<h2 class="page-title">Введите самостоятельно</h2>
+				<!-- <p class="hint">Если вы дйствительно хотите зафиксировать поездку и получить билет, нажмите соответствующую кнопку.</p> -->
+				<label class="label">
+					<div class="subject">Номер транспортного средства</div>
+					<div>
+						<input class="transport-num" value="" type="text" inputmode="numeric"/>
+						<div class="verification-result">
+							<i class="iconify mdi mdi-check valid" data-icon="mdi-check"></i>
+							<i class="iconify mdi mdi-close error" data-icon="mdi-close"></i>
+							<i class="iconify mdi mdi-loading verification spin" data-icon="mdi-loading"></i>
+						</div>
+					</div>
+					<div class="hint">Обычно для троллейбуса это трехзначный числовой номер.</div>
+				</label>
+				<div class="action">
+					<button class="button primary get-ticket">
+						<span>Продолжить</span>
+						<i class="icon iconify mdi mdi-arrow-right" data-icon="mdi-arrow-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div><!-- /.activity.input-transport-num -->
 
 
 

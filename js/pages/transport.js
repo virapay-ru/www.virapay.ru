@@ -819,4 +819,38 @@ activeCard.classList.remove('flipped')
 		}
 	})
 
+
+
+	const activityInputTransportNum = getActivityByName('input-transport-num')
+	activityInputTransportNum.querySelectorAll('.back').forEach(btn => btn.onclick = () => history.back())
+	const transportNum = activityInputTransportNum.querySelector('.transport-num')
+	activityInputTransportNum.querySelectorAll('.get-ticket').forEach(btn => btn.onclick = () => {
+		let sessionTransport = storageGet(sessionTransportKey)
+		if (sessionTransport.lastCardId) {
+			console.log('getting link by reg num', transportNum.value)
+			backend.tGetLinkIdByRegNumber(sessionTransport.lastCardId, transportNum.value).then(result => {
+console.log({ result })
+				if (result._error_code == 0) {
+					sessionTransport.lastLinkId = result._qr_code_uuid
+					sessionTransport.askBeforeTransaction = true
+					storagePut(sessionTransportKey, sessionTransport)
+					storagePut(sessionActiveProjectKey, 'transport')
+					location.replace('./tariffs.html')
+				} else {
+					showMessage('Самостоятельный ввод', result._error_message, function () { history.back() })
+				}
+			}).catch(err => {
+				console.log({ err })
+//alert(err)
+				showMessage('Самостоятельный ввод', 'Ошибка. Попробуйте еще раз.', function () { history.back() })
+			})
+		} else {
+			showMessage('Самостоятельный ввод', 'Сначала выберите транспортную карту.', function () { history.back() })
+		}
+	})
+
+	activityTransport.querySelectorAll('.manual-input').forEach(btn => btn.onclick = () => {
+		pushActivity(activityInputTransportNum)
+	})
+
 })();

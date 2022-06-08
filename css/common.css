@@ -962,6 +962,38 @@ input.verification + .verification-result > .verification {
 }
 
 
+/* activity input-transport-num */
+
+.activity.input-transport-num {
+	padding-top: 4rem;
+}
+
+.activity.input-transport-num .container {
+	width: 100%;
+	max-width: 40rem;
+	align-items: center;
+}
+
+.activity.input-transport-num .label {
+	display: block;
+}
+
+.activity.input-transport-num h2, .activity.input-transport-num small, .activity.input-transport-num .label, .activity.input-transport-num .button {
+	margin-bottom: 2rem;
+	max-width: 20rem;
+}
+
+.activity.input-transport-num h2 {
+	text-align: center;
+}
+
+.activity.input-transport-num .page {
+	max-width: max-content;
+    width: auto;
+}
+
+
+
 /* activity main */
 
 .activity.transport > .container,
@@ -2260,6 +2292,16 @@ input.verification + .verification-result > .verification {
 
 
 /* activity transport */
+
+.activity.transport .manual-input {
+	margin-bottom: 0.5rem;
+}
+
+.activity.transport .manual-input a {
+	text-decoration: underline;
+	cursor: pointer;
+	color: #1e90ff;
+}
 
 .card {
 	width: calc(85.6rem * 1 / 3.5);

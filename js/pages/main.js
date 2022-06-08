@@ -2922,7 +2922,7 @@ console.log('stopping media stream of camera')
 						}
 					}
 					{
-						let m = result.match(/^https?\:\/\/onelink.to\/xpcv64\?R=37\&C=\d+\&M=\d+&V=(\d+)$/i)
+						let m = result.match(/^(?:URL\s*\:\s*)?https?\:\/\/onelink.to\/xpcv64\?R=37\&C=\d+\&M=\d+&V=(\d+)$/i)
 						if (m) {
 							let sessionTransport = storageGet(sessionTransportKey)
 							if (sessionTransport.lastCardId) {
