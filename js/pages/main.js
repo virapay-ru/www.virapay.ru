@@ -123,7 +123,13 @@ const isEmailValid = value => { return /^[a-z0-9_\.\-]+\@[a-z0-9_][a-z0-9_\-\.]*
 				}, 1000)
 
 				const checkCall = async () => {
-					let token = await backend.checkCallConfirmation(userPhone, result.password)
+					let token
+					try {
+						token = await backend.checkCallConfirmation(userPhone, result.password)
+					} catch (err) {
+						console.error(err)
+						token = null
+					}
 					if (token) {
 						storagePut(sessionKey, token)
 						location.replace('/')
